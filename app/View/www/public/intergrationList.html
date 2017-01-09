@@ -1,0 +1,40 @@
+<volist name="list" id="item">
+	<li>
+		<div class="singleList">
+			<div class="left">
+				<a href="{:U('score/details',array('id'=>$item['id'],'sid'=>$shopid))}">
+					<img src1="__STATIC__/home/images/milk.jpg" style="height:100%;width:100%;" src="{:attach($item['img'])}">
+				</a>
+			</div>
+			<div class="right">
+				<a href="{:U('score/details',array('id'=>$item['id'],'sid'=>$shopid))}" ><p class="name">{$item.title}</p></a>
+				<!-- <p class="description">{$item.intro}</p> -->
+				<p class="price">积分:{$item.score}
+					<if condition="$item['price'] != 0">
+						+ <span class="price">￥{$item.price}</span>
+					</if>
+					<span style="font-size: 14px;color:#8f8c79;">(已兑：{$item.buy_num})</span></p>
+				<br/>
+				<p class="exchange"><a href="{:U('score/exchange',array('id'=>$item['id'],'sid'=>$shopid))}">立即兑换</a></p>
+			</div>
+		</div>
+	</li>
+</volist>
+<script>
+	$(function(){
+		var liLength=$(".orderListDiv").find('li').length;
+		console.log(liLength);
+		for(var j=0;j<liLength;j++){
+			var length=$(".right .description").eq(j).text().length;
+			console.log(length);
+			var duoyu=$(".right .description").eq(j).text().substr(0,15);
+			console.log(duoyu);
+			for(var i=0;i<length;i++){
+				if(i>15){
+					$(".right .description").eq(j).text(duoyu+'...');
+				}
+				console.log();
+			}
+		}
+	})
+</script>

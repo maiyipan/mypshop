@@ -1,0 +1,19 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">佳鲜农庄消息</span>
+</div>
+<div class="messageCenter">
+    <ul>
+    	<volist name="list" id="vo">
+        <li>
+            <a href="#">
+                <p class="messageTitle">{$vo.info}</p>
+                <p class="messageTime">{$vo.add_time|date='Y-m-d H:i:s',###}</p>
+            </a>
+        </li>
+        </volist>
+    </ul>
+</div>
+<include file="public:footer"/>

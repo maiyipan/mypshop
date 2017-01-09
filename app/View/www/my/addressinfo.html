@@ -1,0 +1,105 @@
+<select class="address" style="    font: 24px/37px 'Microsoft Yahei';width:100px;margin-right:10px;height: 35px; margin-top:32px;-webkit-appearance: none;" name="provinceId" id="province" datatype="*" onchange="changeArea(this)"></select>
+<select class="address" style="    font: 24px/37px 'Microsoft Yahei';width:100px;margin-right:10px;height: 35px; margin-top:32px;-webkit-appearance: none;"  name="cityId" id="city" datatype="*" onchange="changeArea(this)"></select>
+<select class="address" style="    font: 24px/37px 'Microsoft Yahei';width:100px;margin-right:10px;height: 35px; margin-top:32px;-webkit-appearance: none;"  name="areaId" id="area" datatype="*" onchange="changeArea(this)"></select>
+<input event-node="input_area" type="hidden" id="current" name="city_ids" value="{$info.city_ids}" /><!-- value="1,2,3" -->
+<input type="hidden" id="current_name" name="city_names" value="{$info.city_names}" class="areaInput"/>
+<script type="text/javascript">
+var json;			
+var arrNodeChild = new Array();	
+var selected = '{$info.city_ids}';	
+
+$(function(){
+	$.get('{:U('area/ajax_list')}','',function(data){
+		json = data;
+		init();
+	},'json');
+})
+
+var init = function() {
+	selected = selected == '' ? $('#current').val() : selected;
+	var arrSelect = selected.split(',');
+	
+	var option1 = '<option></option>';
+	var option2 = '<option></option>';
+	var option3 = '<option></option>';
+	$.each(json, function(i, n) {
+		var selected1 = (n.id == arrSelect[0]) ? 'selected="selected"' : '';
+		option1 += '<option value="' + n.id + '" ' + selected1 + '>' + n.name + '</option>';
+		arrNodeChild[n.id] = n.child;
+		if(n.child && n.child !== null) {
+			$.each(n.child, function(ii, nn) {
+				if(n.id == arrSelect[0]) {
+					var selected2 = (nn.id == arrSelect[1]) ? 'selected="selected"' : '';
+					option2 += '<option value="' + nn.id + '" ' + selected2 + '>' + nn.name + '</option>';
+				}
+				arrNodeChild[nn.id] = nn.child;
+				if(nn.child && nn.child !== null) {
+					$.each(nn.child, function(iii, nnn) {
+						if(nn.id == arrSelect[1]) {
+							var selected3 = (nnn.id == arrSelect[2]) ? 'selected="selected"' : '';
+							option3 += '<option value="' + nnn.id + '" ' + selected3 + '>' + nnn.name + '</option>';
+						}
+						arrNodeChild[nnn.id] = nnn.child;
+					});
+				}
+			});
+		}
+	});
+	$('#province').append(option1);
+	$('#city').append(option2);
+	$('#area').append(option3);
+};
+
+var changeArea = function(obj) {
+	var id = $(obj).attr('id');
+	var val = $(obj).val();
+	switch(id) {
+		case 'province':
+			if(arrNodeChild[val] && arrNodeChild[val] !== null) {
+				if(val == 0) {
+					$('#city').html('<option></option>');
+					$('#area').html('<option></option>');
+					break;
+				}
+				var select = '<option></option>';
+				$.each(arrNodeChild[val], function(i, n) {
+					select += '<option value="' + n.id + '">' + n.name + '</option>';
+				});
+				$('#city').html(select);
+				$('#area').html('<option></option>');
+			}else{
+				$('#city').html('<option></option>');
+				$('#area').html('<option></option>');
+			}
+ 			break;
+		case 'city':
+			if(arrNodeChild[val] &&  arrNodeChild[val] !== null) {
+				if(val == 0) {
+					$('#area').html('<option></option>');
+					break;
+				}
+				var select = '<option></option>';
+				$.each(arrNodeChild[val], function(i, n) {
+					select += '<option value="' + n.id + '">' + n.name + '</option>';
+				});
+				$('#area').html(select);
+			}else{
+				$('#area').html('<option></option>');
+			}
+			break;
+	}
+	var current = new Array();
+	typeof($('#province').val()) !== 'undefined' && current.push($('#province').val());
+	typeof($('#city').val()) !== 'undefined' && current.push($('#city').val());
+	typeof($('#area').val()) !== 'undefined' && current.push($('#area').val());
+	$('#current').val(current.join(','));
+	var currentName = new Array();
+	var provinceTxt = $("#province option").not(function(){ return !this.selected }).text();
+	provinceTxt != '请选择' && currentName.push(provinceTxt);
+	var cityTxt = $("#city option").not(function(){ return !this.selected }).text();
+	cityTxt != '请选择' && currentName.push(cityTxt);
+	var areaTxt = $("#area option").not(function(){ return !this.selected }).text();
+	areaTxt != '请选择' && currentName.push(areaTxt);
+	$('#current_name').val(currentName.join(' '));
+} 
+</script>

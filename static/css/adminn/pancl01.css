@@ -1,0 +1,118 @@
+@charset "utf-8";
+/*global*/
+* {margin: 0;padding: 0;}
+html{color:#333;font-family:Arial,Helvetica,sans-serif,"宋体";font-size:12px;}
+body{font-family: Arial, Helvetica, sans-serif,"宋体"; margin:0; padding:0; font-size:12px; color:#333;background: url(/static/images/admin/pancl/page_bg.png) top repeat-x #f7fcfe;}
+img{vertical-align: middle;border:0px;}
+
+a{ color:#4D4D4D; text-decoration:none;}
+a:hover{ color:#0099cc; text-decoration:underline;}
+
+table{border-collapse:collapse;border-spacing:0;}
+input,textarea{margin:0;padding:0;font-size:12px;font-family:Arial,Helvetica,sans-serif,"宋体";outline:none;color:#333;}
+
+/*解决td内容为空时不显示边框问题*/
+.inTable td{empty-cells : show}
+table a{color:#2559A6; text-decoration:none;}
+
+/*html*/
+input,textarea,select {font: 12px tahoma, arial, verdana, geneva, sans-serif;}
+input.txt_focus {border: 1px solid #c00;}
+input.btn {padding:0px 0;border: 0px solid #ccc;cursor: pointer;}
+textarea.txt {padding: 2px 0 2px 3px;vertical-align: middle;border: 1px solid #ccc;background:#fff;color:#777;}
+textarea.txt_focus {border: 1px solid #c00;}
+
+/*text-align*/
+.txtl {text-align: left;}
+.txtc {text-align: center;}
+.txtr {text-align: right;}
+.txtb {font-weight: bold;}
+.vam {vertical-align: middle;}
+/*color*/
+.red {color: #f00;}
+.gray {color:#999;}
+.white {color: #fff;}
+.orange {color: #f60;}
+/*float*/
+.ftl {float: left;}
+.ftr {float: right;}
+.hand {cursor: pointer;}
+.clearfix,.clear {clear: both;height:0;overflow: hidden;}
+.blank { height:10px;}
+.h300{ height:300px;}
+/*input readonly*/
+input{ color:#000;}
+/*ReadOnly*/
+.readOnly {background-color:#f0f0f0;}
+/* disabled */
+.disabled { color:gray; }
+/* hidden */
+.hide,.hidden {display:none;}
+.b {font-weight:bold;}
+
+/*header*/
+#header{background: url(/static/images/admin/pancl/topbg.png) no-repeat scroll right 0 #218CC2;height: 56px; text-align:center; margin:0px 0px 20px 0px;width:100%;}
+#header .h-box{height:auto; padding:0; overflow:hidden; width:980px; margin:0px auto 0px auto;}
+
+.logobox{float:left;width:350px; height:50px; text-align:left;padding:6px 0 0 0; background: url(/static/images/admin/pancl/logo_s.png) no-repeat 0 center; _background:url(/static/images/admin/pancl/logo_s.gif) no-repeat 0 center; text-indent:-9999px;}
+.userbox{float:right;height:36px;margin:0 10px 0 0; text-align:right; color:#fff; border: 0px solid #70787B;padding:20px 0 0 0; border:0px solid #ccc;}
+.userbox span {color: #fff; margin:0px 6px 0px 0px;}
+.userbox a{color:#FFFFFF;}
+.userbox b{ margin:0 6px;}
+/*footer*/
+#footer{width:100%;}
+#footer .f-box{line-height:25px; text-align:center; width:980px; margin:0px auto 0px auto;padding:0; overflow:hidden;}
+#footer .f-box .copy{ color:#666;}
+#footer .f-box a{ margin:0px 6px 0px 6px;}
+
+/*mainer*/
+#mainer{min-height:500px; text-align:center;width:100%; margin:0px auto 20px auto;height:auto; padding:0px 0; overflow:hidden; background-color:#fff;}
+.errtip{color: #f00; padding:0 0 0 2px;}
+
+@charset "utf-8";
+
+h4{height: 32px; width:auto; line-height:32px; text-align: left; padding:0px 0px 0px 10px;font-size:14px;font-family: "微软雅黑","宋体";color:#333; font-weight: normal;}
+.mleft{ width:70%; height:auto; float:left; margin:0px 0;border: 0px solid #ccc; min-height:300px;}
+.mright{ width:30%; height:auto; float:right; margin:0px 0;border: 0px solid #ccc;min-height:300px;}
+
+.th{margin-top:10px;}
+.mbar{width:auto; height:auto; clear:both; margin:10px 0px 10px 0px;border: 1px solid #ededed;overflow: hidden;}
+.mbar p{ line-height:28px; border:0px solid #ccc; text-align:left; padding:0px 0px 0px 20px;font-family:"宋体";}
+.mbar a{color:#0099cc; margin:0px 10px 0px 0px;font-family:"宋体";}
+.mbar a:hover{color:#0066ff;}
+.mbar .info{background: url(/static/images/admin/pancl/icon_14.jpg) no-repeat 0 8px;height:25px; width:auto;border:0px solid #ccc; display:block; text-indent:20px;}
+.mbar .services{height:150px; width:345px; overflow:hidden;}
+.mbar .services a{margin:0;}
+.mbar .tel{font-size:12px;font-family:"宋体";color:#666;background: url(/static/images/admin/pancl/icon_11.jpg) no-repeat 0 center;height:25px; width:auto;border:0px solid #ccc; display:block; text-indent:20px;}
+.mbar .remark {color:gray;line-height:20px;}
+.mbar .more {float:right;font-size:12px;}
+.mbar .notice{text-align:center; margin:2px 0px 0px 1px;}
+.mbar .notice li { text-align:left;padding:0px 10px;line-height:24px;height:24px;width:210px; overflow:hidden;font-size:12px;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;}
+.mbar hr{ width:96%; border-top: 1px solid #ccc; height:0px; margin:0px auto 0px auto; color:#0099cc;}
+.mtishi{width:auto; height:auto; margin:10px 10px 10px 10px;border: 1px solid #FC9;min-height:25px; background:#fff8d9;}
+.mtishi p{height:28px; line-height:28px; border:0px solid #ccc; text-align:left; padding:0px 0px 0px 10px;font-family:"宋体";}
+.count{ color:#ff9900;font-size:12px;font-family:"微软雅黑";}
+
+.lbar{ float:left; width:190px;padding:10px 0px 5px 0px;}
+.lbar img{ height:90px; width:90px;}
+.lbar p{ text-align:center; height:auto;}
+.sname{display:block; float:left;}
+.vok{background: url(/static/images/admin/pancl/icon.png) no-repeat 0px 5px; line-height:25px; height:25px; width:20px; display:block; text-indent:-9999px; float:right;}
+.vshop{width:auto; margin:10px 10px 10px 10px;border: 1px solid #3399cc;height:30px; background:#e8f2ff; text-align:left; line-height:30px; text-indent:10px; font-weight:bold;}
+.vlogo{height:auto; margin:0px 0px 0px 0px;border: 0px solid #FC9;}
+.vlogo img{ height:90px; width:90px;}
+.bindwx{background: url(/static/images/admin/pancl/wx2.gif) no-repeat 0px 5px; line-height:25px; height:25px; width:20px; display:block; text-indent:-9999px; float:right;}
+
+.hand {cursor:hand;}
+.seltext { border:0;background:#fbe6d4;cursor:pointer;padding:3px;width:350px; }
+.shoplink { text-align:left;line-height: 30px;padding-left:60px; }
+
+/* 幻灯右下角 */
+/*容器*/
+ul.slider{ margin: 0; padding: 0;list-style: none;overflow:hidden;}
+ul.slider li{margin: 0; padding: 0;}
+ul.slider li img{ border: 0;}
+/*数字导航样式*/
+#slider_btn{ bottom: 10px; position: absolute; right: 50px; width: 90px;}
+#slider_btn span{ background: transparent url(/static/images/admin/pancl/flashbutton.gif) no-repeat scroll -15px 0; color: #86A2B8;cursor: pointer; float: left; font-family: Arial;font-size: 12px;height: 15px; line-height: 15px; margin: 1px;text-align: center; width: 15px;}
+#slider_btn span.on{  background: transparent url(/static/images/admin/pancl/flashbutton.gif) no-repeat scroll 0 0; color: #FFFFFF; height: 15px; line-height: 15px; width: 15px;}

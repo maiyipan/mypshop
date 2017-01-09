@@ -1,0 +1,66 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="pad_lr_10" style="margin-top:10px;">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+                <th>卡号</th>
+                <th>密码</th>
+	            <th>面值</th>
+	            <th>有效期</th>
+	            <th>已被使用</th>
+	            <th>是否发放</th>
+	            <th>状态</th>
+	            <th width="250">管理操作</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center" >{$val.card_name}</td>
+            <td align="center" >{$val.card_pwd}</td>
+            <td align="center">{$val.amount}</td>
+            <td align="center">{$val.start_time}～{$val.end_time}</td>
+            <td align="center">
+            	<if condition="$val['is_userd'] eq 1 "><span class="gray bold">是</span>
+            	<else /><span class="green">否</span>
+            	</if>
+            </td>
+            <td align="center">
+            	<if condition="$val['is_send'] eq 1 "><span class="gray bold">是</span>
+            	<else /><span class="green">否</span>
+            	</if>
+            </td>
+            <td align="center">
+            	<if condition="$val['is_close'] eq 1 "><span class="gray bold">禁用</span>
+            	<elseif condition="$val['is_close'] eq 2"/>被占用
+            	<else /><span class="green bold">正常</span>
+            	</if>
+            </td>
+			<td align="center">
+			<a href="javascript:;" class="J_confirmurl button button2" data-acttype="ajax" data-uri="{:U('market/ticket_status',array('status'=>'is_close','ticket_id'=>$ticket_id,'id'=>$val['id']))}" 
+				data-msg="是否要修改禁用状态？" >禁用</a> | 
+			<a href="javascript:;" class="J_confirmurl button button2" data-acttype="ajax" data-uri="{:U('market/ticket_status',array('status'=>'is_send','ticket_id'=>$ticket_id,'id'=>$val['id']))}" 
+				data-msg="是否要修改发放状态？">发放</a> |
+			<a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('market/ticket_details_delete', array('id'=>$val['id']))}" 
+				data-msg="{:sprintf(L('confirm_delete_one'),$val['card_name'])}">删除</a>
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('market/ticket_details_delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('market/ticket_status',array('status'=>'is_send','ticket_id'=>$ticket_id,'id'=>$val['id']))}" data-name="id" data-msg="是否要修改发放状态？" value="发放" />
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('market/ticket_status',array('status'=>'is_close','ticket_id'=>$ticket_id,'id'=>$val['id']))}" data-name="id" data-msg="是否要修改禁用状态？" value="禁用" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

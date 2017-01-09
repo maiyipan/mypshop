@@ -1,0 +1,69 @@
+<include file="public:_header"/>
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	<a class="add fb btn btn-add" href="{:U('promotion_give/fullcut_add')}"><em>添加满减活动</em></a></div>
+</div>
+<!--栏目列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+                <th>名称</th>
+	            <th>活动时间</th>
+	            <th>优惠规则</th>
+	            <th>介绍</th>
+	            <th>状态</th>
+	            <th>添加时间</th>
+	            <!-- <th>页面链接</th> -->
+	            <th width="250">管理操作</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center" >{$val.name}</td>
+            <td align="center">{$val.start_time}～{$val.end_time}</td>
+            <td align="center" >
+            	<if condition="$val['good_type'] eq 1 ">
+	            	<volist name="val.text" id="item" key="index">
+	            	<span style="color:#9E4848;">{$item.title}</span>
+	            	<if condition="$index gt 1 "><br/></if>
+	            	</volist>
+	            	<br/>
+            	<elseif condition="$val['good_type'] eq 2"/><span style="color:#9E4848;">{$val.text}</span><br/> 
+            	<elseif condition="$val['good_type'] eq 3"/><span style="color:#9E4848;">全场商品</span><br/>
+            	</if>
+            	<if condition="$val['award_type'] eq 1 ">当金额满 {$val.condition} 元时,优惠{$val.award_value} 元
+            	<elseif condition="$val['award_type'] eq 2"/>当金额满 {$val.condition} 元时,赠送{$val.award_value}
+            	</if>
+            </td>
+            <td align="center" >{$val.intro}</td>
+            <td align="center" >
+            	<if condition="$val['is_close'] eq 1 ">关闭<else />开启</if>
+            </td>
+            <td align="center">{$val.add_time|date='Y-m-d H:i:s',###}</td>
+           <!--  <td align="center">{$val.url}</td> -->
+			<td align="center">
+			<a href="{:U('promotion_give/fullcut_edit', array('id'=>$val['id']))}" class="btn btn-link">编辑</a> | 
+			<a href="javascript:void(0);" class="J_confirmurl btn btn-link" data-acttype="ajax" data-uri="{:u('promotion_give/fullcut_delete', array('id'=>$val['id']))}" 
+			data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">删除</a>|
+			<!-- <a href="javascript:;" class="J_showdialog btn btn-link" data-id="edit" data-uri="{:U('promotion_give/pre', array('id'=>$val['id']))}" 
+							data-title="预览 - {$val.title}"  data-width="400" data-height="130">预览</a> -->
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('promotion_give/fullcut_delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

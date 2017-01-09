@@ -1,0 +1,50 @@
+<div class="my-modal">
+<style>
+<!--
+.img{width: 6% ;    border-radius: 50%;}
+.title{margin-left: 10px; margin-top: 10px;}
+.top{margin-top: 10px;}
+.btno{float: right;margin-right: 10px;}
+/* .time{float: right;margin-right: 110px;} */
+.timespan{float: right;margin-right: 110px;}
+.put{border-radius: 50%;height: 30px;width: 400px;margin-left: 10px;}
+-->
+</style>
+<!--编辑会员-->
+<div class="dialog_content">
+<div class="widget-body">
+		<div class="widget-main no-padding">
+			<div class="dialogs">
+			<volist name="data" id="vo">
+			<div class="itemdiv dialogdiv title">
+					<div class="user">
+						<img alt="User" src="{$vo.headimgurl}" class="img"/>
+						<a href="#">{$vo.nickname}</a><span class="label label-info arrowed arrowed-in-right">user</span>
+						<i class="icon-time "></i><span class="green ">{$vo.time|date="H:i",###}</span>
+					</div>
+					<div class="top">请求:<input class="put" value="{$vo.msgtype}"><a href="{:U('user/index')}" class="btno"><i class="icon-only icon-share-alt"></i></a></div>
+				</div>
+				<div class="itemdiv dialogdiv title">
+					<div class="user">
+						<img alt="Admin" src="/ikshop/static/Plugin/style/avatars/logo.jpg" class="img"/>
+						<a href="#">Bob</a><span class="label label-info arrowed arrowed-in-right">admin</span>
+						<i class="icon-time "></i><span class="green ">{$vo.time|date="H:i",###}</span>
+					</div>
+					<div class="body">
+						<div class="top">回复:<input class="put" value="{$vo.reply}"><a href="{:U('user/index')}" class="btno"><i class="icon-only icon-share-alt"></i></a></div>
+					</div>
+				</div>
+			</volist>	
+			</div>
+		</div>
+	</div>	
+</div>
+</div>
+<!-- <script type="text/javascript" src="__STATIC__/js/iscroll.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	callRankList= new IScroll("#callRankList",{
+        mouseWheel: true,
+    });
+});
+</script> -->

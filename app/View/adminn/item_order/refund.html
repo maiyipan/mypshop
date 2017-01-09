@@ -1,0 +1,39 @@
+<div class="dialog_content">
+	<form id="info_form" name="info_form"
+		action="{:u('item_order/refund')}" method="post">
+		<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+			<tr>
+				<td class="shop-td-title">订单编号：</td>
+				<td class="shop-td-content">{$info.orderId}</td>
+				<input type="hidden" name="orderid" id="orderid"
+					value="{$info.orderId}">
+			</tr>
+			<tr>
+				<td class="shop-td-title">退款方式：</td>
+				<td class="shop-td-content"><switch name="info.supportmetho">
+					<case value="4">买家用的是会员卡支付，退款金额将会退还到买家会员卡账户中</case> 
+					<case value="3">买家用的是微信支付，退款金额将会退还到买家微信账户中</case>
+					<default />- </switch></td>
+			</tr>
+			<tr>
+				<td class="shop-td-title">收货人：</td>
+				<td class="shop-td-content"><if condition="$info.status elt 2">
+					<span data-tdtype="edit" data-field="likes" data-id="{$val.id}"
+						class="tdedit">{$info.address_name}</span> <else />
+					{$info.userName}( {$info.address_name} ) </if></td>
+			</tr>
+
+			<tr>
+				<td class="shop-td-title">订单总金额：</td>
+				<td class="shop-td-content"><span
+					style='font-weight: bold; font-size: 20px; color: red;'>
+						¥{$info.order_sumPrice} </span></td>
+			</tr>
+			<tr>
+				<th class="shop-td-title">申请退款金额：</th>
+				<td class="shop-td-content"><span
+					style='font-weight: bold; font-size: 20px; color: red;'>
+						¥{$info.refund_fee}</span></td>
+			</tr>
+			</form>
+			</div>

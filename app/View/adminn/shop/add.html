@@ -1,0 +1,194 @@
+<include file="public:_header"/>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">新增店铺</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	        <table class="shop-form" >
+	           <tr>
+	             <th width='120'>店铺名称<font color='red'>*</font>：</th>
+	             <td>
+	             <input type='text' id='name' name='name'/>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>联系电话：</th>
+	             <td>
+	             <input type='text' id='tel' name='tel'/>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>是否独立运营<font color='red'>*</font>：</th>
+	             <td>
+	             	<label><input type='radio' id='isSelf1' name='isself' value='0'/>是&nbsp;&nbsp;</label>
+					<label><input type='radio' id='isSelf0' name='isself' value='1'/>否</label>
+	             </td>
+	           </tr>
+	           <tr>
+					<th>ERP门店号:</th>
+					<td><input type="text" class="input col-sm-6" name="erpnum" value=""></td>			
+				</tr>
+	           <tr id="pshop"> 
+					<th width="">上级门店:</th>
+					<td colspan="1">
+						<select class="J_cate_select mr10" data-pid="0" data-uri="{:U('shop/ajax_getchilds')}" data-selected=""></select>
+						<input type="hidden" name="pid" id="J_cate_id" />
+					</td>
+				</tr>
+	           <tr>
+	             <th width='120'>店铺图标<font color='red'>*</font>：</th>
+	             <td>
+	             	<div id="preview_Filedata" style="display:none;" class="ml10">
+		           		<img id='imgPreview' src="__STATIC__/images/admin/pop-up-img.jpg" height='75'/><br/>
+	               </div>
+				   <div style="position:relative;">
+					<input type="text" readonly name="smallIcon" class="inputText imgValue" style="margin-right:4px;float:left;margin-left:8px;width:140px;"/>
+					<div class="uploadDiv">
+						<div class="uploadTxt">浏览</div>
+						<input type="file" class="uploadFile" id="upload"/>
+					</div>
+					<div class="">&nbsp;图片大小:75 x 75 (px)(格式为 gif, jpg, jpeg, png)</div>
+					</div>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>店铺介绍：</th>
+	             <td>
+	             	<textarea  name="descs" style="width:500px;height:60px;"></textarea>
+	             </td>
+	           </tr>
+	             <tr>
+		             <th width='120'>订单配送起步价<font color='red'>*</font>：</th>
+		             <td>
+		             	<input type='text' id='delivery_startmoney' name='delivery_startmoney' value="0.0"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')" maxLength='10'/>
+		             </td>
+		           </tr>
+		           <tr>
+		             <th width='120'>包邮起步价<font color='red'>*</font>：</th>
+		             <td>
+		             	<input type='text' id='delivery_freemoney' name='delivery_freemoney' value="0.0"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')" maxLength='10'/>
+		             </td>
+		           </tr>
+		           <tr>
+		             <th width='120'>邮费<font color='red'>*</font>：</th>
+		             <td>
+		             	<input type='text' id='delivery_money' name='delivery_money' value="0.0"  onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')" maxLength='10'/>
+		             </td>
+		           </tr>
+	           </tr>
+	           	 <tr>
+	             <th width='120'>店铺所在地区<font color='red'>*</font>：</th>
+	             <td>
+	             	<include file="public:area"/>
+	             </td>
+	           </tr>
+	             <tr>
+	             <th width='120'>店铺详细地址<font color='red'>*</font>：</th>
+	             <td>
+	             	<input type='text' id='address' size="50" name='address'/>
+	             </td>
+	             </td>
+	             </tr>
+	             <tr>
+	             <th width='120'>经纬度：</th>
+	             <td>
+	             		<input type="hidden" name="lnglat"/>
+	      				<div id="container" style="width:603px;height:300px;"></div>
+					    <div style="height:22px;"></div>
+					    <div id="fitBoundsDiv"></div>
+					    <div style="display: none;" id="centerDiv"></div>
+					    <div id="zoomDiv"></div>
+					    <div id="containerDiv"></div>
+					    <div id="mapTypeIdDiv"></div>
+					    <div id="projection"></div>
+	             </td>
+	           </tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp"></script>
+<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp&libraries=place"></script>
+<script type="text/javascript" src="http://map.qq.com/api/js?v=2.exp&libraries=place"></script>
+<script type="text/javascript" src="__STATIC__/js/shop/jquery.upload.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.J_cate_select').cate_select('请选择');
+	initMap();
+	
+	var uploadAction = '{:U('upload/pic')}';
+	upload({"dom":"#upload","action":uploadAction,"afterName":"imgValue","dir":"shop"});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return true;
+		},onError:function(msg){
+	}});
+   $("#name").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入店铺名称"});
+   $("#area").formValidator({onFocus:"请选择店铺地区"}).inputValidator({min:1,onError: "请选择店铺地区"});
+   $("#address").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入店铺详细地址"});
+   $("#delivery_startmoney").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入数据"});
+   $("#delivery_freemoney").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入数据"});
+   $("#delivery_money").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入数据"});
+})
+
+function initMap() {
+	var lng = 116.39749118330761;//纬度
+	var lat = 39.908858936892074;//经度
+    //div容器
+    var container = document.getElementById("container");
+    var centerDiv = document.getElementById("centerDiv");
+    //初始化地图
+    var map = new qq.maps.Map(container, {
+    // 地图的中心地理坐标
+    center: new qq.maps.LatLng(lat, lng),
+        zoom: 19
+    });
+    map.setOptions({
+        keyboardShortcuts : false,
+        scrollwheel : false
+    }); 
+    //实例化自动完成
+    var ap = new qq.maps.place.Autocomplete(document.getElementById('address'));
+    var searchService = new qq.maps.SearchService({
+    	map : map
+    });
+    qq.maps.event.addListener(ap, "confirm", function(res){
+        searchService.search(res.value);
+    });
+    //创建自定义控件
+      
+    var middleControl = document.createElement("div");
+    middleControl.style.left="265px";
+    middleControl.style.top="114px";
+	middleControl.style.position="relative";
+	middleControl.style.width="36px";
+    middleControl.style.height="36px";
+	middleControl.style.zIndex="100000";
+    middleControl.innerHTML ='<img src="https://www.cdlhome.com.sg/mobile_assets/images/icon-location.png" />';
+	document.getElementById("container").appendChild(middleControl);
+    //返回地图当前中心点地理坐标
+    centerDiv.innerHTML = "<font color='red'>经度,纬度:&nbsp;&nbsp;&nbsp;</font><span>"+ map.getCenter() +"</span>";
+    $('input[name=lnglat]').val(map.getCenter());
+    //当地图中心属性更改时触发事件
+    qq.maps.event.addListener(map, 'center_changed', function() {
+       centerDiv.innerHTML = "<font color='red'>经度,纬度:&nbsp;&nbsp;&nbsp;</font><span>"+ map.getCenter() +"</span>";
+       $('input[name=lnglat]').val(map.getCenter());
+    });
+ }
+
+</script>
+
+<include file="public:_footer" />
+</body>
+</html>

@@ -1,0 +1,47 @@
+<include file="public:header"/>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">					
+					<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('sms/sms_send')}" method="post">
+						
+							<div class="tabbable">
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<table cellpadding="2" cellspacing="2" width="100%" border="0">
+											<tbody>												
+												
+													<div align="center">
+												     <table width="52%" border="1" cellpadding="3" cellspacing="0">
+												      <tr>
+												        <td height="24" colspan="2" align="center" valign="middle"> <span class="style1">短信发送</span></td>
+												        <input type="hidden" name="longsms" value="1"><!-- 隐藏域 -->
+												      </tr>
+   												      <tr>
+												        <td height="29" align="right" valign="middle"><span class="red">*</span>手机号码</td>
+												        <td align="left" valign="middle">
+												        <input name="phone" type="text" id="CorpID"  maxlength="50" value=""></td>
+												      </tr>
+												      										      
+												     </table>
+												   </div>
+													
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+					  
+												
+							<div class="form-actions">
+								 <button class="btn btn-link btn_submit" type="submit">发送</button>
+								<!--  <a class="btn btn-link btn_submit" href="{:u('sms/cx_smssend')}">发送</a>  -->
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+<include file="public:common" />

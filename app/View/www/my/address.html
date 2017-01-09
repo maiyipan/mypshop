@@ -1,0 +1,98 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">我的收货地址</span>
+    <a href="{:U('my/editAddress',array('sid'=>$shopid))}"><p class="add">新增</p></a>
+</div>
+<div class="addressEditDiv">
+		<empty name="address_list">
+			<div class="noneAddress">
+				<img src="__STATIC__/home/images/noneAddress.jpg">
+				<a href="{:U('my/editAddress',array('sid'=>$shopid))}"><p>添加地址</p></a>
+			</div>
+		<else /> 
+				<ul>
+			    		<volist name="address_list" id="val" >
+					        <li>
+					            <div class="singleAddressList">
+					            	<eq name="val['moren']" value="1">
+					                <span class="moren">默认地址</span>
+					                </eq>
+					                <i class="ic-tick" itemid="{$val.id}"></i>
+					                <div class="addressInfoDiv">
+					                    <p class="userName"><i class="ic-my"></i><span class="name">{$val.consignee}</span></p>
+					                    <p class="userTel"><i class="ic-home"></i><span class="tel">{$val.mobile}</span></p>
+					                    <p class="userAddress">{$val.sheng} {$val.shi} {$val.qu}</p>
+					                    <p class="detailAddress">{$val.address}</p>
+					                    <p class="editAddress" itemid="{$val.id}"><i class="ic-eidt"></i><span class="name">编辑</span></p>
+					                    <p class="deleteAddress" itemid="{$val.id}"><i class="ic-delete"></i><span class="name">删除</span></p>
+					                </div>
+					            </div>
+					        </li>
+			        </volist>
+			    </ul>
+		</empty>
+</div>
+<script type="text/javascript">
+$(function(){
+	var editUrl = '{:U("my/editAddress",array("id"=>"@id@"))}';
+	$('.editAddress').on('click',function(){
+		var id = $(this).attr('itemid');
+		editUrl = editUrl.replace('@id@',id);
+		window.location.href = editUrl;
+	})
+	
+	$('.deleteAddress').on('click',function(){
+		if(confirm('确定要删除吗？')){
+			var id = $(this).attr('itemid');
+			$.get("{:U('my/deleteAddress')}",{id:id},function(data){
+	  		  if(data.status == 1){
+	  			  alert("删除成功");
+	  			  window.location.href = "{:U('my/address',array('sid'=>$shopid))}";
+	  		  }else{
+	  			  alert("删除失败");
+	  		  }
+	  		},'json');
+		}
+	})
+	
+	$('.ic-tick').on('click',function(){
+		var id = $(this).attr('itemid');
+		$.post("{:U('my/morenAddress')}",{id:id},function(data){
+  		  if(data.status == 1){
+  			  alert("设置成功");
+  			  window.location.href = "{:U('my/address',array('sid'=>$shopid))}";
+  		  }else{
+  			  alert("设置失败");
+  		  }
+  		},'json');
+	})
+})
+	$('.addressEditDiv li').on('click',function(){
+		var name=$(this).find('.userName .name').text();
+		var tel=$(this).find('.userTel .tel').text();
+		var address1=$(this).find('.userAddress').text();
+		var address2=$(this).find('.detailAddress').text();
+		var moren=$(this).find('.moren').text();
+		var addressID=$(this).find('.ic-tick').attr('itemid')
+		if(!moren){
+//			console.log('moren')
+		}else{
+			console.log(addressID)
+		}
+		console.log(name,tel,address1,address2,moren)
+		var url ="{:U('order/jiesuan',array('sid'=>$shopid,'addressid'=>"@addressid@"))}"
+		url = url.replace('@addressid@',addressID);
+		
+		var isjiesuan = {$isjiesuan};
+		if (isjiesuan == 0) {
+			window.location.href = url;
+		} else {
+			
+		}
+		
+	})
+</script>
+<include file="public:footer"/>
+

@@ -1,0 +1,91 @@
+<!--编辑管理员-->
+<div class="dialog_content">
+	
+	<div >
+	<img id="contents" src="{:attach($data['qrcode'])}" data-url="{$data.url}"/>
+	<textarea cols="20" rows="10" id="text" class="btn btn-link">{$data.url}</textarea>
+	</div>
+	
+	<div >
+	<a href="{:U('item/down', array('id'=>$data['id']))}"　target="_blank" class="btn btn-link">下载</a> 
+	<a href="#"  class="btn btn-add " onclick="copyUrl2()" style="width: 75px;">复制链接</a></br>
+	<div class="btn btn-add btndiv">
+	<p class="p">如果复制不了，请手动复制二维码链接</p>
+	</div>
+	</div>
+	
+	
+</div>
+<style>
+.btndiv{
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-left: 3px;
+    }
+.p{
+	margin-left: 64px;
+    width: 300px;
+    margin-top: 2px;
+}
+.img{
+	width: 80%;height: 500px
+}
+#text{
+    width: 62%;	border: 0px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 2px;
+    height: 26px;
+}
+</style>
+<script type="text/javascript"> 
+
+function copyUrl2()
+{
+	 var Url2=document.getElementById("text");
+	 Url2.select(); // 选择对象
+ 	document.execCommand("Copy"); // 执行浏览器复制命令
+ 	alert("已复制好，可贴粘。");
+ }
+
+    function copy(){ 
+        var content=document.getElementById("contents");
+       	var copyurl= content.getAttribute("data-url");  
+       	copyToClipboard(copyurl);
+      
+    } 
+    function copyToClipboard(txt) {     
+    	if(window.clipboardData) {             
+    		window.clipboardData.clearData();             
+    		window.clipboardData.setData("Text", txt);     
+   		} else if(navigator.userAgent.indexOf("Opera") != -1) {          
+   			 
+   			      window.location = txt;     
+   		} else if (window.netscape) {          
+   			try {               
+   				  netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");          
+   				  } catch (e) {               
+   					  alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");          
+   					  }          
+   				  var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+   				  if (!clip)               
+   				  return;          
+   				  var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);          
+   				  if (!trans)               
+   					  return;          
+   				  trans.addDataFlavor('text/unicode');          
+   				  var str = new Object();          
+   				  var len = new Object();          
+   				  var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);          
+   				  var copytext = txt;          
+   				  str.data = copytext;          
+   				  trans.setTransferData("text/unicode",str,copytext.length*2);          
+   				  var clipid = Components.interfaces.nsIClipboard;          
+   				  if (!clip)               
+				  return false;          
+   				  clip.setData(trans,null,clipid.kGlobalClipboard);          
+   				  alert("复制成功！")     
+   				  }
+    	}
+
+</script> 

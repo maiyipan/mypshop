@@ -1,0 +1,1222 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<link href="__STATIC__/home/css/mobiscroll_css/mobiscroll.custom-2.5.0.min.css" rel="stylesheet" type="text/css" /> 
+<link href="__STATIC__/home/css/mobiscroll_css/mobiscroll.ios-2.5.1.css?v=1232323" rel="stylesheet" type="text/css" />
+<script src="__STATIC__/home/js/mobiscroll_js/mobiscroll.zepto.js"></script>
+<script src="__STATIC__/home/js/mobiscroll_js/mobiscroll.custom-2.5.0.min.js?v=123"></script>
+
+<script>
+    /* 获取配送时间 */
+    $(function(){  
+        $("#list").mobiscroll().treelist({
+            theme: 'ios',
+            display: 'bottom',
+            setText: '确定', //确认按钮名称
+            cancelText: '取消',//取消按钮名籍我
+        });
+
+        $('.getTime').on('click',function(){
+            console.log(111)
+            $("#list").mobiscroll("show");
+        })
+    });
+
+</script>
+  
+<div class="backDiv">
+    <i class="ic-back spacial" onclick=""> </i>
+    <span class="applySpan">订单结算</span>
+</div>
+<form method="POST"  action="{:U('order/pay',array('sid'=>$shopid))}" id="order_form" name="order_form"
+      style="clear:both">
+    <div class="ensureOrderDiv  firstAddress" style="height: 150px;">
+        <div class="bigDiv ">
+            <div class="div1 cf">
+                <div class="bgWhite pstyle1">
+                    <p class="bgWhite " style="    padding-left: 20px;">请选择配送方式：</p>
+                </div>
+                <div class="bgWhite pstyle">
+                    <p style="width:85%;float: left ;    padding-left: 20px;" class="sendTitle">配送上门  </p>
+                    <input type="radio" class="raidoStyle toDoor ui-radio" name="distributeMode" checked="checked" value="1">
+                </div>
+
+                    <!--<label>-->
+                        <!--<input type="checkbox"  name="coupon" class="none want discountInput " >-->
+                        <!--<i class="ic-tick"></i>-->
+                    <!--</label>-->
+
+                <div class="sendDiv  pstyle" style="padding: 0;    font: 26px/70px 'Microsoft YaHei';">
+                    <a class="singSort" href="{:U('my/address',array('sid'=>$shopid))}">
+                        <div class="selectAddressDiv">
+                            <empty name="default_list">
+                                <span class="selectAddressSapn address" data-id="1">请选择收货地址</span>
+                                <else />
+                                <input class="moren ui-radio" id="address_{$default_list.id}"  name="address_options"value="{$default_list.id}" type="hidden" >
+                                <div class="showAddressDiv address" data-id="2">
+                                    <p>
+                                        <span class="name">{$default_list.consignee}</span>
+                                        <if condition = "$default_list.moren eq 1">
+                                        	<span class="defaultLable">默认</span>
+                                        </if>
+                                    </p>
+                                    <p class="address1">{$default_list.sheng}&nbsp;{$default_list.shi}&nbsp;{$default_list.qu}&nbsp;</p>
+                                    <p class="address2">{$default_list.address}</p>
+                                    <p class="mobile">{$default_list.mobile}</p>
+                                </div>
+                            </empty>
+                            <p class="arrow" ><i class="ic-more"></i> </p>
+                        </div>
+                    </a>
+                    <div class="bgWhite pstyle">
+                        <p style="width: 25%;float: left;    padding-left: 20px;">收货时间：  </p>
+                        <input type="text" disabled id="list_dummy" value="" class="" placeholder="请选择收货时间"     >
+                        <ul id="list" class="dis_none" >
+                        <li data-val="今天" style="font: 26px/70px' Microsoft YaHei">今天
+                        <ul>
+                        <include file="public:daterange"/>
+                        </ul>
+                        </li>
+                        <li data-val="明天" style="font: 26px/70px' Microsoft YaHei">明天
+                        <ul>
+                        <include file="public:daterange"/>
+                        </ul>
+                        </li>
+                        <li data-val="后天" style="font: 26px/70px' Microsoft YaHei">后天
+                        <ul>
+                        <include file="public:daterange"/>
+                        </ul>
+                        </li>
+
+                        </ul>
+                        <p class="arrow  getTime" style="font: 46px/70px 'Microsoft YaHei';"><i class="ic-more"></i> </p>
+                    </div>
+                </div>
+                <div class="bgWhite pstyle"style="margin: 10px 0px">
+                    <p style="width: 85%;float: left;    padding-left: 20px;  color: #F29200;" class="font  selfTitle">您还可以选择到店自提：  </p>
+                    <input type="radio" class="raidoStyle self ui-radio"  name="distributeMode" value="2">
+                </div>
+                <div class="selfDiv bgWhite pstyle dis_none">
+                    <div class="nameDiv" style="width: 40%;float: left;padding-left: 20px;">
+                        <span>姓名：</span>
+                        <input class="nameInput input" style="border-bottom: 1px solid">
+                    </div>
+                    <div class="nameDiv">
+                        <span>联系电话：</span>
+                        <input class="phoneInput input" style="border-bottom: 1px solid">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="distributionMode">
+            <div class="payModeDiv ">
+                <div class="wechatMode">
+                    <!--<img src="__STATIC__/home/images/wechat.png">-->
+                    <p>微信支付</p>
+                    <label>
+                        <input class="none2 wechatModeInput raidoStyle ui-radio" type="radio" style="margin: 0" value="3"name="payment_id"  checked>
+                    </label>
+
+                </div>
+                <!--先屏蔽会员支付  -->
+
+                <div class="menbershipMode">
+                    <p>会员卡支付</p>
+                    <label>
+                        <input class="none2 menberPay menbershipModeInput raidoStyle ui-radio" type="radio" style="margin: 0" value="4"
+                               name="payment_id" >
+                    </label>
+                </div>
+
+                   <!--<img src="__STATIC__/home/images/menbership.png">-->
+            </div>
+
+            <div class="discount cf">
+                    <a class="singSort" href="{:U('order/youhui',array('sid'=>$shopid))}">
+                        <p>折扣码及优惠券：
+                        </p>
+                        <input placeholder="输入优惠券码" class="discountInput"  value = "{$youhuiid}">
+                        <input type="hidden"  id=""  value="{$isyouhui}" class="isyouhui">
+                        <p class="arrow" style="font: 46px/70px 'Microsoft YaHei';width: 10%"><i class="ic-more"></i> </p>
+                    </a>
+
+                    <div class="hideShow dis_none">
+                     <?php if(count($cart) !=0 || count($full_cut) != 0 || count($gift) != 0){ ?>
+                         <volist style="width: 640px;font: 12px/100px ''" name="cart" id="ca">
+                        <div  style="height: 100px ;font: 12px/100px ''">
+                        <div id="demo">
+                         <span id="logo" name="logo">佳鲜农庄</span>
+                         <span id="title" name="title">{$ca.discount}折优惠</span>
+                          <span id="time" name="date_info">有效期：{$ca.begintime}~{$ca.expiretime}</span>
+                          <span id="random" name="random">Z{$ca.random}</span>
+                          <input class="random" type="radio"  name="code_num" id="code_num" value="{$ca.type}{$ca.random}">
+                         <!--  <i class="ic-tick"></i> -->
+                         </div>
+                         </div>
+              </volist>
+              <volist style="width: 640px;font: 12px/100px ''" name="full_cut" id="fc">
+                        <div  style="height: 100px ;font: 12px/100px ''">
+                        <div id="demo">
+                         <span id="logo" name="logo">佳鲜农庄</span>
+                         <span id="title" name="title">满{$fc.full}减{$fc.cut}</span>
+                          <span id="time" name="date_info">有效期：{$fc.begintime}~{$fc.expiretime}</span>
+                          <span id="random" name="random">M{$fc.random}</span>
+                          <input class="random" type="radio"  name="code_num" id="code_num" value="{$fc.type}{$fc.random}">
+                         <!--  <i class="ic-tick"></i> -->
+                         </div>
+                         </div>
+              </volist> 
+              <volist style="width: 640px;font: 12px/100px ''" name="gift" id="gt">
+                        <div  style="height: 100px ;font: 12px/100px ''">
+                        <div id="demo">
+                         <span id="logo" name="logo">佳鲜农庄</span>
+                         <span id="title" name="title">{$gt.gift}代金</span>
+                          <span id="time" name="date_info">有效期：{$gt.begintime}~{$gt.expiretime}</span>
+                          <span class="id" name="random">B{$gt.random}</span>
+                          <input class="random" type="radio"  name="code_num" id="code_num" value="{$gt.type}{$gt.random}">
+                         <!--  <i class="ic-tick"></i> -->
+                         </div>
+                         </div>
+              </volist>
+              <?php }?>
+              </div>
+                </div>
+                <!--<div class="restMoney">-->
+                    <!--<div class="youhuicode">-->
+                        <!--<p> 推荐码:</p>-->
+                        <!--<input placeholder="推荐码首单有优惠哦" type="text" class="youhuicodeInput exchangeInput" name="Discount">-->
+                        <!--<a href="javascript:exchange()" class="youhuicode exchangeBtn"  name="exchangeBtn" id="exchangeBtn" >使用</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+               
+            </div>
+            <div class="orderRemake">
+            <p >备&nbsp &nbsp注:</p>
+            <!-- <textarea type="text" name="remake"></textarea> -->
+            <input type="text" name="remake" placeholder="亲，您还有什么要嘱咐的吗">
+            </div>
+
+            <div class="orderInfoDiv">
+                <!--<p class="title">您的订单信息如下:</p>-->
+                <div class="orderList">
+                    <ul>
+                        <volist name='item' id='vo'>
+                        	<!-- 组合商品 -->
+        					<if condition="$vo['types'] eq 1">
+                            <li style="height:auto;">
+                            	<div style="border-bottom: 1px dotted #c5c5c5;margin-bottom: 5px;height:50px;font: 24px/40px 'Microsoft YaHei';">
+                            		 <div style="width:300px;display: inline-block;font: 26px/40px 'Microsoft YaHei';color: #7b9e5c;">【组合商品】:{$vo.name}</div>
+                                     <p style="float: right;display: inline-block;">
+                                     	<span style="color: #ff7e20;">￥{$vo.price}</span>
+                                     	<span style="font: 18px/40px 'Microsoft YaHei';color: #656043;padding-right:10px;">数量:{$vo.num}</span>
+                                     </p>
+                            	</div>
+                            	 <!-- 组合商品列表 -->
+                 				<?php foreach($assembles[$vo['id']] as $vo2){?>
+                 					<div>
+
+	                                 <div class="goodsInfo teamGoods">
+                                         <a href="{:U('item/details',array('id'=>$vo2['id'],'sid'=>$shopid))}">
+                                             <img src="{:attach(get_thumb($vo['img'], '_m'), '')}">
+                                         </a>
+	                                    <p class="name">
+	                                    	<a style="color:#7b9e5c;" href="{:U('item/details',array('id'=>$vo2['id'],'sid'=>$shopid))}">{$vo2.title}</a>
+	                                    </p>
+	                                    <div>
+                                      		<p><span class="price">￥{$vo2.price}</span><span class="beishu">数量:{$vo.num}</span></p>
+                                    	</div>
+	                                </div>
+	                                </div>
+                 				<?php } ?>
+                            </li>
+                            <else/><!-- 普通商品 -->
+                            <li>
+
+                                <div class="goodsInfo">
+                                    <a href="{:U('item/details',array('id'=>$vo['id'],'sid'=>$shopid))}">
+                                        <img src="{:attach(get_thumb($vo['img'], '_m'), '')}">
+                                    </a>
+                                    <p class="name">
+                                        <if condition="$vo['types'] == 1"><a style="color:#7b9e5c;" href="{:U('item/promotionTeam',array('id'=>$vo['id'],'sid'=>$shopid))}">组合商品:{$vo.name}</a>
+                                        <else/><a style="color:#7b9e5c;" href="{:U('item/details',array('id'=>$vo['id'],'sid'=>$shopid))}">{$vo.name}</a>
+                                    </if>
+                                    </p>
+                                    <div>
+                                      <p><span class="price">￥{$vo.price}</span><span class="beishu">数量:{$vo.num}</span></p>
+                                    </div>
+
+                                </div>
+                            </li>
+                            </if>
+                        </volist>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="youhuiDiv">
+                <p>商品总价<span class="zongjia">￥ {$goods_sumPrice} </span></p>
+                <p>运费<span class="yunfei">￥ {$freesum}</span></p>
+                <p>优惠券抵扣 <span class="youhui"  style="color: #656043">-￥ {$youhui}</span></p>
+                <if condition="!empty($fullgive)">
+	            	<switch name="fullgive.award_type">
+	                     <case value="1"><p><span style="font-size:14px;">满 {$fullgive.condition}元,减{$fullgive.award_value}元</p></case>
+	                     <case value="2"><p><span style="font-size:14px;">满 {$fullgive.condition}元,赠送{$fullgive.award_value}</p></case>
+	                </switch>
+	            </if>
+            </div> 
+
+            <div class="balanceDiv">
+                <!-- <i class="ic-tick"></i> -->
+                <div class="balanceInfo" style="padding-left: 30px">
+                    <div class="zongji" style="font:22px/100px 'Microsoft YaHei'">
+	                    <div> 
+	                         <span>合计：</span>
+	                          <span class="totalPriceLable">￥</span><span class="totalPrice">{$sumPrice}</span>
+	                    </div>
+                          <!--&lt;!&ndash; <spna class="goodsprice"> {$goods_sumPrice} </spna> <span>(商品)- </span> &ndash;&gt;-->
+						<!--<div>-->
+	                         	<!--<span class="youhui">{$youhui}</span> <span>(优惠)- </span>-->
+						<!--</div>-->
+                         		 <!--&lt;!&ndash; <span class="promotionPrice">0</span> <span>(邀请码) + </span> &ndash;&gt;-->
+                   		<!--<div id="haveyunf"  class="yunfei"   >-->
+                   			<!--<span>运&nbsp &nbsp &nbsp &nbsp费：</span><span class="addressPrice">￥{$freesum}</span>-->
+                   		<!--</div>-->
+                    </div>
+                </div>
+                <p class="balanceBtn bgRed" >提交</p>
+            </div>
+        </div>
+
+        <div class="ensureModeDiv dis_none ">
+            <div class="distribution">
+                <span class="peisong">配送方式:</span>
+                <span class="onlinwSpan">物流配送</span>
+               <span class="zitiSpan">到店自提</span> 
+            </div>
+            <div class="submintBtn">
+             <p class="ensureDistriModeBtn">确定</p>
+            </div>
+        </div>
+        <div class="addInvoiceInfoDiv dis_none">
+            <div class="invoiceHeader">
+                <h1>发票抬头</h1>
+                <div class="private">
+                    <label class="privateLebel">
+                        <input class="radioInput privateInput" name="invoic" type="radio"
+                               checked>
+                    </label>
+                    <p>个人</p>
+                </div>
+                <div class="enterprice">
+                    <label class="enterpriceLebel">
+                        <input class="radioInput enterpriceInput" name="invoic" type="radio">
+                    </label>
+                    <p>公司<input class="pInput enterpriceNameInput" type="text" placeholder="请输入公司名称"></p>
+                </div>
+            </div>
+            <div class="warmTips">
+                <p class="title">温馨提示：</p>
+                <p class="content">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+            </div>
+            <div class="btn">
+                <p class="submintBtn" >完成</p>
+            </div>
+        </div>
+
+
+</form>
+<script src="__STATIC__/home/js/jquery/jquery-1.9.1.min.js"></script>
+<script src="__STATIC__/home/js/mobiscroll_js/mobiscroll.custom-2.5.0.min.js"></script>
+<script>
+    function goBack()
+    {
+        console.log("reload");
+        window.history.go(-1);
+    }
+var yunfei = {$freesum};
+$('.toDoor').on('click',function(){
+    var orderprice = $(".zongji .totalPrice").text();
+	orderprice = parseFloat(orderprice) + yunfei;
+	orderprice =   toDecimal2(orderprice);
+	$(".zongji .totalPrice").text(orderprice);
+	$(".youhuiDiv .yunfei").text('￥ '+yunfei)
+	  
+    $(".toDoor").attr("checked", true)
+    $(".self").attr("checked", false)
+    $('.sendDiv').removeClass('dis_none')
+    $('.selfDiv').addClass('dis_none')
+    $('.sendTitle').removeClass('font')
+    $('.selfTitle').addClass('font')
+})
+$('.self').on('click',function(){
+	 console.log('self')
+	 var orderprice = $(".zongji .totalPrice").text();
+	  $(".youhuiDiv .yunfei").text('￥ '+ '0')
+	  orderprice =   toDecimal2(orderprice - yunfei);
+	  $(".zongji .totalPrice").text(orderprice);
+	  
+	$(".toDoor").attr("checked", false)
+	$(".self").attr("checked", true)
+    $('.selfDiv').removeClass('dis_none')
+    $('.sendDiv').addClass('dis_none')
+    $('.selfTitle').removeClass('font')
+    $('.sendTitle').addClass('font')
+})
+$(document).ready(function(){
+    document.getElementById("list_dummy").readOnly=true;
+    $("#list_dummy").attr('placeholder','请选择收货时间')
+    var distributeId = $("input[name='distributeMode'][checked]").val()
+    if(distributeId == 1){
+        $('.sendDiv').removeClass('dis_none')
+        $('.selfDiv').addClass('dis_none')
+        $('.sendTitle').removeClass('font')
+        $('.selfTitle').addClass('font')
+    }else if(distributeId == 2){
+        $('.selfDiv').removeClass('dis_none')
+        $('.sendDiv').addClass('dis_none')
+        $('.selfTitle').removeClass('font')
+        $('.sendTitle').addClass('font')
+    }
+});
+function submint(){
+	var phone=$(".youhuicodeInput").val();
+	if(phone==""||phone==null){
+        $(".noneBtnAlertSpan").show()
+        $(".noneBtnAlertSpan").text("兑换码不能为空");
+        setTimeout(function(){
+            $(".noneBtnAlertSpan").hide()
+        },1000)
+    }
+	else{
+		$.ajax({
+			type: 'post',
+			url:'{:U('my/Coupon_exchange')}',  //请求的url
+			dataType: 'json',
+			timeout: 60000,
+			data: {
+				code: phone,
+			},beforeSend:function(xhr){
+            	beforeAjaxSend()
+			},
+			success: function (data) {
+				if (data.status == 1) {
+					$(".noneBtnAlertSpan").show()
+					$(".noneBtnAlertSpan").text('领取成功');
+					setTimeout(function(){
+						$(".noneBtnAlertSpan").hide()
+					},1000)
+//					window.location.href="{:U('order/jiesuan')}"  //成功之后跳转的链接
+				} else {
+					alert(data.msg);
+				}
+			},
+			error: function (xhr, type) {
+				alert('网络超时，请刷新后再试！');
+			},
+			complete:function(xhr){
+				completeAjaxSend()
+			}
+		})
+	}
+}
+var promotionPrice=0;
+function exchange(){
+    var exchangecode=$(".exchangeInput").val();
+    if(exchangecode==""||exchangecode==null){
+        $(".noneBtnAlertSpan").show()
+        $(".noneBtnAlertSpan").text("兑换码不能为空");
+        setTimeout(function(){
+            $(".noneBtnAlertSpan").hide()
+        },1000)
+    }
+    else{
+        $.ajax({
+                type: 'post',
+                url:'{:U('order/referral_code')}',  //请求的url
+                dataType: 'json',
+                timeout: 60000,
+                data: {
+                code: exchangecode,
+        },beforeSend:function(xhr){
+        	beforeAjaxSend()
+		},
+        success: function (data) {
+            if (data.status ==1) {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text('领取成功');
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+                promotionPrice=data.data.breaks_nums
+                $(".promotionPrice").text(promotionPrice)
+                var totalPrice= $(".zongji .totalPrice").text();
+                $(".zongji .totalPrice").text(totalPrice-promotionPrice)
+            } else {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text(data.msg);
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+            }
+        },
+        error: function (xhr, type) {
+           // alert('网络超时，请刷新后再试！');
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('网络超时，请刷新后再试！');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        },
+		complete:function(xhr){
+			completeAjaxSend()
+		}
+    })
+}
+}
+
+    //	加载更多地址
+    $(".ensureOrderAddress .addressInfoDiv .moreAddressInput").on("click",function(){
+        if($(this).prop("checked")){
+            $(".ensureOrderDiv .secondAddress").removeClass("dis_none")
+            submintOk()
+        }else{
+            $(".ensureOrderDiv .secondAddress").addClass("dis_none")
+        }
+    })
+//    选择默认地址
+    $(" .singleAddressList .moren").on("click",function(){
+        if($(".singleAddressList .moren").prop("checked")){
+            $(".infoDiv").addClass("dis_none")
+            addressid= $(this).val();
+            submintOk();
+
+        }
+    })
+    //选择更多地址
+    $(" .singleAddressList .checkboxInput").on("click",function(){
+            var n=$(this);
+            if($(" .singleAddressList .checkboxInput").prop("checked")){
+                $(".infoDiv").addClass("dis_none")
+                console.log($(" .singleAddressList .moren").prop("checked"))
+                addressid=  $(this).val();//$(this).attr("id");
+                submintOk()
+            }
+    })
+
+//    新增地址
+    $(" .newAddInput").on("click",function(){
+        console.log($(".newAddInput").prop("checked"))
+        if($(".newAddInput").prop("checked")){
+            submintOk()
+            $(".newAddInput").addClass("")
+            $(".infoDiv").removeClass("dis_none")
+            addressid=0;
+            console.log($(".newAddInput").prop("checked"))
+            var getName = $(".nameInput").val();
+            var getPhone = $(".telInput").val();
+            var getAddressArea = $(".areaInput").val();
+            var getAddressDetail = $(".detailInput").val();
+            if (getName == '' || getPhone == '' || getAddressArea == '' || getAddressDetail == '') {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请填写完整新增地址信息");
+                setTimeout(function () {
+                    $(".noneBtnAlertSpan").hide()
+                }, 1000)
+                $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+            }
+        }
+    })
+//优惠券点击
+$(".discountInput").on("click",function(){
+    if($(this).prop("checked")){
+        $(this).siblings(".ic-tick").css("color","#628345")
+        $(this).prop("checked",true)
+    }else{
+        $(this).siblings(".ic-tick").css("color","#cccccc")
+        $(this).prop("checked",false)
+    }
+})
+
+//   优惠码的验证
+   function youhuicodeVer(){
+        var distributeId = $("input[name='distributeMode'][checked]").val()
+        var isyouhuicode=$('.isyouhui').val();
+        var payId=$("input[name='payment_id'][checked]").val();
+        var youhuicode=$('.discountInput').val();
+        var promotionPrice=''
+        $.ajax({
+            type: 'post',
+            url:'{:U('order/ajaxCoupon')}',
+            dataType: 'json',
+            timeout: 60000,
+            data: {
+            	isyouhuicode:isyouhuicode,
+            	coupon:youhuicode,
+            	payId:payId,
+            	distributeId:distributeId,
+            	promotionPrice:promotionPrice
+            },beforeSend:function(xhr){
+            	beforeAjaxSend()
+			},
+            success: function (data) {
+                if (data.status == 1) {
+                  var couponprice = data.youhui;
+                  var freesum = data.freesum;
+                  var order_sumPrice = data.order_sumPrice;
+                  var promotionPrice = data.promotionPrice;
+				$(".zongji .totalPrice").text(order_sumPrice);
+                $(".youhuiDiv .yunfei").text('￥ '+freesum)
+                $(".youhuiDiv .youhui").text('-￥' + couponprice)
+                /* $(".noneBtnAlertSpan").show()
+                  $(".noneBtnAlertSpan").text('优惠码正确');
+                    setTimeout(function(){
+                        $(".noneBtnAlertSpan").hide()
+                 },1000) */
+                } else {
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text(data.err);
+                    setTimeout(function(){
+                        $(".noneBtnAlertSpan").hide()
+                    },1000)
+//                    $(".balanceDiv p.balanceBtn").css("background-color","#cccccc");
+                    $(".balanceDiv p.balanceBtn").attr("disabled", true)
+                }
+
+            },
+            error: function (xhr, type) {
+                alert('网络超时，请刷新后再试！');
+            },
+			complete:function(xhr){
+				completeAjaxSend()
+			}
+        })
+    }
+//选择微信支付    
+$(".payModeDiv input.wechatModeInput").on("click",function(){
+	$(".payModeDiv input.wechatModeInput").prop("checked", true)
+	$(".payModeDiv input.menberPay").attr("checked",false)
+	$(".payModeDiv input.wechatModeInput").attr("checked", true)
+	youhuicodeVer();
+})
+    
+//    会员卡支付
+    $(".payModeDiv input.menberPay").on("click",function(){
+        if($(this).prop("checked")){
+        	var distributeId = $("input[name='distributeMode'][checked]").val()
+            $(".wechatModeInput").prop("checked",false);
+            $(".wechatModeInput").siblings(".ic-tick").css("color","#cccccc")
+            $(this).siblings(".ic-tick").css("color","#628345")
+            $(this).prop("checked",true)
+            var isyouhuicode=$('.isyouhui').val();
+            var payId = $("input[name='payment_id'][checked]").val();
+            var youhuicode=$('.discountInput').val();
+            var promotionPrice=''
+            $.ajax({
+                    type: 'post',
+                    url: '{:U('order/ajaxBalance')}',
+                    dataType: 'json',
+                    timeout: 90000,
+                    data: {
+               				 isyouhuicode:isyouhuicode,
+	                         coupon:youhuicode,
+	                         payId:payId,
+	                         distributeId:distributeId,
+	                         promotionPrice:promotionPrice
+           			 },beforeSend:function(xhr){
+                     	beforeAjaxSend()
+ 					},
+		            success: function (data) {
+		                if (data.status == 1) {
+		                    var couponprice = data.youhui;
+		                    var freesum = data.freesum;
+		                    var order_sumPrice = data.order_sumPrice;
+		                    var promotionPrice = data.promotionPrice;
+		                    
+		                    $(".zongji .totalPrice").text(order_sumPrice);
+		                    $(".youhuiDiv .yunfei").text('￥ '+freesum)
+		                    $(".youhuiDiv .youhui").text('-￥' + couponprice)
+		                    $(".payModeDiv input.menberPay").prop("checked",true)
+		                	$(".payModeDiv input.menberPay").attr("checked",true)
+		                	$(".payModeDiv input.wechatModeInput").attr("checked", false)
+		                } else if (data.status == 0){
+		                	$(".payModeDiv input.wechatModeInput").prop("checked", true)
+		                	$(".payModeDiv input.menberPay").attr("checked",false)
+		                	$(".payModeDiv input.wechatModeInput").attr("checked", true)
+		                    $(".tableDiv").show()
+		                    $(".tableDiv p.content").text("您的会员卡余额不足,请选择其它支付方式支付");
+		                	  setTimeout(function(){
+		                		  $(".tableDiv").hide();
+		                      },2000)
+		                }else  if (data.status == 2){
+		                	$(".payModeDiv input.wechatModeInput").prop("checked", true)
+		                	$(".payModeDiv input.menberPay").attr("checked",false)
+		                	$(".payModeDiv input.wechatModeInput").attr("checked", true)
+		                    $(".tableDiv").show()
+		                    $(".tableDiv p.content").text("亲，马上去绑定会员卡吗");
+		                    // 绑定会员卡
+		                    $(".tableDiv .btnDiv .yes").on("click",function(){
+		                        window.location.href = data.bindurl;
+		                    })
+		                    //不绑会员卡
+		                    $(".tableDiv .btnDiv .no").on("click",function(){
+		                        $(".tableDiv").hide()
+		                        $(".noneBtnAlertSpan").show()
+		                        $(".noneBtnAlertSpan").text("请选择其他支付方式");
+		                        setTimeout(function(){
+		                            $(".noneBtnAlertSpan").hide()
+		                        },1000)
+		                    })
+		                } else {
+		                	$(".payModeDiv input.wechatModeInput").prop("checked", true)
+		                	$(".payModeDiv input.menberPay").attr("checked",false)
+		                	$(".payModeDiv input.wechatModeInput").attr("checked", true)
+		                	alert('会员系统系统异常');
+		                }
+		            },
+		            error: function (xhr, type) {
+		            	$(".payModeDiv input.wechatModeInput").prop("checked", true)
+		            	$(".payModeDiv input.menberPay").attr("checked",false)
+		            	$(".payModeDiv input.wechatModeInput").attr("checked", true)
+		                alert('网络超时，请刷新后再试！');
+		            },
+					complete:function(xhr){
+						completeAjaxSend()
+					}
+       		 })
+    	}else{
+		    $(this).siblings(".ic-tick").css("color","#cccccc")
+		    $(this).prop("checked",true)
+		}
+    })
+    //    点支付方式
+    $(".payModeDiv input").on("click",function(){
+        if($(".payModeDiv input.wechatModeInput").prop("checked")){
+            $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#628345")
+            $(".payModeDiv input.wechatModeInput").prop("checked",true)
+            $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#cccccc")
+            $(".payModeDiv input.menbershipModeInput").prop("checked",false)
+        }else{
+            $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#cccccc")
+            $(".payModeDiv input.wechatModeInput").prop("checked",false)
+            $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#628345")
+            $(".payModeDiv input.menbershipModeInput").prop("checked",true)
+        }
+        if($(".payModeDiv input.menbershipModeInput").prop("checked")){
+            $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#628345")
+            $(".payModeDiv input.menbershipModeInput").prop("checked",true)
+            $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#cccccc")
+            $(".payModeDiv input.wechatModeInput").prop("checked",false)
+        }else{
+            $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#cccccc")
+            $(".payModeDiv input.menbershipModeInput").prop("checked",false)
+            $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#628345")
+            $(".payModeDiv input.wechatModeInput").prop("checked",true)
+        }
+        //paySubmitOk();
+        if($(this).prop("checked")){
+            $(this).siblings(".ic-tick").css("color","#628345")
+            $(this).prop("checked",true)
+        }else{
+            $(this).siblings(".ic-tick").css("color","#cccccc")
+            $(this).prop("checked",false)
+        }
+    })
+    function paySubmitOk(){
+//        配送方式是否选择
+        var mode=$(".distributionInfo .logisticMode").text();
+        var firstAddress= $(".firstAddress input.moren").prop("checked")
+        console.log(firstAddress)
+        var thirdAddress=$(".thirdAddress input.checkboxInput").prop("checked")
+        var secondAddress=$(".secondAddress input.checkboxInput").prop("checked")
+        console.log(thirdAddress)
+        console.log(secondAddress);
+        if(mode==''||mode==null){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('请选择配送方式');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+            $(".payModeDiv input").prop("checked",false)
+        }else {
+            if (!firstAddress && !secondAddress) {
+                if (thirdAddress == false) {
+                	console.log(mode);
+                	if  (mode != '到店自提') {
+                		$(".noneBtnAlertSpan").show()
+                        $(".noneBtnAlertSpan").text("请先添加配送地址哦");
+                        setTimeout(function () {
+                            $(".noneBtnAlertSpan").hide()
+                        }, 1000)
+                        console.log("没有选择新增地址");
+                        $(".payModeDiv input.wechatModeInput").prop("checked", false)
+                        $(".payModeDiv input.menbershipModeInput").prop("checked", false)
+                	} else {
+                		 $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                         $(".balanceDiv p.balanceBtn").css("background-color", "#f29200");
+                	}
+//                $(".payModeDiv input").siblings(".ic-tick").css("color","#cccccc")
+                }else{
+                    var getName = $(".nameInput").val();
+                    var getPhone = $(".telInput").val();
+                    var getAddressArea = $(".areaInput").val();
+                    var getAddressDetail = $(".detailInput").val();
+                    if (getName == '' || getPhone == '' ) {
+                        $(".noneBtnAlertSpan").show()
+                        $(".noneBtnAlertSpan").text("您的姓名或者手机号码为空");
+                        setTimeout(function () {
+                            $(".noneBtnAlertSpan").hide()
+                        }, 1000)
+                        $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                        $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                        console.log("选择新增，但是地址不完整");
+                        $(".payModeDiv input").prop("checked", false)
+                    } else if (mode != "到店自提" && (getAddressArea == '' || getAddressDetail == '')){
+                    	 $(".noneBtnAlertSpan").show()
+                         $(".noneBtnAlertSpan").text("请先完善你的收货地址信息");
+                         setTimeout(function () {
+                             $(".noneBtnAlertSpan").hide()
+                         }, 1000)
+                         $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                         $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                         console.log("选择新增，但是地址不完整");
+                         $(".payModeDiv input").prop("checked", false)
+
+                    }else {
+                        $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                        $(".balanceDiv p.balanceBtn").css("background-color", "#f29200");
+                        console.log("选择新增，地址完整");
+                    }
+                }
+            } else if (firstAddress == false && thirdAddress == false) {
+                if (!secondAddress) {
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请先选择配送地址");
+                    setTimeout(function () {
+                        $(".noneBtnAlertSpan").hide()
+                    }, 1000)
+                    console.log(1);
+                    $(".payModeDiv input").prop("checked", false)
+                    $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                    $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                } else {
+                    if (secondAddress == false) {
+                        $(".noneBtnAlertSpan").show()
+                        $(".noneBtnAlertSpan").text("请选择配送地址");
+                        setTimeout(function () {
+                            $(".noneBtnAlertSpan").hide()
+                        }, 1000)
+                        console.log(2);
+                        $(".payModeDiv input").prop("checked", false)
+                        $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                        $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                    }else{
+                    	  $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                          $(".balanceDiv p.balanceBtn").css("background-color", "#f29200");
+                    }
+                }
+            } else if (thirdAddress == true) {
+                var getName = $(".nameInput").val();
+                var getPhone = $(".telInput").val();
+                var getAddressArea = $(".areaInput").val();
+                var getAddressDetail = $(".detailInput").val();
+                if (getName == '' || getPhone == '' || getAddressArea == '' || getAddressDetail == '') {
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请填写完整新增地址信息");
+                    setTimeout(function () {
+                        $(".noneBtnAlertSpan").hide()
+                    }, 1000)
+                    $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                    $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                    console.log("选择新增，但是地址不完整");
+                    $(".payModeDiv input").prop("checked", false)
+                } else if(mode != "到店自提" && (getAddressArea == '' || getAddressDetail == '')){
+                	$(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请先完善你的收货地址信息");
+                    setTimeout(function () {
+                        $(".noneBtnAlertSpan").hide()
+                    }, 1000)
+                    $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                    $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                    console.log("选择新增，但是地址不完整");
+                    $(".payModeDiv input").prop("checked", false)
+                } else {
+                    $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                    $(".balanceDiv p.balanceBtn").css("background-color", "#f29200");
+                    console.log("选择新增，地址完整");
+                }
+            } else {
+                $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                $(".balanceDiv p.balanceBtn").css("background-color", "#f29200");
+                console.log(5);
+            }
+        }
+    }
+    function submintOk(){
+        var inputLength= $(".payModeDiv input").length;
+        for(var i=0;i<inputLength;i++){
+            if($(".payModeDiv input:checked").length>0){
+//            配送方式是否选择
+                var mode=$(".distributionInfo .logisticMode").text();
+                if(mode==''){
+                    $(".balanceDiv p.balanceBtn").attr("disabled", true);
+//                    $(".balanceDiv p.balanceBtn").css("background-color","#cccccc");
+                }//            判断是否选择地址
+              else{
+                    $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                    $(".balanceDiv p.balanceBtn").css("background-color","#f29200");
+                }
+            }else{
+//                $(".balanceDiv p.balanceBtn").css("background-color","#cccccc");
+            }
+        }
+    }
+
+function ajaxcoupon(){
+
+   var freePrice = 0;
+  var addr_id = $("input[name='shipping_id']:checked").val();
+//    //alert (addr_id);
+    if (addr_id != null) {
+       freePrice = $('#price_' + addr_id).val();
+  }
+
+    var id = $(".discountInput").val();
+    //alert(id);
+    if (id == '') {
+        //alert("请先输入你要使用的优惠码");
+    } else {
+        $.post("{:U('order/ajaxCoupon')}", {
+            coupon : id,
+            isyouhuicode:1
+        }, function(data) {
+            if (data.status == 1) {
+                $('#order_amount2').html(
+                        Number(data.order_sumPrice) + Number
+                        (freePrice));
+
+                $("#submitBtn").removeAttr("disabled").css({"background":"url(__STATIC__/weixin/images/btn_large_bg.png)","color":"#ca542a"});
+            } else {
+                alert(data.err);
+                return false;
+            }
+        }, 'json');
+    }
+
+}
+    function distributeMode(){
+    	var distributeValue = $("input[name='distributeMode'][checked]").val() 
+        if(distributeValue == 1){
+        //如果是配送上门
+            //没有选择了地址
+            if($('.selectAddressDiv .address').attr('data-id')==1){
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请先选择地址");
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+                return false;
+            } else if($('#list_dummy').val()==''){
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请先选择收货时间");
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+                return false;
+            } else {
+            	return true;
+            }
+        }else if(distributeValue == 2){
+            var name= $('.nameInput').val()
+            var phone= $('.phoneInput').val()
+            if(name==''||phone==''){
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请填写姓名、电话");
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+                return false;
+            } else {
+            	return true;
+            }
+        }else{
+        	 return false;
+            $('.balanceBtn').addClass('bgRed')
+        }
+    }
+    
+	function valueVerify(){
+		var distributeId = $("input[name='distributeMode'][checked]").val()
+	    if(distributeId == 1){
+	        var distributeId=1;
+	        var addressid=$('moren').val();
+	        var self=''
+	        var getName='';
+	        var getPhone='';
+	        var getAddressArea='';
+	        var getAddressDetail='';
+	    }else   if(distributeId == 2){
+	        var distributeId=2;
+	        var addressid=0;
+	        var self='self';
+	        var getName=$('.nameInput').val();
+	        var getPhone=$('.phoneInput').val();
+	        var getAddressArea='';
+	        var getAddressDetail='';
+	    }
+	    var distTime = $("#list_dummy").val();
+	    var isyouhuicode=$('.isyouhui').val();
+	    
+	    var payId = $("input[name='payment_id'][checked]").val();
+	    var exchangeCode=$('.discountInput').val();
+	    var sheng='', shi='', qu='',promotionCode='',enterpriceAddress=''
+	}
+	
+    $(".balanceDiv p.balanceBtn").on("click",function(){
+	    if (!distributeMode()) {
+	    	return;
+	    }
+        //valueVerify();
+        //配送方式 0- 配送上门 1-上门自提
+        var distributeValue = $("input[name='distributeMode'][checked]").val() 
+        if(distributeValue == 1){
+            var distributeId=1;
+            var addressid=$('.moren').val();
+            var self=''
+            var getName='';
+            var getPhone='';
+            var getAddressArea='';
+            var getAddressDetail='';
+        }else if(distributeValue ==2 ){
+            var distributeId=2;
+            var addressid=0;
+            var self='self';
+            var getName=$('.nameInput').val();
+            var getPhone=$('.phoneInput').val();
+            var getAddressArea='';
+            var getAddressDetail='';
+            var REG={
+                name:/^[a-zA-Z0-9\u4e00-\u9fa5]{2,12}$/,
+                phone:/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/
+            };
+            if(!REG.phone.test(getPhone)){
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请输入正确的手机号");
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+                return;
+            }
+        }
+        var distTime = $("#list_dummy").val();
+        var isyouhuicode=$('.isyouhui').val();
+        
+        var payId = $("input[name='payment_id'][checked]").val()
+        var exchangeCode=$('.discountInput').val();
+        var sheng='', shi='', qu='',promotionCode='',enterpriceAddress=''
+        ordertj(getName,getPhone,getAddressArea,getAddressDetail,addressid,
+                distributeId,isyouhuicode,exchangeCode,enterpriceAddress,payId ,sheng, shi, qu,promotionCode,promotionPrice, distTime)
+    });
+    
+    var getGoodsAddress=$(".singleAddressList .addressInfoDiv .userAddress").text();
+    var distributeId;
+    var addressid;
+    var isyouhui;
+    var isyouhuicode;
+    var isInvoice;
+    var enterpriceAddress;
+    var payId = 0;
+    var distributeTimeStart;
+    var distributeTimeEnd;
+    var exchangeCode=0;
+
+    function  ordertj(getName,getPhone,getAddressArea,getAddressDetail,addressid,
+                      distributeId,isyouhuicode,exchangeCode,enterpriceAddress,payId ,
+                      sheng, shi, qu,promotionCode,promotionPrice, distTime) {
+			    	console.log(getName + 'getName' +　getPhone + 'getPhone' + getAddressArea + 'getAddressArea' + getAddressDetail+ 'getAddressDetail' + addressid+ 'addressid' + distributeId
+			    			+ 'distributeId' +isyouhuicode + 'isyouhuicode' +exchangeCode + 'exchangeCode' +enterpriceAddress+ 'enterpriceAddress' + payId
+			    			+ 'payId' +sheng+ 'sheng' + shi+ 'shi' + qu + 'qu' +promotionCode + 'promotionCode' +promotionPrice + 'promotionPrice' +distTime+ 'distTime'
+			    	);
+			    	$.ajax({
+			            type: 'post',
+			            url:'{:U('order/pay')}',
+			            dataType: 'json',
+			            timeout: 60000,
+			            data:{
+			                getName:getName , //新增地址收货人姓名
+			                getPhone:getPhone,  //新增地址收货人手机
+			                getAddressArea:getAddressArea, //新增地址收货人所在区域
+			                getAddressDetail:getAddressDetail,  //新增地址收货人详细地址
+			                address_options:addressid,  //收货地址id    1默认  0新增  2。3。。。更多
+			                distributeId:distributeId,  //配送方式  1物流配送  2到店自提
+			                distributeTimeStart:distributeTimeStart,   //配送开始时间
+			                distributeTimeEnd:distributeTimeEnd,   //配送结束时间
+			                isyouhuicode:isyouhuicode, //是否使用优惠码     1是   0否
+			                exchangeCode:exchangeCode , //兑换码
+			                coupon: $(".hideShow input.youhuicode").val(),
+			                enterpriceAddress:enterpriceAddress,    //  ‘’个人  ‘’否            公司名称
+			                payment_id:payId,     //支付方式   3微信支付  4//会员卡支付  //5 银联支付
+			                sheng: sheng,
+			                shi: shi,
+			                qu: qu,
+			                promotionCode:promotionCode , //推荐码
+			                promotionPrice:promotionPrice, //使用推荐码的优惠价格
+			                distTime: distTime
+				        },beforeSend:function(xhr){
+				        	beforeAjaxSend()
+						},
+				        success: function (data) {
+				            if (data.status == 1) {
+				            	console.log(data.data.url)
+				                window.location.href=data.data.url
+				            }else{
+				            	 alert(data.msg);
+				            }
+				        },
+				        error: function (xhr, type) {
+				            alert('网络超时，请刷新后再试！');
+				        },
+						complete:function(xhr){
+							completeAjaxSend()
+						}
+			    	})
+    }
+
+
+
+    /*点击在线付款  */
+    $(".distribution .onlinwSpan").on("click",function(){
+        $(this).css("background-color","#f29200");
+        $(".distribution  .zitiSpan").css("background-color","#628345");
+    });
+//   点击自提
+    $(".distribution  .zitiSpan").on("click",function(){
+        $(this).css("background-color","#f29200");
+        $(".distribution .onlinwSpan").css("background-color","#628345");
+    })
+//点击物流配送
+
+   /*  $(".di") */
+    // 确定配送方式按钮
+    $(".ensureDistriModeBtn").on("click",function(){
+        if( $(".distribution .onlinwSpan").css("background-color")=="rgb(98, 131, 69)"  && $(".distribution  .zitiSpan").css("background-color")=="rgb(98, 131, 69)"){ //
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text("请选择配送方式");
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else{
+        	var distTime = $("#list_dummy").val();
+            // 选择物流配送
+            if($(".distribution .onlinwSpan").css("background-color")=="rgb(242, 146, 0)"){
+                /* if($("#picktime").val()==''||$("#picktime2").val()==''){
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请选择配送时间");
+                    setTimeout(function(){
+                        $(".noneBtnAlertSpan").hide()
+                    },1000)
+                }else{ */
+                    $(".distributionInfo .logisticMode").text("物流配送");
+//                运费 10元
+                    //$(".zongji .yunfei").text(40)
+                     $("#noyunf").hide();
+                     $("#haveyunf").show();
+
+                    specialBack();
+                //}
+            }
+            //        选择自提
+            if($(".distribution  .zitiSpan").css("background-color")=="rgb(242, 146, 0)"){
+                /* if($("#picktimeziti").val()==''||$("#picktime2ziti").val()==''){
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请选择配送时间");
+                    setTimeout(function(){
+                        $(".noneBtnAlertSpan").hide()
+                    },1000)
+                }else{ */
+                    $(".distributionInfo .logisticMode").text("到店自提");
+                    //                运费0元
+                    //$(".zongji .addressPrice").text(0)
+                    $("#noyunf").show();
+                    $("#haveyunf").hide();
+                    specialBack();
+               // }
+            }
+        }
+    })
+    //    点击优惠码
+    $(".distributionMode label input.want").on("click",function(){
+        var flag=$(".discount input.want").attr("checked");
+        if(flag){
+        	$(".hideShow").slideToggle(300);
+        }else{
+        	$(".hideShow").slideToggle(300);
+        }
+    })
+    //    点击配送方式
+    $(".mode").on("click",function(){
+        var REG={
+            name:/^[a-zA-Z0-9\u4e00-\u9fa5]{2,12}$/,
+            phone:/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/
+        };
+        var thirdAddress=$(".thirdAddress input.checkboxInput").prop("checked")
+        if (thirdAddress==true) {
+            var getName = $(".nameInput").val();
+            var getPhone = $(".telInput").val();
+            var getAddressArea = $(".areaInput").val();
+            var getAddressDetail = $(".detailInput").val();
+            if (getName == '' || getAddressArea == '' || getAddressDetail == ''|| !REG.phone.test(getPhone)) {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请填写完整新增地址的正确信息");
+                setTimeout(function () {
+                    $(".noneBtnAlertSpan").hide()
+                }, 1000)
+            } else {
+                $(".ensureOrderDiv").addClass("dis_none");
+                $(".ensureModeDiv").removeClass("dis_none");
+            }
+        } else {
+            $(".ensureOrderDiv").addClass("dis_none");
+            $(".ensureModeDiv").removeClass("dis_none");
+        }
+    })
+    //    返回按钮
+    $(".spacial").on("click",function(){
+        specialBack()
+    })
+    function specialBack(){
+        var noneI=$(".addInvoiceInfoDiv").css("display");
+        var noneM=$(".ensureModeDiv").css("display");
+        var noneO=$(".ensureOrderDiv").css("display");
+
+        if(noneM=="block"){
+            $(".ensureOrderDiv").removeClass("dis_none");
+            $(".ensureModeDiv").addClass("dis_none");
+        }if(noneI=="block"){
+            $(".ensureOrderDiv").removeClass("dis_none");
+            $(".addInvoiceInfoDiv").addClass("dis_none");
+        }if(noneO=="block"){
+            goBack();
+        }
+    }
+
+    function toDecimal2(x) {              
+    	var f = parseFloat(x);              
+    	if (isNaN(f)) {   
+    	      return false;              
+    	}              
+    	var f = Math.round(x*100)/100;              
+    	var s = f.toString();              
+    	var rs = s.indexOf('.');              
+    	if (rs < 0) {   
+    	        rs = s.length;    
+    	        s += '.';   
+    	  }              
+    	while (s.length <= rs + 2) {   
+    	      s += '0';              
+    	}              
+    	return s;   
+    }   
+</script>

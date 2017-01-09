@@ -1,0 +1,633 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<!-- <style>
+.orderRemake{width: 100%;background-color: #eceade;margin-top: 10px;}
+.orderRemake p{    height: 70px;font: 24px/70px 'Microsoft YaHei';color: #656043;padding-left: 20px;}
+.orderRemake textarea{    width: 80%;height: 34px; float: right;margin-right: 20px;}
+.orderRemake input{    width: 80%;height: 50px; float: right;margin-right: 30px; margin-top: -60px; border: none; background-color: transparent;font: 22px/50px 'Microsoft YaHei';color: #656043}
+
+.onliwInfo{width: 100%;height: 130px;background-color: #eceade;margin-top: 10px;}
+.onliwInfo p{font: 28px/70px 'Microsoft YaHei';color: #628345;margin-left: 20px;border-bottom: 1px solid #ccc;}
+.onliwInfo input{font: 24px/50px 'Microsoft YaHei';color: #656043;margin-left: 20px; border: none; width: 60%; background-color: #eceade;}
+#demo{  width:500%;                /*设置div宽度为500像素*/
+    height:60px;            /*设置div高度为200像素*/
+        background:rgb(232,151,3);;      /*设置div背景色为黑色*/
+        margin-left:40px;            /*设置div居中显示*/
+      position: relative;
+      border-radius: 15px;
+    color:#656043
+            }
+#logo{font: 16px/30px 'Microsoft Yahei';position: absolute;bottom: 15px;margin-left: 15px;color: white}
+#title{ font: 16px/30px 'Microsoft Yahei';    position: absolute;    bottom: 15px;    margin-left: 100px;color: white}
+#time{ font: 13px/30px 'Microsoft Yahei';    position: absolute;    bottom: 15px;    margin-left: 215px;color: white}
+#code_num{width: 30px;height: 30px;margin-right: 10px;float:right;margin-top: 18px;    -webkit-appearance: none;    position: RELATIVE;color: white}
+#code_num:before{width: 26px;height:26px;display: block;position: absolute;content: '';border-radius: 15px;border: 1px solid  #444141;color: white}
+#code_num:checked:after{  width: 14px;height:14px;display: block;position: absolute;content: '';border-radius: 7px;background: #628345;left: 7px;top: 7px;color: white}
+</style> -->
+
+<link href="__STATIC__/home/css/mobiscroll_css/mobiscroll.custom-2.5.0.min.css" rel="stylesheet" type="text/css" /> 
+<link href="__STATIC__/home/css/mobiscroll_css/mobiscroll.ios-2.5.1.css" rel="stylesheet" type="text/css" />
+<script src="__STATIC__/home/js/mobiscroll_js/mobiscroll.zepto.js"></script>
+<script src="__STATIC__/home/js/mobiscroll_js/mobiscroll.custom-2.5.0.min.js"></script>
+
+<script>
+    /* 获取配送时间 */
+    $(function(){
+        $("#list").mobiscroll().treelist({
+            theme: 'ios',
+            display: 'bottom',
+            setText: '确定', //确认按钮名称
+            cancelText: '取消',//取消按钮名籍我
+        });
+    });
+
+</script>
+<div class="backDiv">
+    <i class="ic-back spacial" onclick=""> </i>
+    <span class="applySpan">积分兑换</span>
+</div>
+<form method="POST"  action="" id="order_form" name="order_form"
+      style="clear:both">
+    <div class="ensureOrderDiv  firstAddress" style="height: 150px">
+        <?php if(count($address_list)!=0 || count($default_list) != 0){ ?>
+	        <div class="ensureOrderAddress "style="height: 150px">
+	            <div class="singleAddressList">
+	                    <div class="addressInfoDiv">
+	                    <notempty name="default_list">
+	                        <p class="userName"><i class="ic-my"></i><span class="name">{$default_list.consignee}</span></p>
+	                        <p class="userTel"><i class="ic-home"></i><span class="tel">{$default_list.mobile}</span></p>
+	                       <input class="moren ui-radio" id="address_{$default_list.id}"  name="address_options"value="{$default_list.id}" type="radio" >
+	                        <p class="userAddress">{$default_list.sheng}&nbsp;{$default_list.shi}&nbsp;{$default_list.qu}&nbsp;{$default_list.address}</p>
+	                    </notempty> 
+	                        <notempty name="address_list">
+	                        	<input class="moreAddressInput" type="checkbox" style="width: 100px;height: 60px;position: absolute;top: 110px;right: 10px;-webkit-appearance: none;opacity: 0">
+	                        	 <p class="editAddress"><i class="ic-eidt"></i><span class="name">更多</span></p>
+	                        </notempty>
+	                    </div>
+	            </div>
+	        </div>
+        <!--<label for="kkk"></label>-->
+        <!--<input id="kkk">-->
+	        <?php if(count($address_list)!=0 ){ ?>
+	        <div class="ensureOrderAddress moreEnsureOrderAddress secondAddress dis_none ">
+	            <div class="singleAddressList">
+					<ul>
+		                <volist name='address_list' id='vo'>
+		                        <li style="overflow: hidden; height: 127px;">
+		                            <div class="addressInfoDiv">
+		                                <p class="userName"><i class="ic-my"></i><span
+		                                        class="name">{$vo.consignee}</span></p>
+		                                <p class="userTel"><i class="ic-home"></i><span
+		                                        class="tel">{$vo.mobile}</span></p>
+		                                <p class="userAddress">{$vo.sheng}&nbsp;{$vo.shi}
+		                                    &nbsp;{$vo.qu}&nbsp;{$vo.address}</p>
+		                                <input class="checkboxInput ui-radio" id="address_{$vo.id}"  name="address_options"value="{$vo.id}" type="radio" >
+		                            </div>
+		                        </li>
+		                </volist>
+ 					</ul>
+	             </div>
+	              </div>
+	         <?php }?>
+      <?php }?>
+
+      <div class="newAddress moreEnsureOrderAddress  ">
+	       <div class="newAddBtn thirdAddress">
+	          <!--<label style="    float: right;width: 30px;height: 30px;position: relative;margin-right: 40px; margin-top: 20px;">-->
+	              <!--<input type="radio" class="newAddInput"  style="    width: 80px;height: 60px;position: absolute;right: -12px; margin-top:-15px; -webkit-appearance: none" >-->
+	              <!--&lt;!&ndash;<i class="ic-tick" ></i>&ndash;&gt;-->
+	          <!--</label>-->
+	          <input class="checkboxInput newAddInput ui-radio" id="address" name="address_options"value="0" type="radio" style="top: 15px; right: 40px;-webkit-appearance:none;  display: block;float: right; width: 0px;height: 0; position: absolute;">
+
+	          <p class="addAddressBtn "><i class="ic-eidt"></i>使用新地址</p>
+	      </div>
+      </div>
+      <div class="infoDiv dis_none">
+            <div class="editGetAddress">
+                <form class="infoForm" action="{:U('my/editGetAddress',array('sid'=>$shopid))}" method="post">
+                    <input name="id" id="id"  value="{$info.id}" type="hidden">
+                    <li>
+                        <label class="space"><i class="ic-my"></i>姓名</label>
+                        <input placeholder="请输入真实的姓名" type="text" name="consignee" value="{$info.consignee}" class="nameInput">
+                    </li>
+                    <li>
+                        <label class="space"><i class="ic-phone"></i>电话</label>
+                        <input placeholder="请输入手机号码"  type="tel"  name="mobile" value="{$info.mobile}" class="telInput">
+                    </li>
+                    <li>
+                        <label><i class="ic-map"></i>所在地区</label>
+                        <div style="    margin-top: -83px;margin-left: 200px;float: left;font: 24px/76px 'Microsoft YaHei';">
+		           		 <include file="jiesuaninfo"/>
+
+	 		      		 </div>
+                    </li>
+                    <li>
+                        <label><i class="ic-nail"></i>详细地址</label>
+                        <input placeholder="请输入详细地址" type="text" name="address" value="{$info.address}" class="detailInput">
+                    </li>
+                </form>
+            </div>
+        </div>
+           
+            
+            <div class="distributionMode">
+                <div class="mode">
+                    <h1>配送方式：</h1>
+                    <div class="distributionInfo">
+                        <p class="logisticMode"></p>
+                    </div>
+                    <p class="arrow"><i class="ic-more"></i> </p>
+                </div>
+            </div>
+            <div class="payModeDiv ">
+                <div class="wechatMode">
+                    <img src="__STATIC__/home/images/wechat.png">
+                    <p>微信支付</p>
+                    <label>
+                        <input class="none2 wechatModeInput" type="radio" value="3"
+                               name="payment_id" >
+                        <i class="ic-tick"></i>
+                    </label>
+
+                </div>
+            </div>
+            <div class="orderRemake">
+            <p >备注:</p>
+            <!-- <textarea type="text" name="remake"></textarea> -->
+            <input type="text" name="remake" placeholder="备注">
+            </div>
+            
+            <div class="orderInfoDiv">
+                <p class="title">订单信息</p>
+                <div class="orderList">
+                    <ul>
+                        <li>
+	                	<input type="hidden" id="itemid" value="{$item.id}">
+	                    <img src1="__STATIC__/home/images/milk.jpg"  src="{:attach($item['img'])}"> 
+	                    <div class="goodsInfo">
+	                        <p class="name">{$item.title}</p>
+	                        <p>
+	                         <span class="price">积分:{$item.score} </span>
+	                         <if condition="$item['price'] gt 0">
+	            				<span class="price">+ ￥{$item.price}</span>
+	            			</if>
+	                        <span class="beishu">x1</span></p>
+	                    </div>
+	                </li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="balanceDiv">
+                <!--<i class="ic-tick"></i>-->
+                <div class="balanceInfo" style="padding-left: 30px">
+                    <p class="zongji" style="font:20px/50px 'Microsoft YaHei'">
+                          总计：￥<span class="totalPrice">{$sumPrice}</span> +
+                          <spna class="goodsprice"> {$sumScore} </spna> <span>(积分) </span>
+                          <br/>
+                          	您当前有积分:<span class="score">{$user.score}</span>
+                    	</p>
+                    	<p></p>
+                </div>
+                <p class="balanceBtn" >提交</p>
+            </div>
+        </div>
+
+     <div class="ensureModeDiv dis_none ">
+            <div class="distribution">
+                <span class="peisong">配送方式:</span>
+                <span class="onlinwSpan">物流配送</span>
+               <span class="zitiSpan">到店自提</span> 
+            </div>
+
+            <!-- <div class="onliwInfo " style="height:78px;">
+                <div class="zitiAddress">
+                <div style="height: 80px; width: 100%;">
+                        <span class="diesTime">配送时间:</span>
+						<ul id="list" >
+							<li data-val="今天" style="font: 26px/70px' Microsoft YaHei">今天
+								<ul>
+									<include file="public:daterange"/>
+								</ul>
+							</li>
+							<li data-val="明天" style="font: 26px/70px' Microsoft YaHei">明天
+								<ul>
+									<include file="public:daterange"/>
+								</ul>
+							</li>
+							<li data-val="后天" style="font: 26px/70px' Microsoft YaHei">后天
+								<ul>
+									<include file="public:daterange"/>
+								</ul>
+							</li>
+
+						</ul>
+					</div>
+                </div>
+            </div> -->
+            <div class="submintBtn">
+             <p class="ensureDistriModeBtn">确定</p>
+            </div>
+        </div>
+</form>
+<script src="__STATIC__/home/js/jquery/jquery-1.9.1.min.js"></script>
+<script src="__STATIC__/home/js/mobiscroll_js/mobiscroll.custom-2.5.0.min.js"></script>
+<script>
+    $(function(){
+        $(".balanceDiv p.balanceBtn").css("background-color","#cccccc");
+        $(".balanceDiv p.balanceBtn").css("disabled", true);
+
+    })
+    //	加载更多地址
+    $(".ensureOrderAddress .addressInfoDiv .moreAddressInput").on("click",function(){
+        if($(this).prop("checked")){
+            $(".ensureOrderDiv .secondAddress").removeClass("dis_none")
+            submintOk()
+        }else{
+            $(".ensureOrderDiv .secondAddress").addClass("dis_none")
+        }
+    })
+//    选择默认地址
+    $(" .singleAddressList .moren").on("click",function(){
+        if($(".singleAddressList .moren").prop("checked")){
+            $(".infoDiv").addClass("dis_none")
+            addressid= $(this).val();
+            submintOk()
+        }
+    })
+    //选择更多地址
+    $(" .singleAddressList .checkboxInput").on("click",function(){
+            var n=$(this);
+            if($(" .singleAddressList .checkboxInput").prop("checked")){
+                $(".infoDiv").addClass("dis_none")
+                console.log($(" .singleAddressList .moren").prop("checked"))
+                addressid=  $(this).val();//$(this).attr("id");
+                submintOk()
+            }
+    })
+
+//    新增地址
+    $(" .newAddInput").on("click",function(){
+        console.log($(".newAddInput").prop("checked"))
+        if($(".newAddInput").prop("checked")){
+            submintOk()
+            $(".newAddInput").addClass("")
+            $(".infoDiv").removeClass("dis_none")
+            addressid=0;
+            console.log($(".newAddInput").prop("checked"))
+            var getName = $(".nameInput").val();
+            var getPhone = $(".telInput").val();
+            var getAddressArea = $(".areaInput").val();
+            var getAddressDetail = $(".detailInput").val();
+            if (getName == '' || getPhone == '' || getAddressArea == '' || getAddressDetail == '') {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请填写完整新增地址信息");
+                setTimeout(function () {
+                    $(".noneBtnAlertSpan").hide()
+                }, 1000)
+                $(".balanceDiv p.balanceBtn").attr("disabled", true);
+                $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+            }
+        }
+    })
+    //    点支付方式
+    $(".payModeDiv input").on("click",function(){
+    	 if($(".payModeDiv input.wechatModeInput").prop("checked")){
+             $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#628345")
+             $(".payModeDiv input.wechatModeInput").prop("checked",true)
+             $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#cccccc")
+             $(".payModeDiv input.menbershipModeInput").prop("checked",false)
+         }else{
+             $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#cccccc")
+             $(".payModeDiv input.wechatModeInput").prop("checked",false)
+             $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#628345")
+             $(".payModeDiv input.menbershipModeInput").prop("checked",true)
+         }
+         if($(".payModeDiv input.menbershipModeInput").prop("checked")){
+             $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#628345")
+             $(".payModeDiv input.menbershipModeInput").prop("checked",true)
+             $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#cccccc")
+             $(".payModeDiv input.wechatModeInput").prop("checked",false)
+         }else{
+             $(".payModeDiv input.menbershipModeInput").siblings(".ic-tick").css("color","#cccccc")
+             $(".payModeDiv input.menbershipModeInput").prop("checked",false)
+             $(".payModeDiv input.wechatModeInput").siblings(".ic-tick").css("color","#628345")
+             $(".payModeDiv input.wechatModeInput").prop("checked",true)
+         }
+         paySubmitOk();
+         if($(this).prop("checked")){
+             $(this).siblings(".ic-tick").css("color","#628345")
+             $(this).prop("checked",true)
+         }else{
+             $(this).siblings(".ic-tick").css("color","#cccccc")
+             $(this).prop("checked",false)
+         }
+    })
+    function paySubmitOk(){
+//        配送方式是否选择
+        var mode=$(".distributionInfo .logisticMode").text();
+        var firstAddress= $(".firstAddress input.moren").prop("checked")
+        console.log(firstAddress)
+        var thirdAddress=$(".thirdAddress input.checkboxInput").prop("checked")
+        var secondAddress=$(".secondAddress input.checkboxInput").prop("checked")
+        console.log(thirdAddress)
+        console.log(secondAddress);
+        if(mode==''||mode==null){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('请选择配送方式');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+            $(".payModeDiv input").prop("checked",false)
+        }else if(firstAddress==false&&thirdAddress==false) {
+            if(!secondAddress){
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请先选择配送地址");
+                setTimeout(function () {
+                    $(".noneBtnAlertSpan").hide()
+                }, 1000)
+                console.log(1);
+                $(".payModeDiv input").prop("checked",false)
+            }else{
+                if(secondAddress==false){
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请选择配送地址");
+                    setTimeout(function () {
+                        $(".noneBtnAlertSpan").hide()
+                    }, 1000)
+                    console.log(2);
+                }
+                $(".payModeDiv input").prop("checked",false)
+            }
+            $(".balanceDiv p.balanceBtn").attr("disabled", true);
+            $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+        }else if (thirdAddress==true) {
+            var getName = $(".nameInput").val();
+            var getPhone = $(".telInput").val();
+            var getAddressArea = $(".areaInput").val();
+            var getAddressDetail = $(".detailInput").val();
+            if (getName == '' || getPhone == '' || getAddressArea == '' || getAddressDetail == '') {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请填写完整新增地址信息");
+                setTimeout(function () {
+                    $(".noneBtnAlertSpan").hide()
+                }, 1000)
+                $(".balanceDiv p.balanceBtn").attr("disabled", true);
+                $(".balanceDiv p.balanceBtn").css("background-color", "#cccccc");
+                console.log(3);
+                $(".payModeDiv input").prop("checked",false)
+            }else{
+                $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                $(".balanceDiv p.balanceBtn").css("background-color","#f29200");
+                console.log(4);
+            }
+        }else{
+            $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+            $(".balanceDiv p.balanceBtn").css("background-color","#f29200");
+            console.log(5);
+        }
+    }
+    function submintOk(){
+        var inputLength= $(".payModeDiv input").length;
+        for(var i=0;i<inputLength;i++){
+            if($(".payModeDiv input:checked").length>0){
+//            配送方式是否选择
+                var mode=$(".distributionInfo .logisticMode").text();
+                if(mode==''){
+                    $(".balanceDiv p.balanceBtn").attr("disabled", true);
+                    $(".balanceDiv p.balanceBtn").css("background-color","#cccccc");
+                }//            判断是否选择地址
+              else{
+                    $(".balanceDiv p.balanceBtn").removeAttr("disabled")
+                    $(".balanceDiv p.balanceBtn").css("background-color","#f29200");
+                }
+            }else{
+                $(".balanceDiv p.balanceBtn").css("background-color","#cccccc");
+            }
+        }
+    }
+    
+    var getGoodsAddress=$(".singleAddressList .addressInfoDiv .userAddress").text();
+    var distributeId;
+    var addressid;
+    var isyouhui;
+    var isyouhuicode;
+    var isInvoice;
+    var enterpriceAddress;
+    var payId = 0;
+    var distributeTimeStart;
+    var distributeTimeEnd;
+    var exchangeCode=0;
+    
+//	提交按钮
+	$(".balanceDiv p.balanceBtn").on("click",function(){
+		paySubmitOk();
+        var getName =$(".nameInput").val();
+        var getPhone=$(".telInput").val();
+        var getAddressArea=$(".areaInput").val();
+        var getAddressDetail=$(".detailInput").val();
+        var sheng = $(".shengInput").val();
+        var shi  = $(".shiInput").val();
+        var qu = $(".quInput").val();
+        var promotionCode=$(".restMoney .exchangeInput").val();
+        
+		if($(".balanceDiv p.balanceBtn").css("background-color")=="rgb(204, 204, 204)"){
+			if($(".ensureOrderDiv .score").text()==''){
+				$(".noneBtnAlertSpan").show()
+				$(".noneBtnAlertSpan").text("你还没有积分哦");
+				setTimeout(function(){
+					$(".noneBtnAlertSpan").hide();
+				},1000)
+			}else{
+				$(".noneBtnAlertSpan").show()
+				$(".noneBtnAlertSpan").text("请至少选择配送方式和支付方式");
+				setTimeout(function(){
+					$(".noneBtnAlertSpan").hide();
+				},1000)
+				$(".balanceDiv p.balanceBtn").attr("disabled", true);
+			}
+		}else{
+			var mode=$(".distributionInfo .logisticMode").text();
+			if(mode=="物流配送"){
+				distributeId=1;
+	            distributeTimeStart=$(".ensureModeDiv .zitiAddress #picktime").val();
+	            distributeTimeEnd=$(".ensureModeDiv .zitiAddress #picktime2").val();
+			}if(mode=="到店自提"){
+				distributeId=2;
+				distributeTimeStart=$(".ensureModeDiv .zitiAddress #picktimeziti").val();
+	            distributeTimeEnd=$(".ensureModeDiv .zitiAddress #picktime2ziti").val();
+			}
+			if($(".distributionMode input.restMoneyInput").prop("checked")){
+                if($(".privateLebel input.privateInput").prop("checked")){
+                    isInvoice=1;
+                    enterpriceAddress=''
+                }if($(".privateLebel input.enterpriceInput").prop("checked")){
+                    isInvoice=2;
+                    enterpriceAddress=$(".enterprice input.enterpriceNameInput").val()
+                }
+            }else{
+                isInvoice=0;
+                enterpriceAddress=''
+            }
+			if($(".payModeDiv input.yinlinMode")){
+				payId=3;
+			}if($(".payModeDiv input.wechatModeInput")){
+				payId=5;
+			}if($(".payModeDiv input.menbershipModeInput")){
+				payId=4;
+			}
+			//orderScoretj(getName,getPhone,getAddressArea,getAddressDetail,getGoodsAddress,distributeId,distributeAddressId,isInvoice,enterpriceAddress,payId)
+			var itemid = '{$item["id"]}';
+	    	var itemnum = 1; //$('input[name=num]').val();
+	    	//alert(1);
+	    	$.ajax({
+	            type: 'post',
+	            url:'{:U("score/doexchange",array('sid'=>$shopid))}',
+	            dataType: 'json',
+	            timeout: 15000,
+	            data:{
+	            	itemid: itemid,//商品ID
+	            	num:itemnum, //数量
+	            	remark:$('input[name=remake]').val(),
+	                getName:getName , //新增地址收货人姓名
+	                getPhone:getPhone,  //新增地址收货人手机
+	                getAddressArea:getAddressArea, //新增地址收货人所在区域
+	                getAddressDetail:getAddressDetail,  //新增地址收货人详细地址
+	                address_options:addressid,  //收货地址id    1默认  0新增  2。3。。。更多
+	                distributeId:distributeId,  //配送方式  1物流配送  2到店自提
+	                distributeTimeStart:distributeTimeStart,   //配送开始时间
+	                distributeTimeEnd:distributeTimeEnd,   //配送结束时间
+	                payment_id:3,     //支付方式   3微信支付  4//会员卡支付  //5 银联支付 
+	                sheng: sheng,
+	                shi: shi,
+	                qu: qu,
+		        },
+		        success: function (data) {
+		            if (data.status == 1) {alert(data.url);
+		            	console.log(data.data)
+		                window.location.href=data.url
+		            }else{
+		            	 alert(data.msg);
+		            }
+		        },
+		        error: function (xhr, type) {
+		            alert('网络超时，请刷新后再试！');
+		        }
+		    })
+			
+		}
+	})
+	
+//
+    $(".distribution .onlinwSpan").on("click",function(){
+        $(".zitiInfo").addClass("dis_none");
+        $(this).css("background-color","#f29200");
+        $(".distribution  .zitiSpan").css("background-color","#628345");
+        $(".onliwInfo").removeClass("dis_none");
+    })
+//
+    $(".distribution  .zitiSpan").on("click",function(){
+    	$(".onliwInfo").addClass("dis_none");
+        $(this).css("background-color","#f29200");
+        $(".distribution .onlinwSpan").css("background-color","#628345");
+        $(".zitiInfo").removeClass("dis_none");
+    })
+//    <!--点击物流配送-->
+    
+   /*  $(".di") */
+    //    确定配送方式按钮
+    $(".ensureDistriModeBtn").on("click",function(){
+        if( $(".distribution .onlinwSpan").css("background-color")=="rgb(98, 131, 69)"&&
+                $(".distribution  .zitiSpan").css("background-color")=="rgb(98, 131, 69)"){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text("请选择配送方式");
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else{
+            // 选择物流配送
+            if($(".distribution .onlinwSpan").css("background-color")=="rgb(242, 146, 0)"){
+                if($("#picktime").val()==''||$("#picktime2").val()==''){
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请选择配送时间");
+                    setTimeout(function(){
+                        $(".noneBtnAlertSpan").hide()
+                    },1000)
+                }else{
+                    $(".distributionInfo .logisticMode").text("物流配送");
+//                运费 10元
+                    $(".zongji .yunfei").text(40)
+                    specialBack();
+                }
+            }
+            //        选择自提
+            if($(".distribution  .zitiSpan").css("background-color")=="rgb(242, 146, 0)"){
+                if($("#picktimeziti").val()==''||$("#picktime2ziti").val()==''){
+                    $(".noneBtnAlertSpan").show()
+                    $(".noneBtnAlertSpan").text("请选择配送时间");
+                    setTimeout(function(){
+                        $(".noneBtnAlertSpan").hide()
+                    },1000)
+                }else{
+                    $(".distributionInfo .logisticMode").text("到店自提");
+                    //                运费0元
+                    $(".zongji .yunfei").text(0)
+                    specialBack();
+                }
+            }
+        }
+    })
+    //    点击配送方式
+    $(".mode").on("click",function(){
+        var REG={
+            name:/^[a-zA-Z0-9\u4e00-\u9fa5]{2,12}$/,
+            phone:/(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)/
+        };
+        var thirdAddress=$(".thirdAddress input.checkboxInput").prop("checked")
+        
+        if (thirdAddress==true) {
+            var getName = $(".nameInput").val();
+            var getPhone = $(".telInput").val();
+            var getAddressArea = $(".areaInput").val();
+            var getAddressDetail = $(".detailInput").val();
+            if (getName == '' || getAddressArea == '' || getAddressDetail == '' || !REG.phone.test(getPhone)) {
+                $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text("请填写完整新增地址的正确信息");
+                setTimeout(function () {
+                    $(".noneBtnAlertSpan").hide()
+                }, 1000)
+            } else {
+            	 $(".ensureOrderDiv").addClass("dis_none");
+                 $(".ensureModeDiv").removeClass("dis_none");
+            }
+        }else{
+            $(".ensureOrderDiv").addClass("dis_none");
+            $(".ensureModeDiv").removeClass("dis_none");
+        }
+    })
+    //    返回按钮
+    $(".spacial").on("click",function(){
+        specialBack()
+    })
+    function specialBack(){
+        var noneI=$(".addInvoiceInfoDiv").css("display");
+        var noneM=$(".ensureModeDiv").css("display");
+        var noneO=$(".ensureOrderDiv").css("display");
+        if(noneM=="block"){
+            $(".ensureOrderDiv").removeClass("dis_none");
+            $(".ensureModeDiv").addClass("dis_none");
+        }if(noneI=="block"){
+            $(".ensureOrderDiv").removeClass("dis_none");
+            $(".addInvoiceInfoDiv").addClass("dis_none");
+        }if(noneO=="block"){
+            goBack();
+        }
+    }
+   
+  //返回按钮
+    function goBack()
+    {
+    	console.log("reload");
+    	 window.history.go(-1);
+    }
+</script>

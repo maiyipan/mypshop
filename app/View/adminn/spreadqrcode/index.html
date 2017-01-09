@@ -1,0 +1,158 @@
+<include file="public:header"/>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+	<div class="widget-header">
+			<div class="widget-toolbar no-border">
+				<ul class="nav nav-tabs" id="myTab">
+				<li class="active"><a data-toggle="tab" href="#home1">二维码列表</a></li>
+				<li class=""><a data-toggle="tab" href="#home2">新增</a></li>
+					
+				</ul>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">
+
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="table-responsive">
+									<table id="sample-table-1"
+										class="table table-striped table-bordered table-hover">
+										<thead>
+													<tr>
+														<th class="center">
+															<label>
+																<input type="checkbox" class="ace" />
+																<span class="lbl"></span>
+															</label>
+														</th>
+														<th>ID</th>
+														<th>名称</th>
+														<th>备注</th>
+														<th>操作</th>
+														<th class="">URL</th>
+													</tr>
+										</thead>
+										<tbody>
+										 <volist name="list" id="val" >
+										 	<tr>
+												<td class="center"><label> <input
+														type="checkbox" class="ace" /> <span class="lbl"></span>
+												</label></td>
+
+												<td>{$val.id}</a></td>
+												<td>{$val.name}</td>
+												<td ><span class="label label-sm label-warning">{$val.remark}</span></td>
+												<td class="">
+													<!-- <div class="visible-md visible-lg hidden-sm hidden-xs btn-group"> -->
+														<a class="J_preview btn btn-link btn-xs fa fa-pencil-square-o"  data-bimg="{:attach($val['img'], 'spread')}"
+															href="#" >预览
+														</a>
+														<a class="btn btn-link btn-xs fa fa-pencil-square-o"
+															href="{:u('spreadqrcode/download', array('id'=>$val['id'], 'menuid'=>$menuid))}" target="_blank">下载
+														</a>
+														<a href="javascript:;"
+															class="bootbox-confirm btn btn-xs btn-link"
+															data-uri="{:U('spreadqrcode/delete', array('id'=>$val['id']))}"
+															data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">
+															<i class="icon-trash align-top bigger-110"></i>{:L('delete')}
+														</a>
+													<!-- </div> -->
+												</td>
+												<td class="">{$val.url}</td>
+											</tr>
+										 </volist>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="home2" class="tab-pane in">
+						<form class="form-horizontal J_ajaxForm" id="info_form"
+							action="{:U('spreadqrcode/add')}" method="post">
+							<div class="form-group">
+								<label class="control-label col-xs-12 col-sm-3 no-padding-right"
+									for="name">名称:</label>
+
+								<div class="col-xs-12 col-sm-9">
+									<div class="clearfix input-group">
+										<input type="name" name="name" id="name"
+											class="col-xs-12 col-sm-12" />
+									</div>
+								</div>
+							</div>
+
+							<div class="space-2"></div>
+
+							<div class="form-group">
+								<label class="control-label col-xs-12 col-sm-3 no-padding-right"
+									for="url">活动链接:</label>
+
+								<div class="col-xs-12 col-sm-9">
+									<div class="clearfix input-group">
+										<input type="text" name="url" class="col-xs-12 col-sm-12" />
+									</div>
+								</div>
+							</div>
+
+							<div class="space-2"></div>
+
+
+							<div class="form-group">
+								<label class="control-label col-xs-12 col-sm-3 no-padding-right"
+									for="desc">备注:</label>
+
+								<div class="col-xs-12 col-sm-9">
+									<div class="clearfix input-group">
+										<input type="text" name="remark" id="remark"
+											class="col-xs-12 col-sm-12" />
+									</div>
+								</div>
+							</div>
+
+							<div class="space-2"></div>
+							
+							<div class="form-actions">
+								<button class="btn btn-link btn_submit J_ajax_submit_btn"
+									type="submit">提交</button>
+								<a class="btn" href="">返回</a>
+							</div>
+
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<include file="public:common" />
+<script src="__STATIC__/Plugin/style/js/admin.js"></script>
+<script src="__STATIC__/Plugin/style/js/bootbox.min.js"></script>
+<script src="__STATIC__/Plugin/style/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+$('.J_preview').preview(); //查看大图
+$("#info_form").validate({
+	errorElement : 'div',
+	errorClass : 'errTips',
+	rules : {
+		name : "required",
+		url : {
+			required: true,
+			url:true
+		}
+	},
+	messages : {
+		name : "请输入活动名称",
+		url : {
+			required: "请输入活动链接",
+			url: "请输入正确的链接地址"
+		}
+	}
+});	
+</script>

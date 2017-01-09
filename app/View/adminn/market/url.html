@@ -1,0 +1,57 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+                <th>数量</th>
+	            <th>url</th>
+	            <th>数量</th>
+	            <th>有效期</th>
+	            <th>添加时间</th>
+	            <th width="250">管理操作</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center" >{$val.share}</td>
+            <td align="center" >{$val.url}</td>
+			<td align="center">
+			<a href="{$val.url}" class="button button2">编辑</a> | 
+			<a href="{:U('market/ticket_details', array('id'=>$val['id']))}" class="button button2">查看</a> |
+			<a href="javascript:;" class="button button2" onclick="create_dialog({$val['id']})" title="生成实体代金券">生成代金券</a> |
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('market/ticket_delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<script type="text/javascript">
+//创建优惠券
+function create_dialog(ticket_id){
+	$.dialog.prompt('请输入生成线下实体代金券数量：',function(num){
+		var num = parseInt(num);
+		if(isNaN(num) || num <= 0)
+		{
+			alert('请填写正确的数量');
+			return false;
+		}
+		var url = '{:u("market/ticket_create", array("ticket_id"=>"@ticket_id@","num"=>"@num@"))}';
+	    url = url.replace('@ticket_id@',ticket_id).replace('@num@',num);
+		window.location.href = url;
+	});
+}
+</script>
+<include file="public:_footer" />
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!--添加品牌-->
+<div class="dialog_content">
+	<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+		<tr>
+			<th width="80">关键词 :</th>
+			<td>
+                 <input type="text" placeholder="优惠券名称" name="keyword" id="keyword" class="input-text">
+				<button type='button' id="search" style="padding:0 10px" data-uri="{:U('promotion_give/coupons')}" 
+				 class='btn'><span>搜索</span></button>
+			</td>
+		</tr>
+	</table>
+	<table class='border_table ptable' border="1" style="width:100%;background: #fff;">
+		<tbody id="tbody">
+		</tbody>
+	</table>
+</div>
+<script>
+$('#search').click(function(){
+	var keyword = $.trim($('#keyword').val());
+	var url = $(this).attr('data-uri');
+	$.post(url,{'keyword':keyword},function(data){
+		if(data.status == 1 && data.data){
+			var html = '';
+			for(var i = 0 ;i < data.data.length; i++){
+				var item = data.data[i];
+			    html +=  '<tr><td><label class="attr">'
+			    		+'<input type="radio" name="id[]" id="'+item.urlid+'" name="'+item.coupons+'" title="'+item.title+'" sub_title="'+item.sub_title+'"/>&nbsp;'+item.urlid+'</label></td>' 	
+					   	+'<td>'+item.coupons+'</td>'
+					   	+'<td>'+item.title+'</td>'
+						+'<td>'+item.sub_title+'</td>'
+						+'</tr>';
+			}
+			$('#tbody').html(html);
+		}else{
+			$('#tbody').html('<td colspan="4" height="30">没有找到相关信息</td>');
+		}
+	},'json')
+	return false;
+})
+</script>

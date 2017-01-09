@@ -1,0 +1,59 @@
+<include file="public:_header"/>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">查看评论</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	       	<input type="hidden" name="id" value="{$info.id}"/>
+	        <table class="shop-form" >
+	           <tr>
+	             <th width='120'>用户名：</th>
+	             <td><div class="ml5">{$info.username}</div></td>
+	           </tr>
+	           <tr>
+	             <th width='120'>评价时间：</th>
+	             <td><div class="ml5">{$info.add_time|date="Y-m-d H:i:s",###}</div></td>
+	           </tr>
+	           <tr>
+	             <th width='120'>评价商品：</th>
+	             <td><div class="ml5">{$info.item_name}</div></td>
+	           </tr>
+	           <tr>
+	             <th width='120'>评价内容：</th>
+	             <td><div class="ml5">{$info.info}
+	             	<div>
+                	<volist name="info.images" id="image" >
+                	<span class="img_border">
+                 	<img src="{:attach($image)}" height="80" width="80" class="J_preview" data-bimg="{:attach($image)}">
+                	</volist>
+                	</div>
+                	</div>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>评价分数：</th>
+	             <td><div class="ml5">{$info.point}分</div></td>
+	           </tr>
+	           <tr>
+	             <th width='120'>回复评价<font color='red'>*</font>：</th>
+	             <td>
+	             	 <textarea  name="reinfo" style="width:500px;height:60px;">{$info.reinfo}</textarea>
+	             </td>
+	           </tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

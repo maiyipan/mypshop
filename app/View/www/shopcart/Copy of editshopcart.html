@@ -1,0 +1,152 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div id="cartPage">
+    <div class="backDiv " >
+        <i class="ic-back" onclick="goBack()"> </i>
+        <span class="applySpan">编辑我的健康食品</span>
+        <p class="editGoodsDetail finishEdit">完成</p>
+    </div>
+    <div class="cartEditDiv  ">
+        <div class="cartListDiv">
+            <ul>
+                <li>
+                    <div class="good">
+                        <label>
+                            <input type="checkbox" class="checkInput">
+                            <i class="ic-tick ic-gtick"></i>
+                        </label>
+                        <img src="images/orange.png">
+                    <span>
+                        <button class="numberBtn  "onclick="cul(0)">-</button>
+                        <input type="text" value="1" id="quantity" name="" class="text width1" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <button class="numberBtn "onclick="cul(1)">+</button>
+                    </span>
+                        <img class="recover" src="images/recover.png">
+                    </div>
+                    <p class="fudaiInfo">总重：5.86kg(含包装)</p>
+                    <p class="baoyouInfo">包邮简要说明</p>
+                </li>
+                <li>
+                    <div class="good">
+                        <label>
+                            <input type="checkbox" class="checkInput">
+                            <i class="ic-tick ic-gtick"></i>
+                        </label>
+                        <img src="images/orange.png">
+                    <span>
+                        <button class="numberBtn  "onclick="cul(0)">-</button>
+                        <input type="text" value="1" id="quantity" name="" class="text width1" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        <button class="numberBtn "onclick="cul(1)">+</button>
+                    </span>
+                        <img class="recover" src="images/recover.png">
+                    </div>
+                    <p class="fudaiInfo">总重：5.86kg(含包装)</p>
+                    <p class="baoyouInfo">包邮简要说明</p>
+                </li>
+            </ul>
+        </div>
+        <div class="editBalanceDiv">
+            <label>
+                <input type="checkbox" class="checkInput">
+                <i class="ic-tick ic-gtick"></i>
+                <p class="balanceBtn">批量删除</p>
+            </label>
+            <!--<p class="balanceBtn">批量删除</p>-->
+        </div>
+        <div class="tableDiv dis_none">
+            <div class="sureTable">
+                <p class="content">确定要删除吗？</p>
+                <div class="btnDiv">
+                    <p class="yes">是</p>
+                    <p class="no">否</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="public:nav"/>
+<include file="public:footer"/>
+<script>
+    <!-- 完成按钮-->
+    $(".backDiv .finishEdit").on("click",function(){
+        //Todo 保存用户修改的商品信息
+        goBack();
+    })
+<!-- 单个删除按钮-->
+    $("img.recover").on("click",function(){
+        alertTable();
+        var delBtnLi=$(this).parents("li");
+        $(".tableDiv").show();
+        $(".tableDiv p.yes").on("click",function(){
+            $(".tableDiv").hide();
+            delItem(delBtnLi)
+//            Todo 数据改变存储
+        })
+        $(".tableDiv p.no").on("click",function(){
+            $(".tableDiv").hide();
+        })
+    })
+    function delItem(itemId){
+        itemId.remove();
+        console.log(1)
+    }
+<!-- 批量删除按钮-->
+$("p.balanceBtn").on("click",function(){
+
+    var checkedPLi=$(".cartEditDiv li .checkInput:checked").parents(" li");
+    var checkedLength=$(".cartEditDiv li .checkInput:checked").length;
+    if(checkedLength>0){
+        var flag=$(".cartEditDiv li .checkInput").attr("checked");
+        if(flag==true){
+            $(".tableDiv").show();
+            $(".tableDiv p.yes").on("click",function(){
+                $(".tableDiv").hide();
+                checkedPLi.remove();
+            })
+
+        }else{}
+    }else{
+        alert("请先选中");
+    }
+
+})
+    function alertTable(){
+
+    }
+<!--商品勾选按钮-->
+    $(".cartEditDiv li .checkInput").on("click" ,function(){
+        checkLi()
+    });
+    $(".editBalanceDiv .checkInput").on("click" ,function(){
+        checkBlance($(this));
+    })
+    function checkLi(){
+       var checkdeLiLength= $(".cartEditDiv li .checkInput:checked").length;
+        var liLength= $(".cartEditDiv li").length;
+        if(checkdeLiLength==liLength){
+            $(".editBalanceDiv .checkInput").prop("checked",true);
+        }else{
+            $(".editBalanceDiv .checkInput").prop("checked",false);
+        }
+    }
+    function checkBlance(checkBlanceId){
+        if(checkBlanceId.attr("checked")){
+            $(".cartEditDiv li .checkInput").prop("checked",true);
+        }else{
+            $(".cartEditDiv li .checkInput").prop("checked",false);
+        }
+    }
+    <!-- +按钮-->
+    function cul(p){
+        var o=$("#quantity").val();
+        if(!isNaN(o)){
+            if(p){
+                o++;
+            }else{
+                if(parseInt(o)!=0){
+                    o--;
+                }
+            }
+            $("#quantity").val(o)}
+    }
+</script>

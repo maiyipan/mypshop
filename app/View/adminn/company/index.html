@@ -1,0 +1,43 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="pad_lr_10" style="margin-top:10px;">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+           		<th>联系人</th>
+           	  	<th>电话</th>
+           	  	<th>公司</th>
+           	    <th>地址</th>
+           	    <th>添加时间</th>
+           	    <th>管理操作</th>
+			</tr>
+			
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center">{$val.name}</td>
+            <td align="center" >{$val.tel}</td>
+            <td align="center" >{$val.company_name}</td>
+            <td align="center" >{$val.company_name_address}</td>
+            <td align="center" >{$val.createtime}</td>
+            <td align="center">
+            <a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('company/company_delete', array('id'=>$val['id']))}" 
+			data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">删除</a>
+			
+			
+			
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

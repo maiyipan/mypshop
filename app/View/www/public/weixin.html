@@ -1,0 +1,145 @@
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appid}', // 必填，公众号的唯一标识
+    timestamp: '{$signPackage["timestamp"]}', // 必填，生成签名的时间戳
+    nonceStr: '{$signPackage["nonceStr"]}', // 必填，生成签名的随机串
+    signature: '{$signPackage["signature"]}',// 必填，签名，见附录1
+    jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onVoiceRecordEnd',
+                'playVoice',
+                'onVoicePlayEnd',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+/*
+ * 注意：
+ * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+ * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+ * 3. 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+ *
+ * 如有问题请通过以下渠道反馈：
+ * 邮箱地址：weixin-open@qq.com
+ * 邮件主题：【微信JS-SDK反馈】具体问题
+ * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+ */
+wx.ready(function() {
+//	console.log('exect');
+	wx.checkJsApi({
+		jsApiList : [ 'getNetworkType', 'previewImage', 'scanQRCode','scanQRCode' ,'onMenuShareAppMessage','onMenuShareTimeline'],
+		success : function(res) {
+			//alert(JSON.stringify(res)); 
+		}
+	});
+	function stopScrolling( e ) {
+		e.preventDefault();
+	}
+	/*
+	if (sessionStorage.getItem("isgetloca") != 0) {  
+		wx.getLocation({
+		    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+		    success: function (res) {
+		        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+		        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+		        var speed = res.speed; // 速度，以米/每秒计
+		        var accuracy = res.accuracy; // 位置精度
+		  		sessionStorage.isgetloca= 0;
+	        	$.ajax({
+	                type: 'get',
+	                url:'{:U('index/getloction')}',
+	                dataType: 'json',
+	                timeout: 15000,
+	                data: {
+	                	latitude:latitude,
+	                	longitude:longitude
+	                },
+	                success: function (data) {
+	                    if (data.status == 1) {
+	                    	// alert("为您定位到 最近的佳鲜店铺！"+data.name+'店铺链接:'+data.url); 
+							$(".loadingSection").hide();
+							document.removeEventListener( 'touchmove' , stopScrolling  );
+							setTimeout(function(){
+								$(".addressChoiceSection").show();
+								$(".addressChoiceSection .nomal").show()
+							},20)
+
+							$(".addressChoiceSection p.newestAddress").text(data.name)
+							$(".addressChoiceSection p.newestAddress").attr('data-id',data.url);
+							$(".addressChoiceSection p.newestAddress").css('background-image',data.smallIcon);
+							$(".addressChoiceSection p.newestAddress").css('background-repeat','no-repeat');
+							$(".addressChoiceSectionB p.newestAddress").text(data.name)
+							$(".addressChoiceSectionB p.newestAddress").attr('data-id',data.url);
+							$(".addressChoiceSectionB p.newestAddress").css('background-image',data.smallIcon);
+							$(".addressChoiceSectionB p.newestAddress").css('background-repeat','no-repeat');
+//	                    	alert("为您定位到 最近的佳鲜店铺！"+data.name);
+
+//	                    	window.location.href=data.url;
+	                    	$(function(){
+	                    	    if($.cookie("refresh")!="no"){
+	                    	        setTimeout(function(){
+	                    	            window.location.reload();
+	                    	            $.cookie("refresh","no");
+	                    	        },5000);
+	                    	    }
+	                    	});
+	                    } else {
+	                        alert(data.msg);
+	                    }
+	                },
+					beforeSend:function(data){
+						
+					},
+	                error: function (xhr, type) {
+	                    //alert('网络超时，请刷新后再试！'+type);
+	                },
+					complete:function(data){
+						//alert("正在加载完成"+data.status)   
+					} 
+	            })
+		    }
+		});
+	} */
+	
+});
+wx.error(function(res) {
+	
+	//alert(res.errMsg);
+});
+
+
+</script>
+

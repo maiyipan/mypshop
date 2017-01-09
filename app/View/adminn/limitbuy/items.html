@@ -1,0 +1,102 @@
+<include file="public:_header"/>
+<div class="subnav">
+</div>
+<!--栏目列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+                <th>商品名称</th>
+                <th>抢购时间</th>
+	            <th>原价</th>
+	            <th>抢购价</th>
+	            <th width="250">管理操作</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="items" id="val">
+		<tr>
+            <td align="center" >{$val.title}</td>
+            <td align="center">{$info.start_time}～{$info.end_time}</td>
+            <td align="center" >
+            	{$val.original_price}
+            </td>
+            <td align="center">{$val.limitbuy_price}</td>
+			<td align="center">
+				<a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('limitbuy/delete_items', array('id'=>$val['item_id'],'limitbuy_id'=>$info['id']))}" 
+					data-msg="{:sprintf(L('confirm_delete_one'),$val['title'])}">删除</a>
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+</div>
+<script type="text/javascript">
+function relationCallBack(goodsList){
+	if(goodsList){
+		var length = $('#speed_goods tr').length;
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList, function(){
+			var value = $(this).attr('price');
+			if($('input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			html += '<tr><td><img src="'+$(this).attr('img')+'" style="max-width:50px;max-height:50px;" /></td>'
+						+'<input type="hidden" class="itemid" name="items[itemid][]" value="'+$(this).attr('id')+'" />'
+						+'<input type="hidden" class="itemid" name="items[original_price][]" value="'+$(this).attr('price')+'" />'
+						+'<td>'+$(this).attr('title')+'</td>'
+						+'<td style="text-align:center;">'+$(this).attr('price')+'</td>'
+						+'<td style="text-align:center;"><input text="text" size="5" name="items[limitbuy_price][]" />元 <span class="del">删除</span></td></tr>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#speed_goods').append(html).show();
+	}
+}
+$(function(){
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

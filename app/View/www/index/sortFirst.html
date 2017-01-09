@@ -1,0 +1,27 @@
+<include file="public:header"/>
+<title>佳鲜农庄</title>
+<div id="sortPage">
+	<div class="backDiv" onclick="goBack()">
+	    <i class="ic-back"> </i>
+	    <span class="applySpan">商品分类</span>
+	</div>
+	<div class="sortFirstDiv">
+	    <ul>
+	    	<volist name="list" id="val" >
+	        <li <if condition="$i eq count($list)">class="lastLi"</if>>
+	        	<a href="{:U('index/sortSecond',array('fid'=>$val['id'],'sid'=>$shopid))}">
+	        		<img src="{:attach2($val['img'],'item_cate')}">
+	        		<div class="cateName">
+	        			{$val.name}
+	        		</div>
+	        	</a> 
+	        </li>
+	        </volist>
+	    </ul>
+	</div>
+	<include file="public:nav"/>
+	
+</div>
+<include file="public:footer"/>
+<include file="public:weixin"/>
+<include file="public:weixinPublicShare"/>

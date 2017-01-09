@@ -1,0 +1,82 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div id="myCenterPage">
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">兑换佳鲜农庄优惠券</span>
+    <!--<p class="edit">编辑</p>-->
+</div>
+<div class="activateMenbership">
+<body>
+	<form  id='Bind' class="infoForm" action="{:U('my/coupon_exchange',array('sid'=>$shopid))}" method='post'>
+		<!-- <input type="hidden" name='id' class="idInput" value="{$list.id}">
+		<input type="hidden" name='discount' class="discountInput" value="{$list.discount}">
+		<input type="hidden" name='full' class="fullInput" value="{$list.full}">
+		<input type="hidden" name='cut' class="cutInput" value="{$list.cut}">
+		<input type="hidden" name='gift' class="giftInput" value="{$list.gift}">
+		<input type="hidden" name='begintime' class="begintimeInput" value="{$list.begintime}">
+		<input type="hidden" name='expiretime' class="expiretimeInput" value="{$list.expiretime}">
+		<input type="hidden" name='share' class="shareInput" value="{$list.share}"> -->
+	
+        <li>
+            <label class="space">优惠码:</label>
+            <input placeholder="" type="text" class="DiscountInput" name="Discount">
+
+        </li>
+        <div class="btn submit">       	
+          <!--  <p class="activate"> <input class="enter bindbtn" value="激活" type="submit"></p> --> 
+            <div class="activate" > <a href="javascript:submint()" name="cardbind" id="cardbind" style="display: block;">立即领取</a></div>
+        </div>
+        
+    </form> 
+</body>
+</div>
+<script type="text/javascript">
+function submint(){
+	var phone=$(".DiscountInput").val();
+	if(phone==""||phone==null){
+        $(".noneBtnAlertSpan").show()
+        $(".noneBtnAlertSpan").text("手机号不能为空");
+        setTimeout(function(){
+            $(".noneBtnAlertSpan").hide()
+        },1000)
+    }
+	else{
+		$.ajax({
+			type: 'post',
+			url:'{:U('my/Coupon_exchange')}',  //请求的url
+			dataType: 'json',
+			timeout: 15000,
+			data: {
+				code: phone,
+				/* discount: discount,
+				full: full,
+				cut: cut,
+				gift: gift,
+				id: id,
+				begintime: begintime,
+				expiretime: expiretime,
+				share: share, */
+			},
+			success: function (data) {
+				if (data.status == 1) {
+					$(".noneBtnAlertSpan").show()
+					$(".noneBtnAlertSpan").text('领取成功');
+					setTimeout(function(){
+						$(".noneBtnAlertSpan").hide()
+					},1000)
+					window.location.href="{:U('my/coupon',array('sid'=>$shopid))}"  //成功之后跳转的链接
+				} else {
+					alert(data.msg);
+				}
+			},
+			error: function (xhr, type) {
+				alert('网络超时，请刷新后再试！');
+			}
+		})
+//		document.getElementById('Bind').submit(); //Bind是上面表单的ID
+	}	
+}
+</script>
+<include file="public:footer"/>
+</html>

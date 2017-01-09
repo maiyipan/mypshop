@@ -1,0 +1,26 @@
+<volist name="list" id="vo">
+ <if condition="$vo['list'] eq $vo['urlid']">
+    <a  href="#" class="conpon" id="{$vo.urlid}">
+       <div class="singDiv   conpondiv">
+        <div id = "bake">
+ <else />
+         <a  href="{$vo.url}" class="conpon" id="{$vo.urlid}">
+         <div class="singDiv   conpondiv">
+         <div  id ="demo">
+ </if> 
+ 
+          <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+          <span class="menbershipCard label priceSpan" name="title">{$vo.title}</span>
+          <span class="menbershipCard label addressSpan" name="sub_title">{$vo.sub_title}</span>
+          <span class="timeSpan" name="date_info">有效期：{$vo.begintime}~{$vo.expiretime}</span>
+          <span class="backSpan backIspan">
+	          <if condition="$vo['list'] eq $vo['urlid']">
+	          <span class=" noneSpan cat">已领取</span>
+	          <else />
+	          <span class=" noneSpan cat">领取</span>
+	          </if> 
+          </span>
+    </div>
+         </div>
+     </a>
+</volist>

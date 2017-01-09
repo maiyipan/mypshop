@@ -1,0 +1,46 @@
+<!--添加禁止IP-->
+
+
+<div class="dialog_content">
+	<form id="info_form" name="info_form" action="{:u('item_order/audit')}"
+		method="post">
+		<table style="width: 100%;">
+			<tr>
+				<td class="shop-td-title">订单编号：</td>
+				<td class="shop-td-content">{$info.orderId}</td>
+			</tr>
+
+			<tr>
+				<td class="shop-td-title">退款方式：</td>
+				<td class="shop-td-content"><switch name="info.supportmetho">
+					<case value="4">买家用的是会员卡支付，退款金额将会退还到买家会员卡账户中</case> 
+					<case value="3">买家用的是微信支付，退款金额将会退还到买家微信账户中</case>
+					<default />- </switch></td>
+			</tr>
+			<tr>
+
+				<td class="shop-td-title">收货人：</td>
+				<td class="shop-td-content"><if condition="$info.status elt 2">
+					<span>{$info.address_name}</span> <else /> {$info.address_name} </if></td>
+			</tr>
+			<tr>
+				<td class="shop-td-title">订单总金额：</td>
+				<td class="shop-td-content"><span style='font-weight:bold;font-size:20px;color:red;'> ¥{$info.order_sumPrice} </span> </td>
+			</tr>
+			<tr>
+				<td class="shop-td-title">输入退款金额：</td>
+				<td class="shop-td-content"><input type="text" name="refundprice" id="val"
+					class="input-text">
+				</td>
+			</tr>
+			
+			<input type="hidden" name="orderId"
+					id="val" class="input-text" value="{$info.orderId}">
+			<input type="hidden" name="id"
+					id="val" class="input-text" value="{$info.id}">
+		</table>
+	</form>
+</div>
+<script>
+
+</script>

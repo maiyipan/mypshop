@@ -1,0 +1,39 @@
+<include file="public:_header"/>
+<div class="container">
+<div class="widget-box">
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	        <table class="shop-form" >
+	           <tr>
+	             <th width='120'>公告内容：</th>
+	             <td>
+	               <textarea  name="notice" style="width:500px;height:60px;">{$info.notice}</textarea>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>是否显示公告<font color='red'>*</font>：</th>
+	             <td colspan='3'>
+	             	<label><input type='radio' name='show_notice' <if condition="$info['show_notice'] ==1 ">checked</if> value='1'/>显示 </label>
+	             	<label><input type='radio' name='show_notice' <if condition="$info['show_notice'] ==0 ">checked</if> value='0'/>不显示</label>
+	             </td>
+	           </tr>
+	         </table>
+	          <div class="form-actions">
+	          <input type="hidden" name='id' value="{$info.id}"/>
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return true;
+		},onError:function(msg){
+	}});
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

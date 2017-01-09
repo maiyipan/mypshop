@@ -1,0 +1,52 @@
+<!--添加品牌-->
+<div class="dialog_content">
+	<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+		<tr>
+			<th width="80">分类 :</th>
+			<td>
+				
+                <select class="J_cate_select mr10" id="J_cate_select1" data-pid="0" data-uri="{:U('item_cate/ajax_getchilds', array('type'=>0))}" data-selected="{$search.selected_ids}"></select>
+                    <input type="hidden" name="cate_id" id="J_cate_id" value="{$search.cate_id}" /><br/>
+				
+			</td>
+		</tr>
+		<tr>
+			<th width="80">关键词 :</th>
+			<td>
+                 <input type="text" placeholder="商品名称、商品编号" name="keyword" id="keyword" class="input-text">
+				<button type='button' id="search" style="padding:0 10px" data-uri="{:U('promotion_give/search_items')}" 
+				 class='btn'><span>搜索</span></button>
+			</td>
+		</tr>
+	</table>
+	<table class='border_table ptable' border="1" style="width:100%;background: #fff;">
+		<tbody id="tbody">
+		</tbody>
+	</table>
+</div>
+<script>
+$('#search').click(function(){
+	var keyword = $.trim($('#keyword').val());
+	var url = $(this).attr('data-uri');
+	var cate_id = $.trim($('input[name=cate_id]').val());
+	$.post(url,{'keyword':keyword,'cate_id':cate_id},function(data){
+		if(data.status == 1 && data.data){
+			var html = '';
+			for(var i = 0 ;i < data.data.length; i++){
+				var item = data.data[i];
+			    html +=  '<tr><td><label class="attr">'
+			    		+'<input type="checkbox" name="id[]" value="1" goodsId="'+item.goodsId+'" id="'+item.id+'" title="'+item.title+'" price="'+item.price+'" img="'+item.img+'"/>&nbsp;'+item.goodsId+'</label></td>' 	
+					   	+'<td>'+item.title+'</td>'
+						+'<td>￥'+item.price+'</td>'
+						+'<td><img src="'+item.img+'" width="40px" class="img_border"/></td>'
+						+'</tr>';
+			}
+			$('#tbody').html(html);
+		}else{
+			$('#tbody').html('<td colspan="4" height="30">没有找到相关商品</td>');
+		}
+	},'json')
+	return false;
+})
+$('#J_cate_select1').cate_select({top_option:lang.all}); //分类联动
+</script>

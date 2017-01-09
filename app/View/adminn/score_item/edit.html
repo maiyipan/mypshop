@@ -1,0 +1,147 @@
+<include file="public:_header"/>
+<script src="__STATIC__/js/kindeditor/kindeditor.js"></script>
+<script src="__STATIC__/js/kindeditor/lang/zh_CN.js"></script>
+
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">编辑商品</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+			<input type="hidden" name="menuid"  value="{$menuid}"/>
+			<input type="hidden" name="id" id="id" value="{$info.id}" />
+	        <table class="shop-form" >
+	        	<tr>
+						<th width="120">商品分类<font color='red'>*</font>:</th>
+						<td>
+							<select name="cate_id" id="cate_id" style="margin-left:10px;">
+            					<option value="">--请选择分类--</option>
+            						<volist name="cate_list" id="val">
+            						<option value="{$val.id}" <if condition="$info['cate_id'] eq $val['id']">selected="selected"</if>>{$val.name}</option>
+            					</volist>
+            				</select>
+					</td>
+					</tr>
+		            <tr>
+						<th>商品名称<font color='red'>*</font> :</th>
+						<td>
+							<input type="text" name="title" id="title" value="{$info.title}" class="input-text" size="30">
+		                </td>
+					</tr>
+					 <tr>
+			             <th width='120'>商品简介：</th>
+			             <td colspan='3'>
+			             	<textarea rows="2" style="width:788px" id='intro' name='intro'>{$info.intro}</textarea>
+			             </td>
+			           </tr>
+					<tr>
+						<th>商品图片<font color='red'>*</font> :</th>
+						<td>
+							<if condition="$info['img'] =='' ">
+			             	<div id="preview_Filedata" style="display:none;" class="ml10">
+				           		<img id='imgPreview' src="__STATIC__/images/admin/pop-up-img.jpg" height='75'/><br/>
+			               </div>
+			               <else/>
+			               <div id="preview_Filedata" class="ml10">
+			           		<img id='imgPreview' src="{:attach($info['img'])}" height='152'/><br/>
+			           		</div>
+			           		</if>
+						   <div style="position:relative;">
+							<input type="text" readonly name="img" value="{$info.img}" class="inputText imgValue" style="margin-right:4px;float:left;margin-left:8px;width:140px;"/>
+							<div class="uploadDiv">
+								<div class="uploadTxt">浏览</div>
+								<input type="file" class="uploadFile" id="upload"/>
+							</div>
+							<div class="">&nbsp;图片大小:150 x 150 (px)(格式为 gif, jpg, jpeg, png)</div>
+							</div>
+						</td>
+		 			</tr>
+		            <tr>
+						<th>所需积分<font color='red'>*</font> :</th>
+						<td><input type="text" name="score" id="score" value="{$info.score}" class="input-text" size="10" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')"></td>
+					</tr>
+					<tr>
+						<th>额外金额 :</th>
+						<td><input type="text" name="price" id="price" value="{$info.price}" class="input-text" size="10" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')"></td>
+					</tr>
+					<tr>
+						<th>库存 <font color='red'>*</font>:</th>
+						<td><input type="text" name="stock" id="stock" value="{$info.stock}" class="input-text" size="10" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')"></td>
+					</tr>     
+					<tr>
+						<th>排序值 :</th>
+						<td><input type="text" name="ordid" value="{$info.ordid}" id="ordid" class="input-text" size="10" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')"></td>
+					</tr>
+					<tr>
+			             <th width='120'>商品详情<font color='red'>*</font>：</th>
+			             <td colspan='3' class="pad_6">
+			             <textarea rows="2" cols="60" id='desc' name='desc'>{$info.desc}</textarea>
+			             </td>
+			        </tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/shop/jquery.upload.js"></script>
+<script type="text/javascript">
+function editItems(){
+	if($.trim($('#desc').val()) == ''){
+	   SHOP.msg('请输入商品详情!', {icon: 5});
+	   return false;
+	}
+	if($.trim($('input[name=img]').val()) == ''){
+	   SHOP.msg('请上传商品图片!', {icon: 5});
+	   return false;
+	}
+	return true;
+}
+
+$(function(){
+	var uploadAction = '{:U('upload/pic')}';
+	upload({"dom":"#upload","action":uploadAction,"afterName":"imgValue","dir":"score_item"});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return editItems();
+		},onError:function(msg){
+	}});
+	
+	KindEditor.ready(function(K) {
+		editor1 = K.create('textarea[name="desc"]', {
+			height:'250px',
+			width:"800px",
+			uploadJson : '{:U("attachment/editer_upload")}',
+			allowFileManager : false,
+			allowImageUpload : true,
+			items:[
+			        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+			        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+			        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+			        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+			        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+			        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|','image','table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+			        'anchor', 'link', 'unlink', '|', 'about'
+			],
+			afterBlur: function(){ this.sync(); }
+		});
+	});  
+	
+   $("#title").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入商品名称"});
+   $("#score").formValidator({onFocus:"请选择店铺地区"}).inputValidator({min:1,onError: "请输入所需积分"});
+   $("#stock").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入库存数量"});
+   $("#cate_id").formValidator({onFocus:"请选择商品分类"}).inputValidator({min:1,onError: "请选择完整商品分类"});
+   
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

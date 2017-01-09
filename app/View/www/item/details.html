@@ -1,0 +1,425 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">商品详情</span>
+</div>
+<div class="detailDiv">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+        	<empty name="img_list">
+        	    <div class="swiper-slide">
+            	   <a>
+                        <img src="{:attach(get_thumb($item['baseid']['img'], '_b'), '')}" style="width: 640px;height: 414px;">
+                   </a>
+                </div>
+                
+              <else />
+               <volist name="img_list" id="img">
+               <div class="swiper-slide">
+            	   <a>
+                        <img src="{:attach(get_thumb($img['url'], '_b'), '')}" style="width: 640px;height: 414px;">
+                   </a>
+                </div>
+            </volist> 
+            
+            </empty>
+        
+        
+         	 
+           
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="nameMask">
+        <p>{$item.baseid.title}</p> 
+    </div>
+    
+    <div class="info">
+        <!-- <img class="touxiang fl" src="{:attach(get_thumb($item['baseid']['img'], '_b'), '')}"> -->
+        <div class="left fl">
+        	<if condition="empty($limitbuy)">
+            <p>价格：<span class="price">￥{$item.price}</span></p>
+            <else/>
+            <p>价格：<span class="price">￥{$limitbuy.award_value}</span></p>
+           <!--  <p>市场价：<span class="price">￥{$item.price}</span></p> -->
+            </if>
+            <p style="line-height: 99px">品牌：<span>{$brand_list[$item['baseid']['brand']]}  </span></p>
+        </div>
+        <div class="right fl">
+            <p>商品规格：<span>{$item.baseid.size}</span></p>
+            <p style="line-height: 99px">商品产地：<span>{$item.baseid.originplace}</span></p>
+        </div> 
+        <if condition="!empty($limitbuy)">
+        <div class="dianzan fl" style="display:none;">
+        <p class="time" start="<?php echo strtotime($limitbuy['start_time']);?>" end="<?php echo strtotime($limitbuy['end_time']);?>">距结束：
+        	<span class="day" style="color: #ff7e20;">0</span>天
+        	<span class="hour" style="color: #ff7e20;">3</span>小时
+        	<span class="minute" style="color: #ff7e20;">2</span>分
+        	<span class="second" style="color: #ff7e20;">56</span>秒
+        </p>
+        </div>
+        </if>
+        <div class="dianzan  dianzanDiv fl">
+	        <span> 满意度：</span>
+	       <div>
+	           <i></i>
+	           <i></i>
+	           <i></i>
+	           <i></i>
+	           <i></i>
+	       </div>
+	       </div>
+    </div>
+    <div class="addressInfo">
+       <div class="line number">
+        <p class="fontSize fl">购买数量：</p>
+       <span>
+           <div class="numberBtn " onclick="cul(0)" style="    float: left;"><p id="btnP">-</p></div>
+           <input type="text" value="1" id="quantity" name="" class="text width1" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">
+           <div class="numberBtn " onclick="cul(1)" style="    float: right;"><p id="btnP">+</p></div>
+           <script type="text/javascript">
+               function cul(p){
+                   var o=$("#quantity").val();
+                   if(!isNaN(o)) {
+                       if(p){
+                           o++
+                       }else{
+                           if(parseInt(o)!=1){
+                               o--
+                           }
+                       }
+                       $("#quantity").val(o)
+                   }
+               }
+           </script>
+       </span>
+       </div>
+    </div>
+    <if condition="!empty($assemble) || !empty($fullcut)">
+   	<div class="promotionDiv" style="height:auto;">
+   		<if condition="!empty($assemble)">
+        <p class="fontSize">推荐组合:</p>
+        <div class="teamDiv">
+        	<volist name="assemble.item" id="aitems"  key="k">
+        		<?php if($k > 1){?>
+        		 <div class="emotion fl">+</div>
+        		<?php } ?>
+            		<a href="{:U('item/promotionTeam',array('id'=>$assemble['id'],'sid'=>$shopid))}">
+            		<img title="{$aitems.title}" src="{:attach(get_thumb($aitems['img'], '_b'), '')}"/> 
+            		</a>
+            </volist>
+            <div class="emotion fl">=</div>
+             <div class="priceDiv fr">
+            	<p class="smallFont ">原价：<span class = "delFont">￥{$assemble.original_price}</span></p>
+            	<p class="fontSize taocan">套餐价：<span>￥{$assemble.assemble_price}</span></p>
+            </div>
+        </div>
+        </if>
+        <if condition="!empty($fullcut)">
+        <div class="manjian "><p><span>满减</span>
+        	<switch name="fullcut.award_type">
+    			<case value="1">满 {$fullcut.reserve}元,减{$fullcut.award_value}元</case>
+    			<case value="2">满 {$fullcut.reserve}元,赠送{$fullcut.award_value}</case>
+ 			</switch>
+        </p></div>
+        </if>
+    </div>
+    </if>
+    <div class="userList">
+        <div class="userBtn">
+            <a href="{:U('item/picTextDetail',array('id'=>$item['id'],'sid'=>$shopid))}" class="gbtnbg fl">图文详情</a>
+            <p class="arrow"><i class="ic-more"></i> </p>
+        </div>
+        <div class="userBtn">
+            <a href="{:U('item/userReviews',array('id'=>$item['id'],'sid'=>$shopid))}" class="rbtnbg fr">用户评价<if condition="$item['comments'] gt 0">（{$item.comments}）</if></a>
+        	<p class="arrow"><i class="ic-more"></i> </p>
+        </div>
+        <div class="userList" >
+        	  <?php if(count($cmt_list) ==0){ ?>
+            <div class="reviewsNone" style="width: 100%;height: 200px;font:24px/40px 'Microsoft Yahei';color: #656043;">
+                <p>当前没有评价哦！</p>
+            </div>
+                <?php }else{  ?>
+            <ul class="" style="padding-bottom:110px">
+            	<volist name="cmt_list" id="val">
+                <li>
+                   
+                    <div class="assess user">
+                        <p>{$val.info}</p>
+                        <volist name="val.images" id="image" >
+		               	<span class="img_border">
+		                <img src="{:attach($image,'pic')}" width="32" width="32" class="J_preview" data-bimg="{:attach($image, 'item_cate')}">
+		               	</volist>
+		               <span class="nickName">{$val.username}</span>  <p class="time">{$val.add_time|date="Y-m-d",###}</p>
+                    </div>
+                </li>
+                </volist>
+                
+               <?php } ?>
+            </ul>
+        </div>
+    </div>
+   <notempty name="maylike_list">
+    <div class="guessFavorDiv">
+        <p>猜你喜欢</p>
+        <div class="favorGoodsListDiv" id="rect">
+       		<volist name="maylike_list" id="mval">
+             <ul class="cf">
+                <volist name="mval['list']" id="mitem">
+	                <li>
+	                    <div class="singGood">
+	                        <!-- <img src="{$remark.headimgurl}"> -->
+	                        <a href="{:U('item/details',array('id'=>$mitem['id'],'sid'=>$shopid))}">
+		                		<img src="{:attach(get_thumb($mitem['img'], '_b'), '')}"/> 
+		                	</a> 
+	                        <span class="goodsDescription">{$mitem.title}</span>
+	                        </br>
+	                        <span class="goodsPrice">￥{$mitem.price}</span>
+	                    </div>
+	                </li>
+                </volist>
+
+            </volist>
+        </div>
+    </div>
+    </notempty>
+    
+    <include file="public:footer"/>
+    <div class="btnDiv">
+    	<input type="hidden" value="{$item.id}" id="goodId">
+        <a class=" fl"  style="width: 132px;height: 100%;background: #eceade;" href="{:U('shopcart/index',array('sid'=>$shopid))}"><i class="ic-cart"></i></a>
+        <a class="cart fl" href="javascript:;" onclick="selfaddcart()">加入购物车</a>
+        <a class="buy fr" href="javascript:;" onclick="selfbuys()">立即购买</a>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/home/js/swiper3.js"></script>
+<script type="text/javascript">
+var mySwiper = new Swiper ('.swiper-container', {
+    direction: 'horizontal',
+    loop: true,
+    pagination: '.swiper-pagination',
+    autoplay : 3000,
+})
+    //底部同类商品的推荐
+    (function(){
+    	 var n= {$point};
+    	 console.log(n);
+    	 setTimeout(function(){
+             for(var i=0;i<n;i++){
+                 console.log(i)
+                 $(".dianzan>div>i").eq(i).addClass("zan")
+             }
+         },10)
+    	//点赞
+        /*$(".dianzan>div>i").on("click",function(){
+            var n=$(this).index()+1;
+            $.ajax({
+                type: 'post',
+                url:'../../commentHandle',
+                dataType: 'json',
+                timeout: 15000,
+                data: {
+                    num: n,
+                }, 
+                success: function (data) {
+                    if (data.status == 1) {
+                        $(".dianzan>div>i").removeClass("zan");
+                        setTimeout(function(){
+                            for(var i=0;i<n;i++){
+                                console.log(i)
+                                $(".dianzan>div>i").eq(i).addClass("zan")
+                            }
+                        },10)
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('网络超时，请刷新后再试！');
+                }
+            })
+        })*/
+    	
+    	
+    	
+    	
+    	
+    	
+        var LSwiperMaker = function(o){
+            var that = this;
+            this.config = o;
+            this.control = false;
+            this.sPos = {};
+            this.mPos = {};
+            this.dire;
+
+            // this.config.bind.addEventListener('touchstart', function(){ return that.start(); } ,false);
+            // 这样不对的，event对象只在事件发生的过程中才有效;
+            this.config.bind.addEventListener('touchstart', function(e){ return that.start(e); } ,false);
+            this.config.bind.addEventListener('touchmove', function(e){ return that.move(e); } ,false);
+            this.config.bind.addEventListener('touchend', function(e){ return that.end(e); } ,false);
+
+        }
+
+        LSwiperMaker.prototype.start = function(e){
+
+            var point = e.touches ? e.touches[0] : e;
+            this.sPos.x = point.screenX;
+            this.sPos.y = point.screenY;
+//            document.getElementById("start").innerHTML = "开始位置是:"+this.sPos.x +" "+ this.sPos.y ;
+
+        }
+        LSwiperMaker.prototype.move = function(e){
+
+            var point = e.touches ? e.touches[0] : e;
+            this.control = true;
+            this.mPos.x = point.screenX;
+            this.mPos.y = point.screenY;
+//            document.getElementById("move").innerHTML = "您的位置是："+this.mPos.x +" "+ this.mPos.y ;
+
+        }
+
+        LSwiperMaker.prototype.end = function(e){
+
+            this.config.dire_h  && (!this.control ? this.dire = null : this.mPos.x > this.sPos.x ? this.dire = 'R' : this.dire = 'L')
+            this.config.dire_h  || (!this.control ? this.dire = null : this.mPos.y > this.sPos.y ? this.dire = 'D' : this.dire = 'U')
+
+            this.control = false;
+            this.config.backfn(this);
+
+        }
+
+        window.LSwiperMaker = LSwiperMaker;
+//        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);// 禁止微信touchmove冲突
+
+    }())
+    var liLength=$("#rect ul li").length;
+    for(var i=0;i<liLength;i++){
+        var textLength=$("#rect ul li .goodsDescription").eq(i).text().length;
+        var text=$("#rect ul li .goodsDescription").eq(i).text().substr(0,7);
+        if(textLength>7){
+           $("#rect ul li .goodsDescription").eq(i).text(text+'...');
+        }
+    }
+
+    var a = new LSwiperMaker({
+        bind:document.getElementById("rect"),  // 绑定的DOM对象
+        dire_h:true,     //true 判断左右， false 判断上下
+        backfn:function(o){    //回调事件
+            if(o.dire=="L"){
+                $("#rect ul").css("transform","translate3d(-510px, 0px, 0px)")
+                $("#rect ul").css("-webkit-transform","translate3d(-510px, 0px, 0px)")
+            }if(o.dire=="R"){
+                $("#rect ul").css("transform","translate3d(0px, 0px, 0px)")
+                $("#rect ul").css("-webkit-transform","translate3d(-510px, 0px, 0px)")
+            }
+        }
+    })
+
+   
+
+    function selfaddcart() {
+    var goodId = $("#goodId").val();
+    var quantity = $("#quantity").val();
+
+    if (quantity == '') {
+        alert('请输入购买数量');
+        return;
+    }
+    if (parseInt(quantity) < 1) {
+        alert("购买数量不能小于1");
+        return;
+    }
+    if (isNaN(quantity)) {
+        alert("请输入数字!");
+        return;
+    }
+    cart(goodId, quantity);
+}
+
+function selfbuys(){
+	var goodId = $("#goodId").val();
+    var quantity = $("#quantity").val();
+
+    if (quantity == '') {
+        alert('请输入购买数量');
+        return;
+    }
+    if (parseInt(quantity) < 1) {
+        alert("购买数量不能小于1");
+        return;
+    }
+    if (isNaN(quantity)) {
+        alert("请输入数字!");
+        return;
+    }
+    var url = "{:U('shopcart/add_cart')}";
+    $.post(url, {goodId: goodId, quantity: quantity}, function (data) {
+        if (data.status == 1) {
+            window.location.href = "{:U('shopcart/index',array('sid'=>$shopid))}";
+        } else {
+        	alert(data.msg);
+        }
+    }, 'json');
+}
+
+function cart(goodId, quantity)//商品ID，购买数量
+{
+    var url = "{:U('shopcart/add_cart',array('sid'=>$shopid))}";
+    $.post(url, {goodId: goodId, quantity: quantity}, function (data) {
+        $(".noneBtnAlertSpan").show()
+        $(".noneBtnAlertSpan").text(data.msg);
+        $num = data.currentNUm;
+        $("#quantity").val($num);
+        setTimeout(function(){
+            $(".noneBtnAlertSpan").hide()
+        },1000)
+        if (data.status == 1) {
+
+        } else {
+
+        }
+    }, 'json');
+}
+function distribute(){
+	window.location.href = "{:U('item/distribute',array('itemid'=>$item['id'],'sid'=>$shopid))}";
+}
+</script>
+<include file="public:weixin"/>
+<script>
+wx.ready(function() {
+	var currenUrl = window.location.href;
+	wx.onMenuShareTimeline({
+	    title: "{$item.baseid.title}", // 分享标题
+	    link: currenUrl, // 分享链接
+	    imgUrl: "http://jx.i-lz.cn/data/upload/sys/logo.png", // 分享图标
+	    success: function () { 
+	        // 用户确认分享后执行的回调函数
+	    	//alert('欢迎分享');
+	    },
+	    cancel: function () { 
+	    	//alert('不开心');
+	        // 用户取消分享后执行的回调函数
+	    }
+	});
+	wx.onMenuShareAppMessage({
+	    title: "{$item.baseid.title}", // 分享标题
+	    desc: "佳鲜农庄，基于门店两小时极致配送", // 分享描述
+	    link: currenUrl, // 分享链接
+	    imgUrl: 'http://jx.i-lz.cn/data/upload/sys/logo.png', // 分享图标
+	    type: '', // 分享类型,music、video或link，不填默认为link
+	    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	    success: function () { 
+	    	//alert('欢迎分享');
+	        // 用户确认分享后执行的回调函数
+	    },
+	    cancel: function () { 
+	        // 用户取消分享后执行的回调函数
+	    	//alert('不开心');
+	    }
+	}); 
+});
+
+</script>
+

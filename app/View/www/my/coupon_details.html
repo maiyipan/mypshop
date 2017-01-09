@@ -1,0 +1,107 @@
+<include file="public:header"/>
+<style>
+<!--
+#demo{
+            width:80%;                /*设置div宽度为500像素*/
+            height:80%;            /*设置div高度为200像素*/
+    		background-color: #eceade;
+    		text-align:center;margin-left:auto; margin-right:auto;
+    		
+}
+            }
+-->
+</style>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+</div>
+<div class="conponDetailDiv">
+    <div class="conponQuan">
+        <div class="conponQuanBg">
+            <span class="companyLable">佳鲜农庄</span>
+            <span class="priceSpan">{$list.name}</span>
+            <span class="rangSpan">{$list.title}</span>
+            <span class="timeSpan">{$list.begintime}-{$list.expiretime}</span>
+        </div>
+        <div class="codeDiv">
+            <div class="codeimg"> <span class="codeSpan">您的优惠券编码:{$list.random}</span></div>
+        </div>
+    </div>
+    <div class="moreContentDiv">
+        <div class="moreTile">更多说明</div>
+        <p class="moreP">.{$list.shop_name}可用。</p>
+        <p class="moreP">.活动有效时间 {$list.begintime}-{$list.expiretime}</p>
+        <p class="moreP">.佳鲜农庄，绿色生活新鲜到家。</p>
+    </div>
+    <div class="toUseBtnDiv">
+        <a href="{:U('market/lingxian',array('sid'=>$shopid))}"><div class="useBtn ">去使用我的绿色优惠券</div></a>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/home/js/swiper3.js"></script>
+<script type="text/javascript">
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+        pagination: '.swiper-pagination',
+        autoplay : 3000
+    })
+function selfaddcart() {
+    var goodId = $("#goodId").val();
+    var quantity = $("#quantity").val();
+
+    if (quantity == '') {
+        alert('请输入购买数量');
+        return;
+    }
+    if (parseInt(quantity) < 1) {
+        alert("购买数量不能小于1");
+        return;
+    }
+    if (isNaN(quantity)) {
+        alert("请输入数字!");
+        return;
+    }
+    cart(goodId, quantity);
+}
+
+function selfbuys(){
+	var goodId = $("#goodId").val();
+    var quantity = $("#quantity").val();
+
+    if (quantity == '') {
+        alert('请输入购买数量');
+        return;
+    }
+    if (parseInt(quantity) < 1) {
+        alert("购买数量不能小于1");
+        return;
+    }
+    if (isNaN(quantity)) {
+        alert("请输入数字!");
+        return;
+    }
+    var url = "{:U('shopcart/add_cart')}";
+    $.post(url, {goodId: goodId, quantity: quantity}, function (data) {
+        if (data.status == 1) {
+            window.location.href = "{:U('shopcart/index',array('sid'=>$shopid))}";
+        } else {
+        	alert(data.msg);
+        }
+    }, 'json');
+}
+
+function cart(goodId, quantity)//商品ID，购买数量
+{
+    var url = "{:U('shopcart/add_cart',array('sid'=>$shopid))}";
+    $.post(url, {goodId: goodId, quantity: quantity}, function (data) {
+    	alert(data.msg);
+        if (data.status == 1) {
+        } else {
+        }
+    }, 'json');
+}
+function distribute(){
+	window.location.href = "{:U('item/distribute',array('itemid'=>$item['id'],'sid'=>$shopid))}";
+}
+
+</script>
+<include file="public:footer"/>

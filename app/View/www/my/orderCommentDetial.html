@@ -1,0 +1,40 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">订单评论</span>
+</div>
+
+<form  id="comment" class="commentForm"  name=”comment“ " method="post" >
+<input type="hidden" name="orderId"  value="{$list.orderId}"/>
+<div class="publishEvaluation" name='orderTitle' id='orderTitle'>
+    <ul>
+        <volist name="item_list" id="item">
+        	<li>
+            <div class="evaluationGoodsInfo" name="flag" id="flag">
+
+                <div class="left"><a href="#"><img src="{:attach($item['img'])}"> </a> </div>
+                <div class="info">
+                    <p class="name">{$item.title} </p>
+                    <p class="name">评价：  {$item.info}</p>
+                    
+               </div> 
+                   
+            </div>
+            </li>  
+        </volist>
+        <li>
+              <div class="foot">
+     			 <div class="btn submit"> 
+       			<p class="activate" ><a href="{:U('my/publishEvaluation',array('sid'=>$shopid))}" name="commentBt" id="commentBt" >返回</a></p>
+   				</div> 
+   			  </div>
+   		
+          </li>  
+        
+    </ul>
+</div>
+
+</form>
+
+<include file="public:footer"/>

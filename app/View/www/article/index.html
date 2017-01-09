@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="keywords" content="佳鲜农庄">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="cleartype" content="on">
+<meta name="referrer" content="always">
+<title>{$info.title}</title>
+
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/home/css/mp_news.css?v12">
+<style id="style-1-cropbar-clipper">
+.en-markup-crop-options {
+	top: 18px !important;
+	left: 50% !important;
+	margin-left: -100px !important;
+	width: 200px !important;
+	border: 2px rgba(255, 255, 255, .38) solid !important;
+	border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+	margin-left: 0px !important;
+}
+</style>
+</head>
+<body class=" ">
+
+	<div class="container rich_media" style="min-height: 831px;">
+		<div class="rich_media_inner content ">
+			<h2 class="rich_media_title" id="activity-name">{$info.title}</h2>
+
+			<div class="rich_media_meta_list">
+				<em id="post-date" class="rich_media_meta text">{$info.add_time|date='Y-m-d H:i',###}</em>
+				<em class="rich_media_meta text">佳鲜农庄</em> 
+				<a class="rich_media_meta link nickname js-no-follow js-open-follow"
+					href="" id="post-user">佳鲜农庄</a>
+			</div>
+
+			<div id="page-content" class="content">
+				<div id="img-content">
+					<div class="rich_media_content js-view-image-list" id="js_content">
+						<p>{$info.content}</p>
+					</div>
+					<div class="rich_media_tool" id="js_toobar">
+						<a class="media_tool_meta meta_primary" href="{$info.contentUrl}">阅读原文</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="footer"></div>
+	</div>
+</body>
+</html>

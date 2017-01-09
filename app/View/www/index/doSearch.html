@@ -1,0 +1,78 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <form method="post" action="{:U('index/doSearch',array('sid'=>$shopid))}" onsubmit="return validate()" id="serch_form" name="serch_form" class="srhtf">
+    <input class="search inputBind" type="text" id="keyword" value="{$keyword}" name="keyword" placeholder="搜索  佳鲜农庄">
+    <i class="ic-search " id="search"></i>
+    </form>
+</div>
+<div class="searchNoneDiv">
+	<?php if(count($item_list)==0){ ?>
+    <div class="sorryDiv">
+        <img src="__STATIC__/home/images/emotion.png">
+        <p>很抱歉，没有找到符合条件商品!</p>
+    </div>
+    <div class="lastSearchDiv">
+        <h1>最近的搜索</h1>
+        <div class="listDiv orderListDiv">
+            <ul>
+            	<volist name="hotList" id="item">
+                   <include file="public:itemlist"/>
+                </volist>
+           </ul>
+        </div>
+    </div>
+    <?php }else{  ?>
+    	<div class="listDiv orderListDiv" data-id="{$typeid}">
+			<div class="randLableDiv">
+				<span   class="selesLable">销量优先</span>
+				<span  class="priceLable ">价格
+					<div class="iDiv">
+						<i class="ic-up-dir up" ></i>
+						<i class="ic-down-dir down" ></i>
+					</div>
+				</span>
+				<span  class="timeLable">时间</span>
+			</div>
+			<div id="goodlist" class="promotionList" style="height: 850px; padding-bottom: 150px;">
+    			<ul>
+    			</ul>
+    			
+    		</div>
+			<div style="margin-top: 50px;"> 
+			<span class="loadingMoreBtn dis_none"></span>
+			</div>
+		</div>
+    <?php } ?>
+</div>
+<include file="public:nav"/>
+<include file="public:cart_foot"/>
+<include file="public:footer"/>
+<include file="public:weixin"/>
+<include file="public:weixinPublicShare"/>
+<script>
+	$('#search').click(function(){
+		if(validate())
+			$('#serch_form').submit();
+	})
+
+	function validate() {
+		var ival = document.getElementById('keyword').value;
+		 ival = ignoreSpaces(ival);
+		 if(ival == "") {
+			   alert("输入商品名称才可以搜索哦！"); 
+			   return false; 
+			   }
+			return true;
+	}
+	
+	function ignoreSpaces(string) {
+		var temp = "";
+		string = '' + string;
+		splitstring = string.split(" ");
+		for(i = 0; i < splitstring.length; i++)
+		temp += splitstring[i];
+		return temp;
+		}
+</script>

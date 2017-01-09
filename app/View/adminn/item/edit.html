@@ -1,0 +1,594 @@
+<include file="public:_header" />
+<script src="__STATIC__/js/kindeditor/kindeditor.js"></script>
+<script src="__STATIC__/js/kindeditor/lang/zh_CN.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/js/shop/webuploader/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/js/shop/webuploader/webuploader.css" />
+<script type="text/javascript"
+	src="__STATIC__/js/shop/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="__STATIC__/js/shop/batchupload.js"></script>
+
+<script type="text/javascript" src="__STATIC__/js/shop/jquery.upload.js"></script>
+<style>
+<!--
+.shielding input{readonly}
+-->
+</style>
+<div class="shop-body">
+	<div class='shop-page-content'>
+		<div id='tab' class="shop-tab-box">
+			<ul class="shop-tab-nav">
+				<li class="on">基础信息</li>
+				<li>商品相册</li>
+				<li>高级信息</li>
+				<li>附加属性</li>
+			</ul>
+			<form name="myform" method="post" id="myform" autocomplete="off">
+				<input type='hidden' name='id' value='{$info.id}' /> <input
+					type='hidden' name='baseid' value='{$info.baseid.id}' />
+				<div class="shop-tab-content">
+					<!-- 商品基础信息 -->
+					<div class='shop-tab-item' style="position: relative;">
+						<table class="shop-form mask">
+							<tr>
+								<th width='120'>商品编号<font color='red'>*</font>：
+								</th>
+								<td width='350'><input class="shielding" type='text' id='goodsId'
+									name='goodsId' value="{$info.baseid.goodsId}" maxLength='25' disabled/>
+								</td>
+								<td rowspan='2' valign='top'>
+									<div id="preview_Filedata" class="ml10">
+										<if condition="$info['baseid']['img'] =='' "> <img
+											id='imgPreview' src="__STATIC__/images/admin/pop-up-img.jpg"
+											height='152' /> <br />
+										<else /> <img id='imgPreview'
+											src="{:attach($info['baseid']['img'])}" height='152' /> <br />
+										</if>
+									</div>
+									<div style="position: relative;">
+										<input type="text" readonly name="img"
+											value="{$info.baseid.img}" class="inputText imgValue"
+											style="margin-right: 4px; float: left; margin-left: 8px; width: 140px;" disabled/>
+										<div class="uploadDiv">
+											<div class="uploadTxt">浏览</div>
+											<input type="file" class="uploadFile" id="upload" disabled/>
+										</div>
+										<div class="uploadTip">&nbsp;图片大小:150 x 120 (px)(格式为
+											gif, jpg, jpeg, png)</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th width='120'>商品名称<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='title' name='title'
+									value="{$info.baseid.title}" maxLength='200' disabled/></td>
+							</tr>
+
+							<tr>
+								<th width='120'>产地：</th>
+								<td><input type='text' id='originplace' name='originplace'
+									value="{$info.baseid.originplace}" maxLength='25' disabled/></td>
+							</tr>
+							<tr>
+								<th width='120'>商品简介：</th>
+								<td colspan='3'><textarea rows="2" style="width: 788px"
+										id='intro' name='intro' disabled>{$info.baseid.intro}</textarea></td>
+							</tr>
+
+							<tr>
+								<th width='120'>商品分类<font color='red'>*</font>：
+								</th>
+								<td colspan='3'><select class="J_cate_select mr10"
+									data-pid="0"
+									data-uri="{:U('item_cate/ajax_getchilds', array('type'=>0))}"
+									data-selected="{$selected_ids}" disabled></select> <input type="hidden"
+									name="cate_id" id="J_cate_id" value="{$info.baseid.cate_id}" disabled/>
+								</td>
+							</tr>
+							<tr>
+								<th width="120">所属品牌<font color='red'>*</font> :
+								</th>
+								<td><select name="brand" disabled>
+										<option value=""disabled>--请选择--</option>
+										<volist name='brandlist' id='vo'>
+										<option disabled value="{$vo.id}"<if
+												condition="$vo.id eq  strtoupper($info['baseid']['brand']) ">
+											selected="selected" </if>>{$vo.name}
+										</option>
+										</volist>
+								</select></td>
+							</tr>
+							<tr>
+								<th width='120'>商品详情<font color='red'>*</font>：
+								</th>
+								<td colspan='3' class="pad_6"><textarea rows="2" cols="60"
+										id='info' name='info' disabled>{$info.baseid.info}</textarea></td>
+							</tr>
+						</table>
+
+					</div>
+					
+					<!-- 相册 -->
+					<div class='shop-tab-item'>
+						<div id='galleryImgs' class='shop-gallery-imgs'>
+							<div id="tt"></div>
+							<if condition="count($img_list) eq 0">
+							<div id="wrapper">
+								<div id="container">
+									<div id="uploader">
+										<div class="queueList">
+											<div id="dndArea" class="placeholder">
+												<div id="filePicker"></div>
+											</div>
+											<ul class="filelist"></ul>
+										</div>
+										<div class="statusBar" style="display: none">
+											<div class="progress">
+												<span class="text">0%</span> <span class="percentage"></span>
+											</div>
+											<div class="info"></div>
+											<div class="btns">
+												<div id="filePicker2"
+													class="webuploader-containe webuploader-container"></div>
+												<div class="uploadBtn state-finish">开始上传</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<else />
+							<div id="wrapper">
+								<div id="container">
+									<div id="uploader">
+										<div class="queueList">
+											<div id="dndArea" class="placeholder element-invisible">
+												<div id="filePicker" class="webuploader-container"></div>
+											</div>
+											<ul class="filelist">
+												<volist name="img_list" id="vo" key='i'>
+												<li style="border: 1px solid rgb(59, 114, 165)" order="100"
+													onmouseover="imglimouseover(this)"
+													onmouseout="imglimouseout(this)"><input type="hidden"
+													class="imgs" name="imgs[]" path="'{$vo.url}"
+													value="{$vo.url}" /> <img width="152" height="152"
+													src="{:attach($vo['url'])}"><span class="setdef"
+													style="display: none">默认</span> <span class="setdel"
+													onclick="imglidel(this)" style="display: none">删除</span></li>
+
+												</volist>
+											</ul>
+										</div>
+										<div class="statusBar" style="">
+											<div class="progress">
+												<span class="text"></span> <span class="percentage"></span>
+											</div>
+											<div class="info"></div>
+											<div class="btns">
+												<div id="filePicker2"
+													class="webuploader-containe webuploader-container"></div>
+												<div class="uploadBtn state-finish">开始上传</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							</if>
+						</div>
+						<div style='clear: both;'></div>
+					</div>
+
+					<div class='shop-tab-item'>
+						<table class="shop-form">
+							<tr>
+								<th width='120'>ERP价格<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='price' name='price'
+									value="{$info.baseid.prime_price}" readonly value="0.0"
+									maxLength='10' /></td>
+							</tr>
+							<tr>
+								<th width='120'>商品价格<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='price' name='price'
+									value="{$info.price}" value="0.0"
+									onkeypress="return SHOP.isNumberdoteKey(event)"
+									onkeyup="javascript:SHOP.isChinese(this,1)" maxLength='10' /></td>
+							</tr>
+							<tr>
+								<th width='120'>商品原价<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='prime_price' name='prime_price'
+									value="{$info.prime_price}" value="0.0"
+									onkeypress="return SHOP.isNumberdoteKey(event)"
+									onkeyup="javascript:SHOP.isChinese(this,1)" maxLength='10' /></td>
+							</tr>
+							<tr>
+								<th width='120'>商品库存<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='goods_stock' name='goods_stock'
+									value="{$info.goods_stock}"
+									onkeypress="return SHOP.isNumberKey(event)"
+									onkeyup="javascript:SHOP.isChinese(this,1)" maxLength='25' /></td>
+							</tr>
+							<tr>
+								<th width='120'>限购<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='limit_buy' name='limit_buy'
+									value="{$info.limit_buy}"
+									onkeypress="return SHOP.isNumberKey(event)"
+									onkeyup="javascript:SHOP.isChinese(this,1)" maxLength='25' /></td>
+							</tr> 
+							<tr>
+								<th width='120'>排序：</th>
+								<td><input type='text' id='ordid' name='ordid'
+									value="{$info.ordid}" value="0" maxLength='25' /></td>
+							</tr>
+							<tr>
+								<th width='120'>商品状态<font color='red'>*</font>：
+								</th>
+								<td colspan='3'><label><input type='radio'
+										name='status'
+									<if condition="$info['status'] ==1 ">checked</if> value='1'/>上架
+								</label> <label><input type='radio' name='status'
+									<if condition="$info['status'] ==0 ">checked</if> value='0'/>下架</label>
+								</td>
+							</tr>
+							<tr>
+								<th width='120'>是否使用会员优惠<font color='red'>*</font>：
+								</th>
+								<td colspan='3'>
+									<label>
+										<input type='radio'
+										name='mbdscnt' <if condition="$info['mbdscnt'] ==1 ">checked</if>  value='1' />是 
+									</label> 
+									<label>
+										<input
+										type='radio' name='mbdscnt' <if condition="$info['mbdscnt'] ==0 ">checked</if> value='0' />否
+									</label>
+								</td>
+							</tr>
+							<!--
+			             <tr>
+			             <th width='120'>商品标签：</th>
+			             <td><input type='text' id='comremark' name='comremark' value="" maxLength='25'/></td>
+			             <td><input type ='button' id='getcomremark' name='getcomremark' value="一键获取标签" onclick="javascript:getComRemark()" /></td>
+			           </tr>
+			           -->
+							<tr>
+								<th>商品标签 :</th>
+								<td><input type="text" name="tags" id="J_tags"
+									class="input-text" size="50" value="{$info.tags}"> <input
+									type="button" value="{:L('auto_get')}" id="J_gettags"
+									name="tags_btn" class="btn"></td>
+							</tr>
+							<tr>
+								<th width='120'>商品属性：</th>
+								<td colspan='3'>
+                                                                    <label>
+                                                                        <input type='checkbox'
+										id='is_recomm_tmp' name='is_recomm_tmp'
+									<if condition="$info['is_recomm'] ==1 ">checked</if>
+										value='1'/>推荐
+                                                                                <input type="hidden" name ="is_recomm" id ="is_recomm" />        
+                                                                    </label>
+                                                                    
+                                                                    <label><input type='checkbox'
+										id='is_new_tmp' name='is_new_tmp'
+									<if condition="$info['is_new'] ==1 ">checked</if> value='1'/>新品
+                                                                        <input type="hidden" name ="is_new" id ="is_new" />
+                                                                    </label>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class='shop-tab-item'>
+						<table  cellpadding="2" cellspacing="1" class="shop-form" id="item_attr">
+							<volist name="attr_list" id="val">
+							<tr>
+								<td width="200"><a href="javascript:void(0);" class="blue"
+									onclick="del_attr({$val.id},this);"><img
+										src="__STATIC__/css/adminn/bgimg/tv-collapsable.gif" /></a>属性名
+									:{$val.attr_name}</td>
+								<td width="">属性值 :{$val.attr_value}</td>
+							</tr>
+							</volist>
+
+							<tbody class="add_item_attr">
+								<tr>
+									<th width="200"><a href="javascript:void(0);" class="blue"
+										onclick="add_attr();"><img
+											src="__STATIC__/css/adminn/bgimg/tv-expandable.gif" /></a>属性名 :<input
+										type="text" name="attr[name][]" class="input-text" size="20">
+									</th>
+									<td>属性值 :<input type="text" name="attr[value][]"
+										class="input-text" size="30"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="form-actions">
+                                    <button class="btnf" type="button" onclick="checkform()">提交</button>
+					<a class="btn toback" href="">返回</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div style='clear: both;'></div>
+</div>
+
+<include file="public:_footer" />
+
+<script>
+    
+    function checkform() {
+        //console.log("check");
+         if (document.getElementById("is_new_tmp").checked) {
+             
+             document.getElementById("is_new").value = 1;
+         } else {
+             document.getElementById("is_new").value = 0;
+         }
+         if (document.getElementById("is_recomm_tmp").checked) {
+             document.getElementById("is_recomm").value = 1;
+         } else {
+             document.getElementById("is_recomm").value = 0;
+         }
+         
+         document.getElementById("myform").submit()
+         
+    }
+	function getComRemark() {
+
+		var title = document.getElementById('title').value;
+		$.ajax({
+			type : 'post',
+			url : '{:U("item/ajax_CreatComRemark")}',
+			dataType : 'json',
+			timeout : 15000,
+			data : {
+				title : title
+			},
+			success : function(data) {
+				if (data.status == 1) {
+					document.getElementById('comremark').value = data.data;
+				} else {
+					alert(data.result_msg);
+				}
+			},
+			error : function() {
+				alert('网络超时，请刷新后再试！');
+			}
+		})
+
+	}
+	function editItems() {
+		if ($.trim($('#info').val()) == '') {
+			SHOP.msg('请输入商品简介!', {
+				icon : 5
+			});
+			return false;
+		}
+		if ($.trim($('input[name=img]').val()) == '') {
+			SHOP.msg('请上传商品图片!', {
+				icon : 5
+			});
+			return false;
+		}
+		return true;
+	}
+
+	var filetypes = [ "gif", "jpg", "png", "jpeg" ];
+	var shop_pic = '{:U('upload/pic')}';
+	$(function() {
+		$('.J_cate_select').cate_select('请选择');
+		//自动获取标签
+		$('#J_gettags').live('click', function() {
+			var title = $.trim($('#title').val());
+			if (title == '') {
+				$.pinphp.tip({
+					content : lang.article_title_isempty,
+					icon : 'alert'
+				});
+				return false;
+			}
+			$.getJSON('{:U("item/ajax_gettags")}', {
+				title : title
+			}, function(result) {
+				if (result.status == 1) {
+					$('#J_tags').val(result.data);
+				} else {
+					$.pinphp.tip({
+						content : result.msg
+					});
+				}
+			});
+		});
+
+		var uploadAction = '{:U('upload/pic')}';
+
+		upload({
+			"dom" : "#upload",
+			"action" : uploadAction,
+			"afterName" : "imgValue",
+			"dir" : "item"
+		});
+
+		$('#tab').TabPanel({
+			tab : 0
+		});
+
+		$.formValidator.initConfig({
+			theme : 'Default',
+			mode : 'AutoTip',
+			formID : "myform",
+			debug : false,
+			submitOnce : true,
+			onSuccess : function() {
+				return editItems();
+			},
+			onError : function(msg) {
+			}
+		});
+		$("#goodsId").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入商品编号"
+		});
+		$("#title").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入商品名称"
+		});
+		$("#price").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入市场价格"
+		});
+		$("#prime_price").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入店铺价格"
+		});
+		$("#goods_stock").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入库存"
+		});
+		$("#brand").formValidator({
+			onFocus : "请选择品牌"
+		}).inputValidator({
+			min : 1,
+			onError : "请选择品牌"
+		});
+		$("#cate_id").formValidator({
+			onFocus : "请选择商品分类"
+		}).inputValidator({
+			min : 1,
+			onError : "请选择完整商品分类"
+		});
+
+		KindEditor.ready(function(K) {
+			editor1 = K.create('textarea[name="info"]', {
+				height : '250px',
+				width : "800px",
+				uploadJson : '{:U("attachment/editer_upload")}',
+				allowFileManager : false,
+				allowImageUpload : true,
+				items : [ 'source', '|', 'undo', 'redo', '|', 'preview',
+						'print', 'template', 'code', 'cut', 'copy', 'paste',
+						'plainpaste', 'wordpaste', '|', 'justifyleft',
+						'justifycenter', 'justifyright', 'justifyfull',
+						'insertorderedlist', 'insertunorderedlist', 'indent',
+						'outdent', 'subscript', 'superscript', 'clearhtml',
+						'quickformat', 'selectall', '|', 'fullscreen', '/',
+						'formatblock', 'fontname', 'fontsize', '|',
+						'forecolor', 'hilitecolor', 'bold', 'italic',
+						'underline', 'strikethrough', 'lineheight',
+						'removeformat', '|', 'image','table', 'hr',
+						'emoticons', 'baidumap', 'pagebreak', 'anchor', 'link',
+						'unlink', '|', 'about' ],
+				afterBlur : function() {
+					this.sync();
+				}
+			});
+		});
+	});
+
+	function imglimouseover(obj) {
+		if (!$(obj).find('.file-panel').html()) {
+			$(obj).find('.setdel').addClass('trconb');
+			$(obj).find('.setdel').css({
+				"display" : ""
+			});
+		}
+	}
+
+	function imglimouseout(obj) {
+
+		$(obj).find('.setdel').removeClass('trconb');
+		$(obj).find('.setdel').css({
+			"display" : "none"
+		});
+	}
+
+	function imglidel(obj) {
+		if (confirm('是否删除图片?')) {
+			$(obj).parent().remove("li");
+			return;
+		}
+	}
+
+	function imgmouseover(obj) {
+		$(obj).find('.wst-gallery-goods-del').show();
+	}
+	function imgmouseout(obj) {
+		$(obj).find('.wst-gallery-goods-del').hide();
+	}
+	function delImg(obj) {
+		$(obj).parent().remove();
+	}
+	
+	/*
+	*
+	*/
+	function add_attr()
+	{
+	    $("#hidden_attr .add_item_attr").clone().insertAfter($("#item_attr .add_item_attr:last"));
+	}
+	
+	function del_attrs(obj)
+	{
+		$(obj).parent().parent().remove();
+	}
+	function del_attr(id,obj)
+	{
+		var url = "/?g=admin&m=item&a=delete_attr";
+	    $.get(url+"&attr_id="+id, function(data){
+			if(data==1){
+			    $(obj).parent().parent().remove();
+			};
+	    });
+	}
+	
+</script>
+
+<table id="hidden_attr" style="display: none;">
+	<tbody class="add_item_attr">
+		<tr>
+			<th width="200"><a href="javascript:void(0);" class="blue"
+				onclick="del_attrs(this);"><img
+					src="__STATIC__/css/adminn/bgimg/tv-collapsable.gif" /></a>属性名 :<input
+				type="text" name="attr[name][]" class="input-text" size="20">
+			</th>
+			<td>属性值 :<input type="text" name="attr[value][]"
+				class="input-text" size="30"></td>
+		</tr>
+	</tbody>
+</table>
+</body>
+</html>

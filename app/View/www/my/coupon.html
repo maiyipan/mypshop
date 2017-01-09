@@ -1,0 +1,240 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<style>
+<!--
+#demo{
+            width:96%;                /*设置div宽度为500像素*/
+            height:150px;            /*设置div高度为200像素*/
+            background:rgb(232,151,3);;      /*设置div背景色为黑色*/
+            margin:0 auto;            /*设置div居中显示*/
+    position: relative;
+    border-radius: 15px;
+            }
+-->
+</style>
+<div id="myCenterPage">
+<div class="backDiv">
+    <i class="ic-back" onclick="goreturn()"> </i>
+     <span class="applySpan">我的优惠券</span>
+</div>
+<div class="centerMainDiv cf" style="background-color: transparent;height: 100%">
+    <div class="centerInfoDiv cf" style="background-color: transparent;height: 100%;overflow: hidden">
+        <div class="centerSortdiv ">
+            <a class="waitMoney" >待使用（{$count}）</a>
+            <a class="waitGoods" >不可用（{$nocount}）</a>
+        </div>
+        <div class="sortMainDiv cf"  id="sortMainDiv" style="background-color: transparent;width: 100%;">
+        <a class="singSort" href="{:U('my/Coupon_exchange',array('sid'=>$shopid))}">
+            <div class="ssDiv singDiv">
+                <span class="menbershipCard label">优惠券兑换</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+        <a class="singSort" href="{:U('my/receive',array('set'=>1,'sid'=>$shopid))}">
+            <div class="ssDiv singDiv">
+                <span class="menbershipCard label">优惠券领取</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+            <ul class="sortMainDivUl cf">
+                <li style="height: auto;min-height: 100px">
+                   <volist name="cart" id="vo">
+                   <a  href="{:U('my/coupon_details',array('random'=>$vo['random'],'type'=>'Z','sid'=>$shopid))}" class="conpon">
+                        <div class="singDiv   conpondiv">
+                        <div id="demo">
+                         <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+                         <span class="menbershipCard label priceSpan" name="title">{$vo.discount}折优惠</span>
+                          <span class="menbershipCard label addressSpan" name="sub_title">{$vo.name}</span>
+                          <span class="timeSpan" name="date_info">有效期：{$vo.begintime}~{$vo.expiretime}</span>
+                          <span class="random" name="random">Z{$vo.random}</span>
+                         <span class="backSpan backIspan">
+                             <!--<i class="ic-more"></i>-->
+                             <span class=" noneSpan" style="    width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;">可用
+                             </span>
+                         </span></div>
+                        </div>
+                    </a>
+                    </volist>
+                        <volist name="full_cut" id="fc">
+                               <a  href="{:U('my/coupon_details',array('random'=>$fc['random'],'type'=>'M','sid'=>$shopid))}" class="conpon">
+                                    <div class="singDiv   conpondiv">
+                                    <div id="demo">
+                                     <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+                                     <span class="menbershipCard label priceSpan" name="title">满{$fc.full}减{$fc.cut}</span>
+                                      <span class="menbershipCard label addressSpan" name="sub_title">{$fc.name}</span>
+                                      <span class="timeSpan" name="date_info">有效期：{$fc.begintime}~{$fc.expiretime}</span>
+                                      <span class="random" name="random">M{$fc.random}</span>
+                                     <span class="backSpan backIspan">
+                                         <span class=" noneSpan" style="    width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;">可用
+                                         </span>
+                                     </span></div>
+                                    </div>
+                                </a>
+                      	 </volist>
+                        <volist name="gift" id="gt">
+                                <a  href="{:U('my/coupon_details',array('random'=>$gt['random'],'type'=>'B','sid'=>$shopid))}" class="conpon">
+                                    <div class="singDiv   conpondiv">
+                                        <div id="demo">
+                                            <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+                                            <span class="menbershipCard label priceSpan" name="title">{$gt.gift}代金券</span>
+                                            <span class="menbershipCard label addressSpan" name="sub_title">{$gt.name}</span>
+                                            <span class="timeSpan" name="date_info">有效期：{$gt.begintime}~{$gt.expiretime}</span>
+                                            <span class="random" name="random">B{$gt.random}</span>
+                                            <span class="backSpan backIspan">
+                                             <span class=" noneSpan" style="    width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;">可用
+                                             </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                        </volist>
+                </li>
+                <li style="height: auto;min-height: 100px">
+                    <volist name="nocart" id="novo">
+                        <a  href="#" class="conpon">
+                            <div class="singDiv   conpondiv">
+                                <div id="demo" class="greyBg" style="  background: rgb(160, 150, 131);">
+                                    <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+                                    <span class="menbershipCard label priceSpan" name="title">{$novo.discount}折优惠</span>
+                                    <span class="menbershipCard label addressSpan" name="sub_title">{$novo.name}</span>
+                                    <span class="timeSpan" name="date_info">有效期：{$novo.begintime}~{$novo.expiretime}</span>
+                                    <span class="random" name="random">Z{$novo.random}</span>
+                         <span class="backSpan backIspan">
+                             <span class=" noneSpan" style="    width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;">不可用
+                             </span>
+                         </span></div>
+                            </div>
+                        </a>
+                    </volist>
+
+                    <volist name="nofull_cut" id="nofc">
+                        <a  href="#" class="conpon">
+                            <div class="singDiv   conpondiv">
+                                <div id="demo" style="  background: rgb(160, 150, 131);">
+                                    <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+                                    <span class="menbershipCard label priceSpan" name="title">满{$nofc.full}减{$nofc.cut}</span>
+                                    <span class="menbershipCard label addressSpan" name="sub_title">{$nofc.name}</span>
+                                    <span class="timeSpan" name="date_info">有效期：{$nofc.begintime}~{$nofc.expiretime}</span>
+                                    <span class="random" name="random">M{$nofc.random}</span>
+                                     <span class="backSpan backIspan">
+                                         <span class=" noneSpan" style="    width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;">不可用
+                                         </span>
+                                     </span></div>
+                            </div>
+                        </a>
+                    </volist>
+                    <volist name="nogift" id="nogt">
+                        <a  href="#" class="conpon">
+                            <div class="singDiv   conpondiv">
+                                <div id="demo" style="  background: rgb(160, 150, 131);">
+                                    <span class="menbershipCard label lableSpan" name="logo">佳鲜农庄</span>
+                                    <span class="menbershipCard label priceSpan" name="title">{$nogt.gift}代金券</span>
+                                    <span class="menbershipCard label addressSpan" name="sub_title">{$nogt.name}</span>
+                                    <span class="timeSpan" name="date_info">有效期：{$nogt.begintime}~{$nogt.expiretime}</span>
+                                    <span class="random" name="random">B{$nogt.random}</span>
+                                    <span class="backSpan backIspan">
+                                     <span class=" noneSpan" style="    width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;">不可用
+                                     </span>
+                                     </span>
+                                </div>
+                            </div>
+                        </a>
+
+                    </volist>
+                </li>
+            </ul>
+        </div>
+        </div>        
+    </div>
+</div>
+<include file="public:footer"/>
+    <script>
+    function goreturn(){
+    	window.location.href="{:U('my/index',array('sid'=>$shopid))}";
+    }
+        $("a.waitGoods").on("click",function(){
+            $("a.waitGoods").css("color",'#f29200')
+            $("a.waitMoney").css("color",'#656043')
+            $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("transform","translate3d(-640px, 0px, 0px)")
+            $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("-webkit-transform","translate3d(-640px, 0px, 0px)")
+        })
+        $("a.waitMoney").on("click",function(){
+            $("a.waitMoney").css("color",'#f29200')
+            $("a.waitGoods").css("color",'#656043')
+            $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("transform","translate3d(0px, 0px, 0px)")
+            $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("-webkit-transform","translate3d(0px, 0px, 0px)")
+        })
+        $(function(){
+            $("a.waitMoney").css("color",'#f29200')
+            $("a.waitGoods").css("color",'#656043')
+        })
+//        $(function(){
+//            var LSwiperMaker = function(o){
+//                var that = this;
+//                this.config = o;
+//                this.control = false;
+//                this.sPos = {};
+//                this.mPos = {};
+//                this.dire;
+//
+//                // this.config.bind.addEventListener('touchstart', function(){ return that.start(); } ,false);
+//                // 这样不对的，event对象只在事件发生的过程中才有效;
+//                this.config.bind.addEventListener('touchstart', function(e){ return that.start(e); } ,false);
+//                this.config.bind.addEventListener('touchmove', function(e){ return that.move(e); } ,false);
+//                this.config.bind.addEventListener('touchend', function(e){ return that.end(e); } ,false);
+//
+//            }
+//			//触摸
+//            LSwiperMaker.prototype.start = function(e){
+//
+//                var point = e.touches ? e.touches[0] : e;
+//                this.sPos.x = point.screenX;
+//                this.sPos.y = point.screenY;
+////            document.getElementById("start").innerHTML = "开始位置是:"+this.sPos.x +" "+ this.sPos.y ;
+//
+//            }
+//			//滑动
+//            LSwiperMaker.prototype.move = function(e){
+//
+//                var point = e.touches ? e.touches[0] : e;
+//                this.control = true;
+//                this.mPos.x = point.screenX;
+//                this.mPos.y = point.screenY;
+////            document.getElementById("move").innerHTML = "您的位置是："+this.mPos.x +" "+ this.mPos.y ;
+//
+//            }
+//			//手指离开屏幕
+//            LSwiperMaker.prototype.end = function(e){
+//
+//                this.config.dire_h  && (!this.control ? this.dire = null : this.mPos.x > this.sPos.x ? this.dire = 'R' : this.dire = 'L')
+//                this.config.dire_h  || (!this.control ? this.dire = null : this.mPos.y > this.sPos.y ? this.dire = 'D' : this.dire = 'U')
+//
+//                this.control = false;
+//                this.config.backfn(this);
+//
+//            }
+//
+//            window.LSwiperMaker = LSwiperMaker;
+////            document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);// 禁止微信touchmove冲突
+//
+//        }())
+//
+//        var a = new LSwiperMaker({
+//            bind:document.getElementById("sortMainDiv"),  // 绑定的DOM对象
+//            dire_h:true,     //true 判断左右， false 判断上下
+//            backfn:function(o){    //回调事件
+//                if(o.dire=="L"){
+//                    $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("transform","translate3d(-640px, 0px, 0px)")
+//                    $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("-webkit-transform","translate3d(-640px, 0px, 0px)")
+//                    $("a.waitGoods").css("color",'#f29200')
+//                    $("a.waitMoney").css("color",'#656043')
+//
+//                }if(o.dire=="R"){
+//                    $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("transform","translate3d(0px, 0px, 0px)")
+//                    $(".centerMainDiv .sortMainDiv .sortMainDivUl").css("-webkit-transform","translate3d(0px, 0px, 0px)")
+//                    $("a.waitMoney").css("color",'#f29200')
+//                    $("a.waitGoods").css("color",'#656043')
+//                }
+//            }
+//        })
+    </script>

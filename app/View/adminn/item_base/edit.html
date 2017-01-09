@@ -1,0 +1,413 @@
+<include file="public:_header" />
+<link href="__STATIC__/zui/lib/chosen/chosen.min.css" rel="stylesheet"/>
+<link href="__STATIC__/zui/lib/chosen/chosen.min.css" rel="stylesheet"/>
+<script src="__STATIC__/js/kindeditor/kindeditor.js"></script>
+<script src="__STATIC__/js/kindeditor/lang/zh_CN.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/js/shop/webuploader/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/js/shop/webuploader/webuploader.css" />
+<script type="text/javascript"
+	src="__STATIC__/js/shop/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="__STATIC__/js/shop/batchupload.js"></script>
+
+<script type="text/javascript" src="__STATIC__/js/shop/jquery.upload.js"></script>
+
+<div class="shop-body">
+	<div class='shop-page-content'>
+		<div id='tab' class="shop-tab-box">
+			<ul class="shop-tab-nav">
+				<li class="on">基础信息</li>
+				<li>商品相册</li>
+			</ul>
+			<form name="myform" method="post" id="myform" autocomplete="off">
+				<input type='hidden' name='id' value='{$info.id}' /> <input
+					type='hidden' name='baseid' value='{$info.id}' />
+				<div class="shop-tab-content">
+				
+					<!-- 商品基础信息 -->
+					<div class='shop-tab-item' style="position: relative;">
+
+						<table class="shop-form">
+							<tr>
+								<th width='120'>商品编号<font color='red'>*</font>：
+								</th>
+								<td width='350'><input class="shielding " type='text' id='goodsId'
+									name='goodsId' value="{$info.goodsId}" maxLength='25' />
+								</td>
+								<td rowspan='2' valign='top'>
+									<div id="preview_Filedata" class="ml10">
+										<if condition="$info['img'] =='' "> <img
+											id='imgPreview' src="__STATIC__/images/admin/pop-up-img.jpg"
+											width="302" height='236' /> <br />
+										<else /> <img id='imgPreview'
+                                                                                              src="{:attach($info['img'])}" width="302" height='236' /> <br />
+										</if>
+									</div>
+									<div style="position: relative;">
+										<input type="text"  name="img"
+											value="{$info.img}" class="inputText imgValue"
+											style="margin-right: 4px; float: left; margin-left: 8px; width: 140px;" />
+										<div class="uploadDiv">
+											<div class="uploadTxt">浏览</div>
+											<input type="file" class="uploadFile" id="upload" />
+										</div>
+										<div class="uploadTip">&nbsp;图片大小:302 x 236 (px)(格式为
+											gif, jpg, jpeg, png)</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th width='120'>商品名称<font color='red'>*</font>：
+								</th>
+								<td><input type='text' id='title' name='title'
+									value="{$info.title}" maxLength='200' /></td>
+							</tr>
+
+							<tr>
+								<th width='120'>产地：</th>
+								<td><input type='text' id='originplace' name='originplace'
+									value="{$info.originplace}" maxLength='25' /></td>
+							</tr>
+							<tr>
+								<th width='120'>商品简介：</th>
+								<td colspan='3'><textarea rows="2" style="width: 788px"
+										id='intro' name='intro' >{$info.intro}</textarea></td>
+							</tr>
+
+							<tr>
+								<th width='120'>商品分类<font color='red'>*</font>：
+								</th>
+								<td colspan='3'><select class="J_cate_select mr10"
+									data-pid="0"
+									data-uri="{:U('item_cate/ajax_getchilds', array('type'=>0))}"
+									data-selected="{$selected_ids}" ></select> <input type="hidden"
+									name="cate_id" id="J_cate_id" value="{$info.cate_id}" />
+								</td>
+							</tr>
+
+
+							<tr>
+								<th width="120">所属品牌<font color='red'>*</font>：
+								</th>
+								<td><select name="brand" data-placeholder="选择一个宠物..." class="chosen-select form-control" tabindex="2" >
+										<option value="">--请选择--</option>
+										<volist name='brandlist' id='vo'>
+										<option  value="{$vo.id}"<if
+												condition="$vo.id eq  strtoupper($info['brand']) ">
+											selected="selected" </if>>{$vo.name}
+										</option>
+										</volist>
+								</select></td>
+							</tr>
+							<tr>
+								<th width='120'>商品详情<font color='red'>*</font>：
+								</th>
+								<td colspan='3' class="pad_6"><textarea rows="2" cols="60"
+										id='info' name='info' >{$info.info}</textarea></td>
+							</tr>
+						</table>
+
+					</div>
+					<!-- 相册 -->
+					<div class='shop-tab-item'>
+						<div id='galleryImgs' class='shop-gallery-imgs'>
+							<div id="tt"></div>
+							<if condition="count($img_list) eq 0">
+							<div id="wrapper">
+								<div id="container">
+									<div id="uploader">
+										<div class="queueList">
+											<div id="dndArea" class="placeholder">
+												<div id="filePicker"></div>
+											</div>
+											<ul class="filelist"></ul>
+										</div>
+										<div class="statusBar" style="display: none">
+											<div class="progress">
+												<span class="text">0%</span> <span class="percentage"></span>
+											</div>
+											<div class="info"></div>
+											<div class="btns">
+												<div id="filePicker2"
+													class="webuploader-containe webuploader-container"></div>
+												<div class="uploadBtn state-finish">开始上传</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<else />
+							<div id="wrapper">
+								<div id="container">
+									<div id="uploader">
+										<div class="queueList">
+											<div id="dndArea" class="placeholder element-invisible">
+												<div id="filePicker" class="webuploader-container"></div>
+											</div>
+											<ul class="filelist">
+												<volist name="img_list" id="vo" key='i'>
+												<li style="border: 1px solid rgb(59, 114, 165)" order="100"
+													onmouseover="imglimouseover(this)"
+													onmouseout="imglimouseout(this)"><input type="hidden"
+													class="imgs" name="imgs[]" path="'{$vo.url}"
+													value="{$vo.url}" /> <img width="152" height="152"
+													src="{:attach($vo['url'])}"><span class="setdef"
+													style="display: none">默认</span> <span class="setdel"
+													onclick="imglidel(this)" style="display: none">删除</span></li>
+
+												</volist>
+											</ul>
+										</div>
+										<div class="statusBar" style="">
+											<div class="progress">
+												<span class="text"></span> <span class="percentage"></span>
+											</div>
+											<div class="info"></div>
+											<div class="btns">
+												<div id="filePicker2"
+													class="webuploader-containe webuploader-container"></div>
+												<div class="uploadBtn state-finish">开始上传</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							</if>
+						</div>
+						<div style='clear: both;'></div>
+					</div>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="form-actions">
+					<button class="btnf" type="submit">提交</button>
+					<a class="btn toback" href="">返回</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div style='clear: both;'></div>
+</div>
+
+<include file="public:_footer" />
+<script type="text/javascript" src="__STATIC__/zui/js/zui.min.js"></script>
+<script type="text/javascript" src="__STATIC__/zui/lib/chosen/chosen.min.js"></script>
+<script>
+	function getComRemark() {
+
+		var title = document.getElementById('title').value;
+		$.ajax({
+			type : 'post',
+			url : '{:U("item/ajax_CreatComRemark")}',
+			dataType : 'json',
+			timeout : 15000,
+			data : {
+				title : title
+			},
+			success : function(data) {
+				if (data.status == 1) {
+					document.getElementById('comremark').value = data.data;
+				} else {
+					alert(data.result_msg);
+				}
+			},
+			error : function() {
+				alert('网络超时，请刷新后再试！');
+			}
+		})
+
+	}
+	function editItems() {
+		if ($.trim($('#info').val()) == '') {
+			SHOP.msg('请输入商品简介!', {
+				icon : 5
+			});
+			return false;
+		}
+		if ($.trim($('input[name=img]').val()) == '') {
+			SHOP.msg('请上传商品图片!', {
+				icon : 5
+			});
+			return false;
+		}
+		return true;
+	}
+
+	var filetypes = [ "gif", "jpg", "png", "jpeg" ];
+	var shop_pic = '{:U('upload/pic')}';
+	
+	function onPageLoad() {return false;}
+	function afterPageLoad() {
+	  if($.fn.chosen) $('#pageBody .chosen-select').chosen();
+	  if($.fn.chosenIcons) $('#chosenIcons').chosenIcons();
+	  setTimeout($.doc.mutePageLoading, 500);
+	}
+	$(function() {
+		$('.chosen-select').chosen();
+		 
+		$('.J_cate_select').cate_select('请选择');
+		//自动获取标签
+		$('#J_gettags').live('click', function() {
+			var title = $.trim($('#title').val());
+			if (title == '') {
+				$.pinphp.tip({
+					content : lang.article_title_isempty,
+					icon : 'alert'
+				});
+				return false;
+			}
+			$.getJSON('{:U("item/ajax_gettags")}', {
+				title : title
+			}, function(result) {
+				if (result.status == 1) {
+					$('#J_tags').val(result.data);
+				} else {
+					$.pinphp.tip({
+						content : result.msg
+					});
+				}
+			});
+		});
+
+		var uploadAction = '{:U('upload/pic')}';
+
+		upload({
+			"dom" : "#upload",
+			"action" : uploadAction,
+			"afterName" : "imgValue",
+			"dir" : "item"
+		});
+
+		$('#tab').TabPanel({
+			tab : 0
+		});
+
+		$.formValidator.initConfig({
+			theme : 'Default',
+			mode : 'AutoTip',
+			formID : "myform",
+			debug : false,
+			submitOnce : true,
+			onSuccess : function() {
+				return editItems();
+			},
+			onError : function(msg) {
+			}
+		});
+		$("#goodsId").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入商品编号"
+		});
+		$("#title").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入商品名称"
+		});
+		$("#prime_price").formValidator({
+			onShow : "",
+			onFocus : "",
+			onCorrect : "输入正确"
+		}).inputValidator({
+			min : 1,
+			max : 50,
+			onError : "请输入店铺价格"
+		});
+		$("#brand").formValidator({
+			onFocus : "请选择品牌"
+		}).inputValidator({
+			min : 1,
+			onError : "请选择品牌"
+		});
+		$("#cate_id").formValidator({
+			onFocus : "请选择商品分类"
+		}).inputValidator({
+			min : 1,
+			onError : "请选择完整商品分类"
+		});
+
+		KindEditor.ready(function(K) {
+			editor1 = K.create('textarea[name="info"]', {
+				height : '250px',
+				width : "800px",
+				uploadJson : '{:U("attachment/editer_upload")}',
+				allowFileManager : false,
+				allowImageUpload : true,
+				items : [ 'source', '|', 'undo', 'redo', '|', 'preview',
+						'print', 'template', 'code', 'cut', 'copy', 'paste',
+						'plainpaste', 'wordpaste', '|', 'justifyleft',
+						'justifycenter', 'justifyright', 'justifyfull',
+						'insertorderedlist', 'insertunorderedlist', 'indent',
+						'outdent', 'subscript', 'superscript', 'clearhtml',
+						'quickformat', 'selectall', '|', 'fullscreen', '/',
+						'formatblock', 'fontname', 'fontsize', '|',
+						'forecolor', 'hilitecolor', 'bold', 'italic',
+						'underline', 'strikethrough', 'lineheight',
+						'removeformat', '|', 'image','multiimage', 'table', 'hr',
+						'emoticons', 'baidumap', 'pagebreak', 'anchor', 'link',
+						'unlink', '|', 'about' ],
+				afterBlur : function() {
+					this.sync();
+				}
+			});
+		});
+	});
+
+	function imglimouseover(obj) {
+		if (!$(obj).find('.file-panel').html()) {
+			$(obj).find('.setdel').addClass('trconb');
+			$(obj).find('.setdel').css({
+				"display" : ""
+			});
+		}
+	}
+
+	function imglimouseout(obj) {
+
+		$(obj).find('.setdel').removeClass('trconb');
+		$(obj).find('.setdel').css({
+			"display" : "none"
+		});
+	}
+
+	function imglidel(obj) {
+		if (confirm('是否删除图片?')) {
+			$(obj).parent().remove("li");
+			return;
+		}
+	}
+
+	function imgmouseover(obj) {
+		$(obj).find('.wst-gallery-goods-del').show();
+	}
+	function imgmouseout(obj) {
+		$(obj).find('.wst-gallery-goods-del').hide();
+	}
+	function delImg(obj) {
+		$(obj).parent().remove();
+	}
+	
+	/*
+	*
+	*/
+	function add_attr()
+	{
+	    $("#hidden_attr .add_item_attr").clone().insertAfter($("#item_attr .add_item_attr:last"));
+	}
+	
+	
+</script>
+
+</body>
+</html>

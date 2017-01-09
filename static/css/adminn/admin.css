@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+
+.subnav{
+	padding-top: 20px;
+  	padding-left: 15px;
+  	}
+   	
+   	
+   	
+.listtable th, .listtable td {
+	text-align: center;
+} 
+
+.treeTable tr td .expander {
+  background-position: left center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  padding: 0;
+  zoom: 1;
+}
+
+.treeTable tr.collapsed td .expander {
+  background-image: url(bgimg/tv-expandable.gif);
+}
+
+.treeTable tr.expanded td .expander {
+  background-image: url(bgimg/tv-collapsable.gif);
+}
+
+
+.ilz-hidden {
+	display: none;
+}
+
+.help-block {
+  display: block;
+  margin-top: 5px; 
+  margin-bottom: 10px; 
+  color: #EB3131;
+}
+
+
+.table_form tbody th {
+  font-weight: normal;
+  text-align: right;
+  padding-right: 10px;
+  color: #777;
+}
+
+.operatehead {
+	background-color: #EFF3F8;padding-bottom: 12px;padding-top: 12px;margin: 0px;
+}
+.widget-body {
+    border: 1px solid #CCC;
+    border: 0;
+    background-color: #FFF;
+}
+.my-modal{
+			position: relative;
+    	    padding: 20px;
+    	    
+    	    height: 450px;
+   	    	overflow-y: auto;
+}
+
+.my-modal{
+			position: relative;
+    	    padding: 20px;
+    	    
+    	    height: 450px;
+   	    	overflow-y: auto;
+}
+
+div.errTips{
+	    position: absolute;
+    right: -215px;
+    width: 200px;
+    top: 0;
+    line-height: 33px;
+    color: red;
+}
+
+.logobg {
+	background-image: url(http://jx.i-lz.cn/static/images/admin/bg.jpg); background-size: cover; background-position: 50% 50%; background-repeat: no-repeat;
+	filter:alpha(opacity=50);
+	-moz-opacity:0.8;
+	-khtml-opacity: 0.8;
+	opacity: 0.8;
+}

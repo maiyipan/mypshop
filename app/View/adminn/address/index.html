@@ -1,0 +1,49 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+                <th width="50">默认</th>
+				 <th width="60"><span tdtype="order_by" data-field="name">联系人</span></th>
+                 <th align="100">所在地区</th>
+                 <th >详细地址</th>
+                 <th align="50">邮政编码</th>
+                 <th align="50">手机号码</th>
+                 <th align="50">电话号码	</th>
+                 <th align="80">公司名称</th>
+                 <th width="50">排序</th>
+                 <th width="80">{:L('operations_manage')}</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input onchange="chang(this);" name="isno" <if condition='$val.isno eq 1'>checked=""</if> type="radio" title="点击设为默认发货地址" class="J_checkitem" value="{$val.id}"></td>
+			<td >{$val.contacts}</td>
+	 		<td >{$val.Province}{$val.City}{$val.Area}</td>
+	  		<td ><span>{$val.address}</span></td>
+	  		<td ><span>{$val.postcode}</span></td>
+	  		<td ><span>{$val.mobile}</span></td>
+	  		<td ><span>{$val.phone}</span></td>
+            <td ><span>{$val.name}</span></td>
+            <td align="center"><span>{$val.ordid}</span></td>
+			<td align="center">
+			<a href="javascript:;" class="J_showdialog button button2" data-id="edit" data-uri="{:U('address/edit', array('id'=>$val['id']))}" 
+				data-title="{:L('edit')} - {$val.contacts}"  data-width="550" data-height="130">{:L('edit')}</a> | 
+			<a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('address/delete', array('id'=>$val['id']))}" 
+			data-msg="{:sprintf(L('confirm_delete_one'),$val['contacts'])}">{:L('delete')}</a>
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

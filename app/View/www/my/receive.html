@@ -1,0 +1,85 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<style>
+<!--
+#demo{
+            width:96%;                /*设置div宽度为500像素*/
+            height:150px;            /*设置div高度为200像素*/
+            background:rgb(232,151,3);;      /*设置div背景色为黑色*/
+            margin:0 auto;            /*设置div居中显示*/
+    position: relative;
+    border-radius: 15px;
+            }
+.cat{   width: 100px;right: 20px;font:20px/30px 'Microsoft Yahei';position: absolute;bottom: 20px;}
+.loadingmorebttn{width: 100%;
+    height: 50px;
+    font: 23px/75px 'Microsoft YaHei';
+    color: #8f8c79;
+    text-align: center;
+    display: block;}
+#bake{
+    width: 96%;
+    height: 150px;
+    background: rgb(220, 210, 191);
+    margin: 0 auto;
+    position: relative;
+    border-radius: 15px;
+}
+    
+-->
+</style>
+<div id="myCenterPage" style="min-height: 802px;">
+	<div class="backDiv">
+	    <i class="ic-back" onclick="gojump()"> </i>
+	     <span class="applySpan">优惠券领取</span>
+	</div>
+	
+	<div class="centerMainDiv" style="background-color: transparent">
+	    <div class="centerInfoDiv" style="background-color: transparent">
+	        <div class="sortMainDiv"  id="sortMainDiv" style="background-color: transparent;width: 100%;overflow: hidden;">
+	             <ul>
+	   			 </ul>
+	        </div>
+	    </div>        
+	</div>
+</div>
+
+<include file="public:footer"/>
+<script type="text/javascript">
+var set= 1;
+$(function(){
+	jump()
+});
+$(".loadingmorebttn").on("click",function(){
+	jump()
+});
+function jump(){
+	$.ajax({
+		type: 'get',
+		url:'{:U('my/receive',array('sid'=>$shopid))}',  //请求的url
+		dataType: 'json',
+		timeout: 15000,
+		data: {
+			set:set
+		},
+		success: function (data) {
+			if (data.status == 1) {
+				$("ul").append(data.data.html);
+				if(data.data.isfull == 0){
+					/* $(".loadingmorebttn").html("加载完了").off("click") */
+				}
+				set ++;
+				console.log(set);
+			} else {
+				alert('请求失败');
+			}
+		},
+		error: function (xhr, type) {
+			alert('网络超时，请刷新后再试！');
+		}
+	})
+}
+function gojump(){
+	window.location.href="{:U('my/coupon',array('sid'=>$shopid))}";
+}
+</script>

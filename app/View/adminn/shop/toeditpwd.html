@@ -1,0 +1,53 @@
+<include file="public:_header"/>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">修改密码</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" action="{:U('admin/edit')}">
+			<input type="hidden" name="id" value="{$userid}">
+	        <table class="shop-form" >
+	        	<tr>
+					<th>新密码 <font color='red'>*</font>:</th>
+					<td><input type="password" id="password" name="password" class="input-text" size="30">
+		            <label class="gray">&nbsp;&nbsp;不修改则留空</label>
+		            </td>
+				</tr>
+		        <tr>
+					<th>重复密码 <font color='red'>*</font>:</th>
+					<td><input type="password" id="repassword" name="repassword" class="input-text" size="30"></td>
+				</tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<script type="text/javascript">
+function pwd(){
+	if($.trim($("#password").val()) != $.trim($("#repassword").val())){
+		 SHOP.msg('两次输入密码不一致!', {icon: 5});
+		return false;
+	}
+	return true;
+}
+$(function(){
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return pwd();
+		},onError:function(msg){
+	}});
+	$("#password").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入新密码 "});
+	$("#repassword").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入重复密码 "});
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

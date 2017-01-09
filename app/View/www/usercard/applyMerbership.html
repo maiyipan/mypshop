@@ -1,0 +1,151 @@
+<include file="public:header"/>
+<div class="backDiv">
+    <i class="ic-back " onclick="goBack()"> </i>
+</div>
+<div class="applyDiv dis_none">
+    <p class="applyP">申请会员卡</p>
+</div>
+
+<div class="applyMenbership " >
+    <form  id="register" class="infoForm" action="{:U('usercard/usercard_register',array('sid'=>$shopid))}" method="post" >
+        <li>
+            <label class="space">姓名:</label>
+            <input placeholder="" type="text" name="name" class="name nomal">
+        </li>
+        <li>
+            <label class="space">手机:</label>
+            <input placeholder=""  type="tel" name="mobile" class="phone nomal">
+        </li>
+        <li>
+            <input class="code nomal" placeholder=""  type="text" name="verifi_code"  >
+            <p class="getCode haveClick" onclick="getVeri_code()">获取验证码</p>
+            <p class="getCode noneClick dis_none">获取验证码</p>
+        </li>
+        <li>
+            <label>密码:</label>
+            <input placeholder=""  type="text" name="password" class="password nomal">
+        </li>
+        <li>
+            <label>确认密码:</label>
+            <input placeholder=""  type="text" name="password_confirm" class="password_confirm nomal">
+        </li>
+        <li>
+            <label>证件号码:</label>
+            <input placeholder=""  type="text" name="credentials_num" class="credentials_num nomal">
+        </li>
+        <li>
+            <label>生日:</label>
+            <input placeholder="" type="text" name="time" value="1990-10-01" class="nomal" >
+        </li>
+        <li>
+            <label>地址:</label>
+            <input placeholder="" type="text" name="address" class="address nomal">
+        </li>
+        <li>
+            <label class="sex">性别:</label>
+            <div class="sexDiv">
+                <div class=" wom gg">
+                    <span>女</span>
+                    <i class="icon-circle"></i>
+                    <input class="checkInput" type="radio" name="sex" value="1" >
+                </div>
+                <div class=" man gg">男
+                    <i class="icon-circle"></i>
+                    <input class="checkInput" type="radio" name="sex" value="0">
+                </div>
+           </div>
+        </li>
+        <li>
+            <label>电子邮箱:</label>
+            <input placeholder="" type="text" name="email" class="email nomal">
+        </li>
+        <div class="btn submit">
+           <span class="activate" > <a href="javascript:submint()" name="cardbind" id="cardbind" >提交</a></span>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var wait=30;
+    function submint(){
+    	var name=$(".name").val();
+    	var phone=$(".phone").val();
+    	var code=$(".code").val();
+    	var password=$(".password").val();
+    	var password_confirm=$(".password_confirm").val();
+    	var credentials_num=$(".credentials_num").val();
+    	var address=$(".address").val();
+    	var email=$(".email").val();
+    	if(name==""||name==null){
+            alert("姓名不能为空");
+        }else if(phone==""||phone==null){
+            alert("手机号不能为空");
+        }else if(code==""||code==null){
+            alert("验证码不能为空");
+        }else if(password==""||password==null){
+            alert("密码不能为空");
+        }else if(password_confirm==""||password_confirm==null){
+            alert("确认密码不能为空");
+        }else if(credentials_num==""||credentials_num==null){
+            alert("证件码不能为空");
+        }else if(address==""||address==null){
+            alert("地址不能为空");
+        }else if(email==""||email==null){
+            alert("电子邮箱不能为空");
+        }else{
+        	document.getElementById('register').submit(); //register是上面表单的ID
+        }
+    	
+    } 
+    var o=$(".haveClick");
+    var n=$(".noneClick");
+    function time() {
+        if (wait == 0) {
+//            getVeri_code();
+            o.removeClass("dis_none");
+            n.addClass("dis_none");
+            o.text("获取验证码");
+            wait = 30;
+        } else {
+            o.addClass("dis_none");
+            n.removeClass("dis_none");
+            n.text("重新发送(" + wait + ")s");
+            wait--;
+//            console.log(wait);
+            setTimeout(function() {
+                time();
+            },1000)
+        }
+    }
+    function getVeri_code(){
+        var phone=$(".phone").val();
+        if(phone==""||phone==null){
+        	$(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text("手机号不能为空");
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else{       
+        $.ajax({
+            type: 'post',
+            url: "{:U('usercard/get_verification_code',array('sid'=>$shopid))}",
+            dataType: 'json',
+            timeout: 15000,
+            data:{
+                phone:phone,
+            },
+            success: function (data) {
+                if (data.data.result_code == 1) {
+                	 time();
+                     alert("验证码已发送至您的手机,请注意查收！");
+                } else {
+                    alert(data.data.result_msg);
+                }
+            },
+            error: function (xhr, type) {
+                alert('网络超时，请刷新后再试！');
+            }
+        });
+        }
+    }
+    </script>
+<include file="public:footer"/>

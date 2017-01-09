@@ -1,0 +1,146 @@
+<include file="public:_header"/>
+<style>
+	.border_table {margin: 10px 0;background: #fff;}
+	.border_table thead tr th {color: #333;white-space: nowrap;text-align: center;background: #f6f6f6;}
+	.ptable td{padding: 5px 10px 5px;}
+	.border_table .btn{margin-left:10px;}
+	#speed_goods td{background:#fff;}
+	.border_table tr th,.border_table tr td{border:1px solid #e1e1e1;vertical-align:middle;white-space:nowrap;word-break:keep-all}
+	.item{float:left;position: relative;width:132px;padding:0 20px 20px 0;}
+	.item p{background:#DBD8D8;text-align: center;height: 16px;line-height:16px;word-wrap: break-word;color: #726767;width:100px;overflow: hidden;}
+	.item .setdel{cursor: pointer; background: none repeat scroll 0 0 #3b72a5; top: 0; color: #FFF; height: 18px; line-height: 18px; padding: 0 5px; position: absolute; right: 33px;}
+	table{border-collapse: collapse; border-spacing: 0;}
+	td{border-bottom:none;}
+	.inputText{background-color: #fff; border: 1px solid #ccc; border-radius: 2px; box-shadow: 2px 2px 2px #f0f0f0 inset; font-family: inherit; font-size: 100%; margin: 8px; padding: 5px; vertical-align: middle;}
+</style>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">添加商品集合</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+			  <input type="hidden" name="id" class="input-text" size="30" value="{$info.id}">
+	        <table class="shop-form" >
+	           <tr>
+	             <th width='120'>名称<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="name" class="input-text" size="30" value="{$info.name}">
+	             </td>
+	           </tr>
+	          <!--  <tr>
+					<th width='120'>是否开启<font color='red'>*</font>：</th>
+					<td>
+						<label class='attr'><input type='radio' name='status' value='0' />是</label>
+						<label class='attr'><input type='radio' name='status' value='1' checked=checked />否</label>
+					</td>
+				</tr> -->
+				<tr>
+					<th width='120'>商品列表：</th>
+					<td>
+						<div id="item">
+							<div style="padding:10px 0;">
+								<button type="button" id="searchGoods" data-id="edit" data-uri="{:U('item/search_dialog')}" 
+									data-title="选择商品" data-width="600" data-height="400" class="btn">
+								<span>选择商品</span>
+								</button>
+							</div>
+							<ul >
+								 <volist name="items" id="val">      
+								 <li class="item" id="item{$val.item_id}">  
+								 	<input type="hidden" name="itemid[]" value="{$val.item_id}"/>
+								 	<img id="imgPreview" src="{:attach($val['img'])}" height="100" width="100"/><br/>
+								 	<p>{$val.title}</p><p>(￥{$val.price})</p>
+								 	<span class="setdel" onclick="imglidel(this,{$info.id},{$val.item_id})">删除</span>
+								 </li>	
+								 </volist>
+							</ul>
+						</div>    
+					</td>
+				</tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+function add_file(){
+    $("#next_upload_file .uplode_file").clone().insertAfter($("#first_upload_file .uplode_file:last"));
+}
+function relationCallBack(goodsList){
+	if(goodsList){
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList,function(){
+			var value = $(this).attr('price');
+			if($('#item ul input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			html += '<li class="item" id="item1">';
+			html += '<input type="hidden" name="itemid[]" value="'+$(this).attr('id')+'"/>';
+			html += '<img id="imgPreview" src="'+$(this).attr('img')+'" height="100" width="100"/><br/>';
+			html += '<p>'+$(this).attr('title')+'</p><p>(￥'+$(this).attr('price')+')</p>';
+			html += '<span class="setdel" onclick="imglidel(this)">删除</span>';
+			html += '</li>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#item ul').append(html);
+	}
+}
+function imglidel(elem,id,itemid){
+	$(elem).parents('li').remove();
+}
+$(function(){
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

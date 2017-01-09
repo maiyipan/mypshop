@@ -1,0 +1,43 @@
+<div class="dialog_content">
+<form action="{:u('message/user')}" method="post" name="myform" id="info_form" style="margin-top:10px;">
+<div class="common-form">
+      <table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+        <tr>
+          <th width="80">管理员 :</th>
+          <td>{$_SESSION['admin']['username']}</td>
+        </tr>	
+        <tr>
+          <th>接收人 :</th>
+          <td>
+          	<input type="hidden" name="to_id" value="{$user.id}"/>
+          	<input type="hidden" name="to_name" value="{$user.username}"/>
+          	{$user.username}
+          </td>
+        </tr>
+        <tr id="custom">
+          <th>消息内容 :</th>
+          <td><textarea name="info" style="width:350px;height:80px;"></textarea></td>
+        </tr>                     
+      </table>
+</div>
+</form>
+</div>
+<script>
+$(function(){
+     
+	$.formValidator.initConfig({formid:"info_form",autotip:true});
+	$('#info_form').ajaxForm({success:complate,dataType:'json'});
+	function complate(result){
+		$("#progressImgage").hide(); 
+		$("#maskOfProgressImage").hide();
+		if(result.status == 1){
+			$('.progressloading').remove();
+			$.dialog.get(result.dialog).close();
+			$.pinphp.tip({content:result.msg});
+			window.location.reload();
+		} else {
+			$.pinphp.tip({content:result.msg, icon:'alert'});
+		}
+	}
+});
+</script>

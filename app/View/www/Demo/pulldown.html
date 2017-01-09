@@ -1,0 +1,58 @@
+<include file="public:header"/>
+<title>优惠券领取</title>
+<div id="myCenterPage">
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <!--<p class="edit">编辑</p>-->
+</div>
+<div class="activateMenbership">
+<body>
+	<!-- <form name='demo' id="demo" action="{:U('Demo/pulldown')}" method='post'>
+				<input type="hidden" name='id' value="{$list.id}">
+				<input type="hidden" name='coupons' value="{$list.coupons}">
+				<input type="hidden" name='begintime' value="{$list.begintime}">
+				<input type="hidden" name='expiretime' value="{$list.expiretime}">
+				<input type="hidden" name='share' value="{$list.share}">
+				
+				<input type="text" name='list' value="{$list}">
+				<input type="text" name="phone" />
+			提交<input type="submit" value="Submit"/>
+	</form> -->
+	<form  id='Bind' class="infoForm" action="{:U('Demo/pulldown')}" method='post'>
+		<input type="hidden" name='id' value="{$list.id}">
+		<input type="hidden" name='coupons' value="{$list.coupons}">
+		<input type="hidden" name='begintime' value="{$list.begintime}">
+		<input type="hidden" name='expiretime' value="{$list.expiretime}">
+		<input type="hidden" name='share' value="{$list.share}">
+	
+        <li>
+            <label class="space">手机号:</label>
+            <input placeholder="" type="text" class="phoneInput" name="phone">
+
+        </li>
+        <div class="btn submit">       	
+          <!--  <p class="activate"> <input class="enter bindbtn" value="激活" type="submit"></p> --> 
+            <p class="activate" > <a href="javascript:submint()" name="cardbind" id="cardbind" >立即领取</a></p>
+        </div>
+        
+    </form> 
+</body>
+</div>
+<script type="text/javascript">
+function submint(){
+	var phone=$(".phoneInput").val();
+	if(phone==""||phone==null){
+        $(".noneBtnAlertSpan").show()
+        $(".noneBtnAlertSpan").text("手机号不能为空");
+        setTimeout(function(){
+            $(".noneBtnAlertSpan").hide()
+        },1000)
+    }
+	else{
+		document.getElementById('Bind').submit(); //Bind是上面表单的ID
+	}	
+}
+</script>
+<include file="public:nav"/>
+<include file="public:footer"/>
+</html>

@@ -1,0 +1,23 @@
+<!-- 编辑 -->
+<div class="dialog_content">
+<form id="info_form" action="{:u('templ/edit')}" method="post">
+<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+    <input type="hidden" name="id" value="{$list.id}">
+    <tr>
+      <th width="80">模板类型 :</th>
+      <td>
+      <select name="key" id="board_id">
+            <option value="1">订单完成模板</option>
+           <!--  <option value="2">退款完成模板</option> -->
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th>模板ID号:</th>
+      <td><input type="text" name="templateid" class="input-text" size="40" value="{$list.val}"></td>
+    </tr>
+    
+</table>
+</form>
+</div>
+<script src="__STATIC__/js/fileuploader.js"></script>

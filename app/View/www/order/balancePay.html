@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <include file="public:adapter"/>
+    <include file="public:headtop"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>请输入会员卡密码</title>
+    <script type="text/javascript" src="__STATIC__/weixin/js/index.js"></script>
+    <script type="text/javascript" src="__STATIC__/weixin/js/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/weixin/js/ecmall.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/weixin/js/touchslider.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        //<!CDATA[
+        var SITE_URL = "http://store.weiapps.cn";
+        var REAL_SITE_URL = "http://store.weiapps.cn";
+        var PRICE_FORMAT = '¥%s';
+
+        $(function () {
+            var span = $("#child_nav");
+            span.hover(function () {
+                $("#float_layer:not(:animated)").show();
+            }, function () {
+                $("#float_layer").hide();
+            });
+        });
+        //]]>
+    </script>
+    <script charset="utf-8" type="text/javascript" src="__STATIC__/weixin/js/jquery_002.js"></script>
+<style type="text/css">
+.progress{z-index: 2000} 
+.mask{position: fixed;top: 0;right: 0;bottom: 0;left: 0; z-index: 1000; background-color: #2F2F2F} 
+</style>
+
+
+</head>
+
+<body>
+
+<div class="backDiv" id="content" style="background:#f4f9f0;">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <div class="orderDivbg">订单信息</div>
+    <div class="activateMenbership">
+    <form name="" id="vippwd_form" method="post" action="{:U('order/balanceCommit',array('sid'=>$shopid))}">
+        <input name="dingdanhao" id="dingdanhao" type='hidden' value = "{$dingdanhao}">
+        <input name="sumPrice" id="sumPrice"  type='hidden' value = "{$sumPrice}">
+        <input name="adjustment" id="adjustment"  type='hidden' value = "{$adjustment}">
+        <input name="sumPrice" id="sumPrice" type='hidden' value = "{$sumPrice}">
+        <input name="actual" id="actual"  type='hidden' value = "{$actual}">
+        <input name="total_adjustment" id="total_adjustment"  type='hidden' value = "{$total_adjustment}">
+        <p>订单号：{$dingdanhao}</p>
+        <p>订单金额：<span>￥{$sumPrice}</span></p>
+        <p>会员折扣：<span>{$adjustment}</span></p>
+        <!--  <p>折扣金额：<span>{$total_adjustment}</span></p> -->
+         <p>实付金额：<span>￥{$actual}</span></p>
+        <div class="pwds">
+           <!--  <input type="tel" name = "p1" onkeyup="nextPwd(this)" id="pwd1" autofocus>
+            <input type="tel" name = "p2" onkeyup="nextPwd(this)" id="pwd2">
+            <input type="tel" name = "p3" onkeyup="nextPwd(this)" id="pwd3">
+            <input type="tel" name = "p4" onkeyup="nextPwd(this)" id="pwd4">
+            <input type="tel" name = "p5" onkeyup="nextPwd(this)" id="pwd5">
+            <input type="tel" name = "p6" onkeyup="lastPwd(this)" id="pwd6"> -->
+           会员卡密码：<input placeholder=""  type="password" name="password" class="password">
+         </div>
+         <div class="btn submit">
+			<div class="activate"
+						style="margin: 40px auto; font: 28px/80px 'Microsoft YaHei'; 
+						border: none; border-radius: 5px; width: 277px; height: 80px;
+						 background-color: #ff7e20; display: block; text-align: center;">
+						<a style="color: white;" href="javascript:submint()"
+							name="cardbind" id="cardbind">确认支付 </a>
+			</div>
+		 </div>
+    </form>
+    </div>
+</div>
+
+   <!--  <div class="forgot-popup" id="forgot-popup">
+        <div class="forgotPwdDiv">
+            <div class="closebtn"><div class="btn-close" onclick="popup(0)"><span></span></div></div>
+            <div class="descri">密码重置请拨打：<br>400 9301 888</div>
+            <div class="telImg"><a href="tel:400-9301-888"><img src="__STATIC__/weixin/images/tel_img.png" ></a></div>
+        </div>
+    </div> -->
+    
+ <img id="progressImgage" class="progress" style="display:none" alt="" src="__STATIC__/home/images/ajax-loader.gif"/> 
+<div id="maskOfProgressImage" class="mask" style="display:none"></div> 
+<script type="text/javascript">
+function submint(){
+	
+	var dingdanhao=$("#dingdanhao").val();
+	var sumPrice=$("#sumPrice").val();
+	var adjustment=$("#adjustment").val();
+	var sumPrice=$("#sumPrice").val();
+	var actual=$("#actual").val();
+	var total_adjustment=$("#total_adjustment").val();
+	var password=$(".password").val();
+	var passlength = password.length;
+	
+	var img = $("#progressImgage"); 
+	var mask = $("#maskOfProgressImage");
+	
+	if (passlength < 6) {
+		/* $(".noneBtnAlertSpan").show()
+        $(".noneBtnAlertSpan").text("手机号不能为空");
+        setTimeout(function(){
+            $(".noneBtnAlertSpan").hide()
+        },1000) */
+        alert("会员卡密码最小为6位");
+	} else {
+		$.ajax({
+			type: 'post',
+			url:'{:U('order/balanceCommit')}',  //请求的url
+			dataType: 'json',
+			timeout: 40000,
+			data: {
+				dingdanhao: dingdanhao,
+				sumPrice: sumPrice,
+				adjustment:adjustment,
+				sumPrice:sumPrice,
+				actual:actual,
+				total_adjustment:total_adjustment,
+				password:password
+			},beforeSend:function(xhr){ 
+				img.show().css({ 
+				"position": "fixed", 
+				"top": "40%", 
+				"left": "45%", 
+				"margin-top": function () { return -1 * img.height() / 2; }, 
+				"margin-left": function () { return -1 * img.width() / 2; } 
+				}); 
+				mask.show().css("opacity", "0.1"); 
+				}, 
+			success: function (data) {
+				if (data.status == 1) {
+					/* $(".noneBtnAlertSpan").show()
+					$(".noneBtnAlertSpan").text('支付成功');
+					setTimeout(function(){
+						$(".noneBtnAlertSpan").hide()
+					},1000) */
+					alert(data.msg);
+					window.location.href="{:U('my/index',array('sid'=>$shopid))}"  //成功之后跳转的链接
+				} else if (data.status = 2) { // 密码错误 
+					alert(data.msg);
+				} else {
+					alert(data.msg);
+					window.location.href="{:U('my/index',array('sid'=>$shopid))}"  
+				}
+			},
+			error: function (xhr, type) {
+				alert('系统暂未响应，请在个人中心查看订单情况，有疑问请联系客服');
+				window.location.href="{:U('my/index',array('sid'=>$shopid))}"  
+			},
+			complete:function(xhr){ 
+				img.hide(); 
+				mask.hide();  
+			} 
+		})
+	}
+}
+    /* function nextPwd(obj){
+        if(obj.value.length>0) {
+            if(obj.value.length>1){obj.value=obj.value.toString().substr(0,1);}
+            obj.blur();
+            if(obj.nextElementSibling)
+                obj.nextElementSibling.focus();
+        }
+    }
+    function lastPwd(obj){
+        if(obj.value.length>0) {
+            if(obj.value.length>1){obj.value=obj.value.toString().substr(0,1);}
+            obj.blur();
+            document.getElementById("vippwd_form").submit();
+        }
+    }
+    function popup(fl){
+        var pp = document.getElementById('forgot-popup');
+        if(fl) {
+            pp.style.display = "block";
+            setTimeout(function(){
+            pp.style.opacity = "1";},10);
+        } else {
+            pp.style.opacity = "0";
+            setTimeout(function(){
+                pp.style.display = "none";},200);
+        }
+    } */
+</script>
+
+<include file="public:footer"/>
+</body>
+</html>

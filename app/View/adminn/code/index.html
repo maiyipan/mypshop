@@ -1,0 +1,47 @@
+<include file="public:_header"/>
+<div class="pad_10" >
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="25"><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                <th width="40">ID</th>
+			   <th width="80">二维码类型</th>
+			   <th width="100">创建时间</th>
+			   <th widh = "100">二维码</th>
+			   <th width="100">备注</th>
+			   
+               <th align="center" width="250">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+    	<tbody>
+           <volist name='list' id='vo'>
+				<tr>
+					<td align="center" width="25"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+					<td align="center" width="40">{$vo.id}</td>
+					<td align="center" width="80">{$vo.type}</td>
+					<td align="center" width="100">{$vo.time}</td>
+					<td align="center" width="100"><img src="{:attach($vo['image'])}.jpg" width="50" height="50"/>														</td>
+					<td align="" width="100">{$vo.remark}</td>
+					<td align="" width="250">								
+					<a href="javascript:;" class="J_showdialog btn btn-link" data-id="edit" data-uri="{:U('code/pre', array('image'=>$vo['image']))}" 
+							data-title="预览 - {$vo.title}"  data-width="400" data-height="130">预览</a> 	
+					<a href="javascript:void(0);" class="J_confirmurl btn btn-link" data-acttype="ajax" data-uri="{:u('code/delete', array('id'=>$vo['id']))}" 
+						data-msg="{:sprintf(L('confirm_delete_one'),$vo['name'])}"><i class="icon-edit align-top bigger-110"></i>{:L('delete')}</a>
+					</td>
+				</tr>			
+	      </volist>
+    	</tbody>
+    </table>
+    <div class="btn_wrap_fixed">
+        <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('admin_role/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script type="text/javascript" src="__STATIC__/js/calendar/calendar.js"></script>

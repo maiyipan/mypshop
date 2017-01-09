@@ -1,0 +1,70 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">企业团购</span>
+    <!--<p class="storeCompanyInfo">保存</p>-->
+</div>
+<div class="infoDiv">
+
+
+
+<!-- 
+<form name="form1" method="post" action="{:U('market/enterpriceInfo')}" >
+<input type="text" name="tel" value="13916752109" size="15" />
+<input type="button" value="测 试" onclick="return chkForm()"/>
+</form>  -->
+
+    <form name="form1"  id="form1" class="infoForm"  method="post" action="{:U('market/enterpriceInfo',array('sid'=>$shopid))}" >
+        <li>
+            <label class="space"><i class="ic-private"></i>姓名</label>
+            <input name="username" placeholder="请输入真实的姓名" type="text" class="companyNameInput">
+        </li>
+        <li>
+            <label class="space"><i class="ic-mobilephone"></i>电话</label>
+            <input name="tel" placeholder="请输入手机号码"  type="tel" class="companyTelInput">
+        </li>
+        <li>
+            <label><i class="ic-favor"></i>公司名称</label>
+            <input name="companyName" placeholder="请输入公司名称"  type="text" class="companyInput">
+        </li>
+        <li>
+            <label><i class="ic-map"></i>详细地址</label>
+            <input name="companyNameAddress" placeholder="请输入公司详细地址" type="text" class="companyDetailInput">
+        </li>
+
+        <div class="btn">
+        <!--    <a href="javascript:submint()" name="cardbind" id="cardbind" >提交</a> -->
+		<input type="btn" class="btn1 enter" value="提交" onclick="javascript:handle();" style="background: #f29200;margin: 100px auto;display: block; text-align: center;color: white;">
+                
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+function handle() {
+
+	  var tel=$(".companyTelInput").val().match(/^\s*(\S+(\s+\S+)*)\s*$/);
+	  var telVal = (tel == null)?"":tel[1].trim();;
+	  
+	  var isMobile =/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	  var isTel = /^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;
+	 // alert("您的电话/手机号码是:" + isTel(telVal));
+	  if(isMobile.test(telVal)||isTel.test(telVal) ){
+	//  alert("您的电话/手机号码是:" + telVal);
+	 	  document.getElementById('form1').submit();
+		  return true;
+		
+	  }else{
+	  alert("请输入正确的手机号码或电话号码\n\n例如:13916752109或0712-3614072");
+		  return false;
+	  }
+	
+}
+</script>
+
+<include file="public:footer"/>
+
+

@@ -1,0 +1,472 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<section class="storeListSection ">
+    <div class="seachDiv">
+        <div class="spanstyle">
+            <span class="pagetitle">门店列表</span>
+            </div>
+        <input class="searchInput" placeholder="请输入门店关键字">
+        <i class="ic-search" style=" margin-left: -51px;color: #8C8A8A; font-size: 35px"></i>
+    </div>
+    <div class="toAddressSelect suggestionDiv dis_none nomalAni">
+        <p class="suggestion"><span>以下是搜索结果，</span><sapn style="color: #70ad47">点击这里可以按地区查看门店</sapn></p>
+    </div>
+    <div class="addressChoiceB cf dis_none nomalAni" >
+        <div style="        font: 24px/40px '';background: white;padding: 20px;border: 1px solid #cccccc;margin: 0px 0 20px 0;" class="cf">
+            <p>您还可以通过选择地区查看门店</p>
+            <div class="provience addressStyle">
+                <select class="addressSelect provienceInput" id="loc_province">
+                    <option selected = ""></option>
+                </select>省
+            </div>
+            <div class="city addressStyle">
+                <select class="addressSelect cityInput" id="loc_city">
+                    <option selected = ""></option>
+                </select>市
+            </div>
+            <div class="town addressStyle">
+                <select class="addressSelect townInput" id="loc_town">
+                    <option selected = ""></option>
+                </select>区
+            </div>
+            <!--<input placeholder="关键字搜索" class="addressSelect keyword"/>-->
+            <!--<span class="searchAddressBtn">搜索</span>-->
+        </div>
+    </div>
+    <div class="cf addressDiv nomalAni" style="padding-left:17px;padding-right: 17px;">
+        <p class="title dfttitle">您设置的默认门店为：</p>
+    <div class="storeList cf nomalAni ">
+        <div class="nonedft suggestionDiv  nomalAni dis_none" style="padding: 0">
+            <p class="suggestion">您还没有设置默认门店哦</p>
+        </div>
+        <div class="defaultStore">
+
+            <!--<div class="storeCommon">-->
+                <!--<div class="topPart cf">-->
+                    <!--<img src="" class="storeImg fl">-->
+                    <!--<div class="topRight fl">-->
+                       <!--<p>-->
+                           <!--<span>粤垦路旗舰店</span>-->
+                            <!--<span class="distanceNum">0.49km</span>-->
+                           <!--<img src="__STATIC__/home/images/location.png" class="locationImg ">-->
+                       <!--</p>-->
+                        <!--<p class="title">广州市体和去粤垦路桥园大街16号</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="bottom">-->
+                    <!--<div class="bottomLeft bottomfont fl">-->
+                        <!--<img src="__STATIC__/home/images/setdft.png" class="imgwidth">-->
+                        <!--<span class="title">设为默认门店</span>-->
+                    <!--</div>-->
+                    <!--<div class="bottomRight bottomfont">-->
+                        <!--<img src="__STATIC__/home/images/gotostore.png" class="imgwidth">-->
+                        <!--<span class="title">进入门店购物</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="recommendStore" >
+            <p class="title recommendtitle">根据您的定位，为您推荐以下门店:</p>
+            <div id="recommendStore" style="overflow: hidden">
+                <ul>
+                    <!--<li class="storeCommon li_mar_btm">-->
+                        <!--<div class="topPart cf">-->
+                            <!--<img src="" class="storeImg fl">-->
+                            <!--<div class="topRight fl">-->
+                                <!--<p>-->
+                                    <!--<span>粤垦路旗舰店</span>-->
+                                    <!--<span class="distanceNum">0.49km</span>-->
+                                    <!--<img src="__STATIC__/home/images/location.png" class="locationImg ">-->
+                                <!--</p>-->
+                                <!--<p class="title">广州市体和去粤垦路桥园大街16号</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="bottom">-->
+                            <!--<div class="bottomLeft bottomfont fl">-->
+                                <!--<img src="__STATIC__/home/images/setdft.png" class="imgwidth">-->
+                                <!--<span class="title">设为默认门店</span>-->
+                            <!--</div>-->
+                            <!--<div class="bottomRight bottomfont">-->
+                                <!--<img src="__STATIC__/home/images/gotostore.png" class="imgwidth">-->
+                                <!--<span class="title">进入门店购物</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li class="storeCommon">-->
+                        <!--<div class="topPart cf">-->
+                            <!--<img src="" class="storeImg fl">-->
+                            <!--<div class="topRight fl">-->
+                                <!--<p>-->
+                                    <!--<span>粤垦路旗舰店</span>-->
+                                    <!--<span class="distanceNum">0.49km</span>-->
+                                    <!--<img src="__STATIC__/home/images/location.png" class="locationImg ">-->
+                                <!--</p>-->
+                                <!--<p class="title">广州市体和去粤垦路桥园大街16号</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="bottom">-->
+                            <!--<div class="bottomLeft bottomfont fl">-->
+                                <!--<img src="__STATIC__/home/images/setdft.png" class="imgwidth">-->
+                                <!--<span class="title">设为默认门店</span>-->
+                            <!--</div>-->
+                            <!--<div class="bottomRight bottomfont">-->
+                                <!--<img src="__STATIC__/home/images/gotostore.png" class="imgwidth">-->
+                                <!--<span class="title">进入门店购物</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
+    <div class="changeKeyword suggestionDiv dis_none nomalAni" >
+        <p class="suggestion">后面没有了，没有搜索到？换个姿势试试！！</p>
+    </div>
+
+
+</section>
+ <section class="loadingSection dis_none">
+        <div class="loadDiv ">
+            <img src="__STATIC__/home/images/loading.png">
+            <p>定位中.....</p>
+        </div>
+    </section>
+<include file="public:index"/>
+<!--<include file="public:cart_foot"/>-->
+<!--<include file="public:footer"/>-->
+
+<!--<include file="public:weixinnew"/>-->
+<!--<include file="public:weixinPublicShare"/>-->
+<script type="text/javascript" src="__STATIC__/home/js/area.js"></script>
+<script type="text/javascript" src="__STATIC__/home/js/address.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+function stopScrolling( e ) {
+    e.preventDefault();
+}
+if (sessionStorage.getItem("isgetloca") != 0 ) {
+	$(".loadingSection").show();
+    document.addEventListener( 'touchmove' , stopScrolling , false );
+}
+
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appid}', // 必填，公众号的唯一标识
+    timestamp: '{$signPackage["timestamp"]}', // 必填，生成签名的时间戳
+    nonceStr: '{$signPackage["nonceStr"]}', // 必填，生成签名的随机串
+    signature: '{$signPackage["signature"]}',// 必填，签名，见附录1
+    jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onVoiceRecordEnd',
+                'playVoice',
+                'onVoicePlayEnd',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+/*
+ * 注意：
+ * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+ * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+ * 3. 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+ *
+ * 如有问题请通过以下渠道反馈：
+ * 邮箱地址：weixin-open@qq.com
+ * 邮件主题：【微信JS-SDK反馈】具体问题
+ * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+ */
+wx.ready(function() {
+//	console.log('exect');
+	wx.checkJsApi({
+		jsApiList : [ 'getNetworkType', 'previewImage', 'scanQRCode','scanQRCode' ,'onMenuShareAppMessage','onMenuShareTimeline'],
+		success : function(res) {
+			//alert(JSON.stringify(res));
+		}
+	});
+	function stopScrolling( e ) {
+		e.preventDefault();
+	}
+		wx.getLocation({
+		    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+		    success: function (res) {
+		        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+		        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+		        var speed = res.speed; // 速度，以米/每秒计
+		        var accuracy = res.accuracy; // 位置精度
+	        	$.ajax({
+	                type: 'get',
+	                url:"{:U('index/getloction')}",
+	                dataType: 'json',
+	                timeout: 15000,
+	                data: {
+	                	latitude:latitude,
+	                	longitude:longitude
+	                },
+	                success: function (data) {
+	                    if (data.status == 1) {
+							$(".addressChoiceB p.labelP").text(data.name)
+							$(".addressChoiceB p.labelP").attr('data-id',data.url);
+							$(".addressChoiceB p.labelP").css('background-image',data.smallIcon);
+							$(".addressChoiceB p.labelP").css('background-repeat','no-repeat');
+							//addressloading(1,'','',0)
+	                    } else {
+	                        alert(data.msg);
+	                    }
+	                },
+					beforeSend:function(data){
+						console.log('get local...')
+					},
+	                error: function (xhr, type) {
+	                    //alert('网络超时，请刷新后再试！'+type);
+	                },
+					complete:function(data){
+						//alert("正在加载完成"+data.status)
+					}
+	            })
+		    }, fail: function(){
+		    	/* var latitude = 23.1596680000; // 纬度，浮点数，范围为90 ~ -90
+		        var longitude = 113.3362440000; // 经度，浮点数，范围为180 ~ -180。
+		        var speed = 0; // 速度，以米/每秒计
+		        var accuracy = 0; // 位置精度
+	        	$.ajax({
+	                type: 'get',
+	                url:"{:U('index/getloction')}",
+	                dataType: 'json',
+	                timeout: 15000,
+	                data: {
+	                	latitude:latitude,
+	                	longitude:longitude
+	                },
+	                success: function (data) {
+	                    if (data.status == 1) {
+							$(".addressChoiceB p.labelP").text(data.name)
+							$(".addressChoiceB p.labelP").attr('data-id',data.url);
+							$(".addressChoiceB p.labelP").css('background-image',data.smallIcon);
+							$(".addressChoiceB p.labelP").css('background-repeat','no-repeat');
+							addressloading(1,'','',0)
+	                    } else {
+	                        alert(data.msg);
+	                    }
+	                },
+					beforeSend:function(data){
+						console.log('get local...')
+					},
+	                error: function (xhr, type) {
+	                    //alert('网络超时，请刷新后再试！'+type);
+	                },
+					complete:function(data){
+						//alert("正在加载完成"+data.status)
+					}
+	            })  */
+		    	
+		    }, complete: function(){
+		    	sessionStorage.isgetloca= 0;
+		    	$(".loadingSection").hide();
+				document.removeEventListener( 'touchmove' , stopScrolling  );
+				addressloading(1,'','',0)
+		    }
+		});
+
+});
+wx.error(function(res) {
+
+	//alert(res.errMsg);
+});
+    var pro=$(".provienceInput option").attr('selected');
+    var city=$(".cityInput option").attr('selected');
+    var town=$(".townInput option").attr('selected');
+    console.log(pro,city,town)
+    $(document).ready(function() {
+        showLocation(pro,city,town);
+
+    });
+    $('.f-slogan').addClass('dis_none')
+    $('.f_copyright').addClass('dis_none')
+    $('.searchInput').on('focus',function() {
+        canback=1
+        $('.addressDiv').addClass('dis_none')
+        $('.addressChoiceB').removeClass('dis_none')
+        $('.spanstyle').html('').prepend('  <img src="__STATIC__/home/images/storeBack.png" style="    width: 35px;    padding-top: 22px;"  ></div>')
+        $('.spanstyle').css({'width': '80px'},{ 'height': '60px'})
+        $('span.pagetitle').addClass('dis_none')
+        $('.searchInput').css('width','75%')
+        $('.changeKeyword').addClass('dis_none')
+
+    })
+    $('.spanstyle').on('click',function(){
+        if(canback==1){
+           $('.addressChoiceB').addClass('dis_none')
+            $('.addressDiv').removeClass('dis_none')
+            $('.spanstyle').html('').prepend('   <span class="pagetitle">门店列表</span>')
+            $('.spanstyle').css({'width': '150px'},{ 'height': '60px'})
+//            $('span.pagetitle').hide();
+            $('.searchInput').css('width','65%')
+            $('.changeKeyword').addClass('dis_none')
+            $('.toAddressSelect').addClass('dis_none')
+            $('.dfttitle').removeClass('dis_none')
+            $('.recommendtitle').removeClass('dis_none');
+            $('.defaultStore').removeClass('dis_none')
+            searchname=0;
+            var name =''
+            $('.seachDiv .searchInput').val(name);
+            addressloading(1,'','',0)
+        }else{
+        }
+    })
+   
+    recommendStore = new IScroll("#recommendStore", {
+        bounce: false,
+        useTransform: true,
+        tap: true,
+        zoom: true,
+        probeType: 2
+    });
+
+    recommendStore.on("scrollEnd", function () {
+        if (address_totalPage!= 0) {
+            //判定是否划到底
+            if (this.y == this.maxScrollY) {
+                addressPageNum++;
+                search=0;
+                //关键字搜索
+                if(searchname==1){
+                    var name=$('.seachDiv .searchInput').val();
+                    addressloading(1,null,name,1)
+                }else if(searchname==2){
+                	
+                	  var city_names,name,provience,city,town;
+                      provience=$(".provienceInput option:checked").text();
+                      city=$(".cityInput option:checked").text();
+                      town=$(".townInput option:checked").text();
+                      city_names=provience+' '+city+ ' '+town;
+                    addressloading(1,city_names,null,1)
+                }else{
+                    addressloading(addressPageNum,null,null,0)
+                }
+            }
+        }
+    })
+    $('#loc_town').on('change',function(){
+        searchname=2
+        search=1;
+        var city_names,name,provience,city,town;
+        provience=$(".provienceInput option:checked").text();
+        city=$(".cityInput option:checked").text();
+        town=$(".townInput option:checked").text();
+        city_names=provience+' '+city+ ' '+town;
+        name=$('.seachDiv .searchInput').val();
+        $('.defaultStore').addClass('dis_none')
+        $('.nonedft').addClass('dis_none')
+        if(city_names==''&&name==''){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('地址不完整哦');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else if(provience==''||city==''||town==''&&name==''){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('地址不完整哦');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else{
+            addressloading(1,city_names,null,search)
+        }    })
+    $('.seachDiv i').on('click',function(){
+        $('.addressChoiceB').addClass('dis_none')
+        $('.dfttitle').addClass('dis_none')
+        $('.recommendtitle').addClass('dis_none')
+        searchname=1;
+        var city_names,name,provience,city,town;
+        provience=$(".provienceInput option:checked").text();
+        city=$(".cityInput option:checked").text();
+        town=$(".townInput option:checked").text();
+        city_names=provience+' '+city+ ' '+town;
+        name=$('.seachDiv .searchInput').val();
+        $('.defaultStore').addClass('dis_none')
+        $('.nonedft').addClass('dis_none')
+        if(name==''){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('请输入关键字');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else{
+            addressloading(1,null,name,search)
+        }    })
+    $('.toAddressSelect').on('click',function(){
+        $('.addressChoiceB').removeClass('dis_none');
+        $(this).addClass('dis_none')
+    })
+
+    $('body').on('click','.bottomLeft',function(){
+        var uid=$(this).parents('.storeCommon').attr('data-id');
+       var isdft=$(this).parents('.storeCommon').attr('data-isdft');
+
+        var btn=$(this)
+        if(isdft==1){
+            var dft=0
+            var text="取消设置成功，您可以在门店列表选择其他门店设为默认门店"
+        }else{
+            var dft=1
+            var text="设置成功，再次进入时将默认跳转到此门店，即将跳转到默认门店"
+        }
+        showEnsure({
+            text:text,
+            btn:'<div class="yse" id="sendBtn">确认</div><div class="no">取消</div>',
+            fun:function(){
+                $(".yes").off();
+                $("#sendBtn").on("click",function(){
+                    setDefault(uid,btn,dft)
+                })
+                $(".no").on('click',function(){
+                    close($("#alertEnsure"))
+                })
+            }
+        });
+
+    })
+    $('body').on('tap','.topPart',function(){
+        var url=$(this).parents('.storeCommon').attr('data-url');
+        window.location.href=url;
+    })
+    $('body').on('tap','.bottomRight',function(){
+        gotodft($(this))
+    })
+
+</script>

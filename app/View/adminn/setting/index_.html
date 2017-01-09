@@ -1,0 +1,121 @@
+<include file="public:header"/>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+	
+		<div class="widget-header">
+			<div class="widget-toolbar no-border">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">站点设置</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">
+						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('setting/edit')}" method="post">
+							<div class="tabbable">
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<table cellpadding="2" cellspacing="2" width="100%" border="0">
+											<tbody>
+												<tr>
+										            <th width="150">{:L('site_name')} :</th>
+										            <td><input type="text" name="setting[site_name]" class="input-text" size="50" value="{:C('pin_site_name')}"></td>
+										        </tr>
+										        <tr>
+										            <th>{:L('seo_title')} :</th>
+										            <td><input type="text" name="setting[site_title]" class="input-text" size="50" value="{:C('pin_site_title')}"></td>
+										        </tr>
+										        <tr>
+										            <th>{:L('seo_keys')} :</th>
+										            <td><input type="text" name="setting[site_keyword]" class="input-text" size="50" value="{:C('pin_site_keyword')}"></td>
+										        </tr>
+										        <tr>
+										            <th>{:L('seo_desc')} :</th>
+										            <td><textarea rows="3" cols="50" name="setting[site_description]">{:C('pin_site_description')}</textarea></td>
+										        </tr>
+										        
+										        <tr>
+										        	<th>{:L('weixin_appid')}</th>
+										        	<td> <input type = "text" name = "setting[appid]" class="input-text" size="50" value="{:C('pin_appid')}"></td>
+										        </tr>
+										        <tr>
+										        	<th>{:L('weixin_appsecret')}</th>
+										        	<td> <input type = "text" name = "setting[appsecret]" class="input-text" size="50" value="{:C('pin_appsecret')}"></td>
+										        </tr>
+										        
+										        <tr>
+										        	<th>{:L('weixin_mchid')}</th>
+										        	<td> <input type = "text" name = "setting[mchid]" class="input-text" size="50" value="{:C('pin_mchid')}"></td>
+										        </tr>
+										        
+										    	<tr>
+										        	<th>{:L('site_status')} :</th>
+										        	<td>
+										            	<label><input type="radio" class="J_change_status" <if condition="C('pin_site_status') eq '1'">checked="checked"</if> value="1" name="setting[site_status]"> {:L('open')}</label> 
+										                <label><input type="radio" class="J_change_status" <if condition="C('pin_site_status') eq '0'">checked="checked"</if> value="0" name="setting[site_status]"> {:L('close')}</label>
+										            </td>
+										    	</tr>
+										        <tr id="J_closed_reason" <if condition="C('pin_site_status') eq 1">class="ilz-hidden"</if>>
+										        	<th>{:L('closed_reason')} :</th>
+										        	<td><textarea rows="4" cols="50" name="setting[closed_reason]" id="closed_reason">{:C('pin_closed_reason')}</textarea></td>
+										    	</tr>
+										    	<tr>
+										    		<th width="150">用户注册 :</th>
+											            <td>
+											                <label class="mr10"><input type="radio" class="J_change_status_reg" <if condition="C('pin_reg_status') eq '1'">checked="checked"</if> value="1" name="setting[reg_status]"> {:L('open')}</label>
+											                <label><input type="radio" class="J_change_status_reg" <if condition="C('pin_reg_status') eq '0'">checked="checked"</if> value="0" name="setting[reg_status]"> {:L('close')}</label>
+											            </td>
+											    </tr>
+											    <tr id="J_closed_reason_reg" <if condition="C('pin_reg_status') eq 1">class="ilz-hidden"</if>>
+											            <th>关闭注册原因 :</th>
+											            <td><textarea rows="2" cols="40" name="setting[reg_closed_reason]">{:C('pin_reg_closed_reason')}</textarea></td>
+											     </tr>
+										        <tr>
+										        	<th></th>
+										        	<td>
+										        	<input type="hidden" name="menuid"  value="{$menuid}"/>
+										        	</td>
+										    	</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="form-actions">
+								<button class="btn btn-link btn_submit J_ajax_submit_btn"
+									type="submit">提交</button>
+							</div>
+						</form>
+					</div>
+					
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<script type="text/javascript">
+		$(function(){
+		    $('.J_change_status').on('click', function(){
+		    	//console.log('t' + $(this).val());
+		        if($(this).val() == '0'){
+		            $('#J_closed_reason').fadeIn();
+		        }else{
+		            $('#J_closed_reason').fadeOut();
+		        }
+		    }); 
+		    
+		    $('.J_change_status_reg').on('click', function(){
+		    	//console.log('t' + $(this).val());
+		        if($(this).val() == '0'){
+		            $('#J_closed_reason_reg').fadeIn();
+		        }else{
+		            $('#J_closed_reason_reg').fadeOut();
+		        }
+		    }); J_closed_reason_reg
+		});
+			 
+		</script>
+<include file="public:common" />

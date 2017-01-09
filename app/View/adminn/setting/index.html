@@ -1,0 +1,46 @@
+<include file="public:_header" />
+<!--会员列表-->
+<div class="pad_10" >
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                <th width="40">ID</th>
+                <th align="left">KEY值</th>
+                <th align="left">VALUE值</th>
+                <th align="left">备注</th>
+                <th align="center" width="250">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+    	<tbody>
+            <volist name="list" id="val" >
+            <tr>
+                <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                <td align="center">{$val.id}</td>
+                <td ><span>{$val.name}</span></td>
+                <td width=""><span>{$val.data}</span></td>
+                <td width="100"><span>{$val.remark}</span></td>
+                <td width="200" align="left">
+				 <a href="javascript:;" class="J_showdialog btn btn-link" data-id="edit" data-uri="{:U('setting/edit', array('id'=>$val['id']))}" 
+					data-title="{:L('edit')} - {$val.name}"  data-width="750" data-height="290">{:L('edit')}</a> 
+				 <a href="javascript:void(0);" class="J_confirmurl btn btn-link" data-acttype="ajax" data-uri="{:u('setting/delete', array('id'=>$val['id']))}" 
+				 data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">{:L('delete')}</a>
+				</td>
+            </tr>
+            </volist>
+    	</tbody>
+    </table>
+    <div class="btn_wrap_fixed">
+        <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('admin_role/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script type="text/javascript" src="__STATIC__/js/calendar/calendar.js"></script>

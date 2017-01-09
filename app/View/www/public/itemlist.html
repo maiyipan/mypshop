@@ -1,0 +1,181 @@
+
+<if condition="$item.goods_stock neq 0 "> 
+		        <li>
+		            <div class="singleList">
+		                <div class="left  <if condition="$item.prom neq null"> mj    <elseif condition="$item.mbdscnt neq null " /> hyzk </if>  ">
+ 		                	<a href="{:U('item/details',array('id'=>$item['id'],'sid'=>$shopid))}"> 
+		                		<!-- <img src="{:attach($item['img'])}"/>  -->
+		                		<img src="{:attach(get_thumb($item['img'], '_m'), '')}"/> 
+		                	</a> 
+		                </div>
+		                <div class="right">
+		                    <a href="{:U('item/details',array('id'=>$item['id'],'sid'=>$shopid))}" >
+		                    	<p class="name">{$item.title}</p>
+		                    </a>
+		                    <!--<p class="description">{$item.intro}</p>-->
+		                    <p class="price">¥{$item.price}
+								<label id="kk">
+									<input id="kk" type="checkbox" onclick="addFavor($(this))" class="favorCheckInput"  data-id="{$item.id}" >
+									<if condition="$item.likeflag neq null ">
+									    <i  class="ic-heart" ></i>
+									<else/>
+									    <i class="ic-heart-empty"></i>
+									</if>
+								</label>
+								<i onclick="buys({$item.id},$(this))" price="{$item.price}"  oldprice="{$item.price}" id="cart1" class="ic-cart"></i></p>
+
+		                    <p class="info">源产地：<span class="address">{$item.originplace}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评论数：<span class="number">{$item.baseid.comments}</span></p>
+		                </div>
+		            </div>
+		        </li>
+<else/>
+	<li>
+	<div class="singleList">
+			<div class="left">
+				<a href="{:U('item/details',array('id'=>$item['id'],'sid'=>$shopid))}">
+					<div class="mask">
+						<p>售罄</p>
+					</div>
+					<img src="{:attach(get_thumb($item['img'], '_m'), '')}"/>
+				</a>
+			</div>
+			<div class="right">
+				<a>
+					<p class="name" style="color: #b5b5b5">{$item.title}</p>
+				</a>
+				<!--<p class="description" style="color: #b5b5b5">{$item.intro}</p>-->
+				<p class="price" style="color: #b5b5b5">¥{$item.price}
+					<label id="kk">
+						<input id="kk" type="checkbox"  class="favorCheckInput"  data-id="{$item.id}" >
+						<if condition="$item.flag eq '1'">
+							<i  class="ic-heart" style="color: #b5b5b5"></i>
+							<else/><i class="ic-heart-empty" style="color: #b5b5b5"></i>
+						</if>
+					</label>
+					<i style="color: #b5b5b5" price="{$item.price}"  oldprice="{$item.price}" id="cart1" class="ic-cart"></i></p>
+
+				<p class="info" style="color: #b5b5b5">源产地：<span class="address">{$item.originplace}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;评论数：<span class="number">{$item.baseid.comments}</span></p>
+			</div>
+    </div>
+	</li>
+</if>
+		        
+<script>
+$(function(){
+	//商品描述的字数控制
+//	$(function(){
+//		var liLength=$(".orderListDiv").find('li').length;
+//		console.log(liLength);
+//		for(var j=0;j<liLength;j++){
+////			var length=$(".right .description").eq(j).text().length;
+////			console.log(length);
+//			var duoyu=$(".right .description").eq(j).text().substr(0,15);
+//			console.log(duoyu);
+//			for(var i=0;i<length;i++){
+//				if(i>15){
+//					$(".right .description").eq(j).text(duoyu+'...');
+//				}
+//				console.log();
+//			}
+//		}
+//	})
+//	var $pointDiv = $('<div id="pointDivs">').appendTo('body');
+//		for(var i = 0;i<5;i++){
+//		$('<div class="point-outer point-pre"><div class="point-inner"/》</div>').appendTo($pointDiv);
+//		}
+//		})
+//	$(".singleList .ic-cart").on("click",function(){
+//		//获取开始点坐标
+//		//ev.target ====>
+//		var startOffset = $(this).offset();
+//		//获取结束点坐标
+//		var endTop = window.innerHeight - 140, endLeft = 430,left = startOffset.left+10,top = startOffset.top+10;
+//		var outer = $('#pointDivs .point-pre').first().removeClass("point-pre").css({left:left+'px',top:top+'px'});
+//		var inner = outer.find(".point-inner");
+//		setTimeout(function(){
+//			outer[0].style.webkitTransform = 'translate3d(0,'+(endTop)+'px,0)';
+//			inner[0].style.webkitTransform = 'translate3d('+(endLeft - left)+'px,0,0)';
+//			setTimeout(function(){
+//				outer.removeAttr("style").addClass("point-pre");
+//				inner.removeAttr("style");
+//			},800);
+//		},1);
+//		//        console.log( $("nav #cart span").text());
+//		//        var  cal=parseInt($("nav #cart span").text());
+//		//        $("nav #cart span").text(cal+1);
+
+		})
+//收藏点击
+function addFavor(_this){
+	if(_this.prop("checked")){
+		_this.parents("li").find("label i").removeClass("ic-heart-empty").addClass("ic-heart");
+		$(".noneBtnAlertSpan").text("放进您的心愿单了");
+		$(".noneBtnAlertSpan").show();
+		var likeval = 1;
+		var goodid= _this.attr("data-id");
+		$.ajax({
+			type:'post',
+			url:'{:U("market/likefun_ajax")}',
+			dataType:'json',
+			timeout:15000,
+			data:{
+				likeval:likeval,
+				goodid:goodid
+			},
+			success:function(data){
+				if(data.status ==1){
+
+				}
+				else
+				{
+					alert(data.result_msg);
+				}
+			},
+			error:function(){
+				//alert('网络超时，请刷新后再试！');
+			}
+		});
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+	}else{
+		_this.parents("li").find("label i").removeClass("ic-heart").addClass("ic-heart-empty");
+		$(".noneBtnAlertSpan").text("不好意思！！！");
+		$(".noneBtnAlertSpan").show();
+		var likeval = 0;
+		//	var goodid = document.getElementById('favorCheckInput').value;
+		var goodid= _this.attr("data-id");
+		$.ajax({
+			type:'post',
+			url:'{:U("market/likefun_ajax")}',
+			dataType:'json',
+			timeout:15000,
+			data:{
+				likeval:likeval,
+				goodid:goodid
+			},
+			success:function(data){
+				if(data.status ==1){
+					//		alert(goodid);
+					//successful
+				}
+				else
+				{
+					alert(data.result_msg);
+				}
+			},
+			error:function(){
+				//alert('网络超时，请刷新后再试！');
+			}
+		});
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+	}
+}
+	</script>
+	<!--<script type="text/javascript" src="__STATIC__/home/js/jquery/jquery-2.1.4.min.js"></script>-->

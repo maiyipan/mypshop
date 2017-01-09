@@ -1,0 +1,89 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">我的地址详情</span>
+    <p class="store">保存</p>
+</div>
+<div class="infoDiv">
+    <div class="editGetAddress">
+    <form class="infoForm" action="{:U('my/editGetAddress',array('sid'=>$shopid))}" method="post">
+    	<input name="id" id="id"  value="{$info.id}" type="hidden">
+        <li>
+            <label class="space"><i class="ic-my"></i>姓名</label>
+            <input placeholder="请输入真实的姓名" type="text" name="consignee" value="{$info.consignee}" class="nameInput">
+        </li>
+        <li>
+            <label class="space"><i class="ic-phone"></i>电话</label>
+            <input placeholder="请输入手机号码"  type="tel"  name="mobile" value="{$info.mobile}" class="telInput">
+        </li>
+     <!--    <li>
+            <label><i class="ic-map"></i>所在地区</label>
+            <input placeholder="请输入所在地区"  type="text"  name="sheng" value="{$info.sheng}" class="areaInput">
+        </li> -->
+        <li>
+            <label><i class="ic-map"></i>所在地区</label>
+            <div style="margin-top:0px;margin-bottom: 0px;width: 59%;height: 100px;background-color: white;margin-left: 260px;">
+            <include file="addressinfo"/>
+          <!--   <select class="address" onclick="distribute()">
+                <option selected="selected" value="{$_SESSION['distribute_names']}">{$_SESSION['distribute_names']}</option>
+            </select> -->
+	        
+	        </div>
+        </li>
+        
+        <li>
+            <label><i class="ic-nail"></i>详细地址</label>
+            <input placeholder="请输入公司详细地址" type="text" name="address" value="{$info.address}" class="detailInput">
+        </li>
+        <li>
+            <p  style="    margin-top: 20px;
+    text-align: justify;
+    font: 28px/60px 'Microsoft YaHei';
+    color: #ff7e20;
+    height: 60px;
+    position: absolute;
+    /* width: 200px; */
+    padding-left: 20px;
+    /* border-right: 2px solid #628345; */
+    padding-right: 20px;" class="borderNone">
+            	温馨提示：目前仅配送门店周围1公里小区。
+             </p>
+        </li>
+    </form>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	//新增地址保存按钮
+    $(".store").on("click",function(){
+   
+        var consignee=$("input.nameInput").val();
+        var mobile=$("input.telInput").val();
+        var sheng=$("input.areaInput").val();
+        var address=$("input.detailInput").val();
+        var id=$("#id").val();
+
+        if(consignee==''){
+             alert("请填写完整信息");
+        } else if (mobile=='' ) {
+        	  alert("请填写完整信息");
+        }else if(sheng==''){
+        	  alert("请填写完整信息");
+        } else if(address=='') {
+        	  alert("请填写完整信息");
+        }else{
+        	$.post("{:U('my/editAddress')}",{id:id,consignee:consignee,mobile:mobile,sheng:sheng,address:address},function(data){
+        		console.log()
+        		  if(data.status == 1){
+        			  alert("操作成功");
+        			  window.location.href = "{:U('my/address',array('sid'=>$shopid))}";
+        		  }else{
+        			  alert("操作失败");
+        		  }
+        	},'json');
+        }
+    })
+})
+</script>
+<include file="public:footer"/>

@@ -1,0 +1,43 @@
+<div id="nav">
+    <ul class="navlist">
+        <li><a href="{:U('index/index',array('sid'=>$shopid))}"><i class="ic-home"></i><em>首页</em><span></span></a></li>
+        <li>
+            <i class="ic-app"></i>
+            <em>分类</em>
+            <span></span>
+            <ul class="submenu">
+                <li><a href="{:U('index/itemList',array('sid'=>$shopid))}" class="none_ico">全部</a></li>
+                <volist name='index_cate_list' id='vo'>
+                    <li>
+                        <a href="{:U('book/cate',array('cid'=>$vo['id'],'sid'=>$shopid))}" class="none_ico"> {$vo.name}</a>
+                    </li>
+                </volist>
+            </ul>
+        </li>
+        <li><a href="{:U('shopcart/index',array('sid'=>$shopid))}">
+            <i class="ic-cart"></i>
+            <em>购物车</em>
+        </a>
+           </li>
+        <li><a href="{:U('user/index',array('sid'=>$shopid))}">
+            <i class="ic-my"></i>
+            <em>我的佳鲜</em>
+            <span></span></a></li>
+    </ul>
+    <script type="text/javascript">
+        $(".navlist>li").eq(({$currentid}-1)).addClass("cur");
+        $(".navlist > li:eq(1)").click(function () {
+            $(this).toggleClass("active");
+            $(".navlist>li.cur").removeClass("cur");
+            $(this).addClass("cur");
+        });
+        $(".navlist > li.r a").each(function () {
+            href = "index.php-app=member&act=login&ret_url=-index.php-app=member.htm" + $(this).attr("href");
+            whref = window.location.href;
+            if (whref.indexOf(href) != '-1') {
+                $(this).parent("li").addClass("active");
+            }
+        });
+    </script>
+
+</div>

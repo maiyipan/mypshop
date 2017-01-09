@@ -1,0 +1,92 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div id="searchPage">
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <form method="post" action="{:U('index/doSearch',array('sid'=>$shopid))}" onsubmit="return validate()" id="serch_form" name="serch_form" class="srhtf">
+    <input class="search inputBind" type="text" id="keyword" name="keyword" placeholder="搜索佳鲜农庄" >
+     <i class="ic-search " id="search"></i>
+    </form>
+</div>
+<div class="searchPageDiv">
+    <div class="hotSearch">
+        <h1>热门搜索</h1>
+        <div class="searchName searchHotName ">
+        	<volist name='searchHot' id='vo'>
+             <a href="{:U('index/doSearch', array('keyword'=>$vo['keyword'],'sid'=>$shopid))}">{$vo.keyword}</a>
+            </volist>
+        </div>
+    </div>
+    <div class="historySearch">
+        <h1>历史搜索</h1>
+        <img class="recover" onclick="javascript:deleteSearchHis();" src="__STATIC__/home/images/recover.png">
+        <div class="searchName searchHistoryName">
+        	<volist name='searchHis' id='vo'>
+            <a href="{:U('index/doSearch', array('keyword'=>$vo,'sid'=>$shopid))}">{$vo}</a>
+            </volist>
+        </div>
+    </div>
+
+</div>
+    <div class="tableDiv dis_none">
+        <div class="sureTable">
+            <p class="content">确定要删除吗？</p>
+            <div class="btnDiv">
+                <p class="yes">是</p>
+                <p class="no">否</p>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+$(function(){
+	$('#search').click(function(){
+		if(validate()) {
+			$('#serch_form').submit();	
+		}
+		
+	})
+})
+function validate() {
+   var ival = document.getElementById('keyword').value;
+   ival = ignoreSpaces(ival);
+   if(ival == "") {
+	   alert("输入商品名称才可以搜索哦！"); 
+	   return false; 
+	   }
+	return true;
+}
+
+function ignoreSpaces(string) {
+	var temp = "";
+	string = '' + string;
+	splitstring = string.split(" ");
+	for(i = 0; i < splitstring.length; i++)
+	temp += splitstring[i];
+	return temp;
+	}
+function deleteSearchHis()//商品ID，购买数量
+{
+    $(".searchHistoryName").empty();
+//    $(".tableDiv").show();
+//    $(".tableDiv p.yes").on("click",function(){
+//        $(".tableDiv").hide();
+//
+//    })
+//    $(".tableDiv p.no").on("click",function(){
+//        $(".tableDiv").hide();
+//    })
+	
+    var url = "{:U('index/deleteSearchHis',array('sid'=>$shopid))}";
+    $.post(url, function (data) {
+       /*  if (data.status == 1) {
+        	alert('清除成功');
+        } else {
+        	alert('清除失败');
+        } */
+    }, 'json');
+}
+</script>
+<include file="public:nav"/>
+<include file="public:footer"/>
+<include file="public:weixin"/>
+<include file="public:weixinPublicShare"/>

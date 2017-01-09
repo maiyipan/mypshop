@@ -1,0 +1,194 @@
+<include file="public:_header"/>
+<style>
+	.border_table {margin: 10px 0;background: #fff;}
+	.border_table thead tr th {color: #333;white-space: nowrap;text-align: center;background: #f6f6f6;}
+	.ptable td{padding: 5px 10px 5px;}
+	.border_table .btn{margin-left:10px;}
+	#speed_goods td{background:#fff;}
+	.border_table tr th,.border_table tr td{border:1px solid #e1e1e1;vertical-align:middle;white-space:nowrap;word-break:keep-all}
+</style>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">编辑限时抢购</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+			<input type="hidden" name="id" value="{$info.id}"/>
+	        <table class="shop-form" >
+	           <tr>
+	             <th width='120'>名称<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="name" value="{$info.name}" class="input-text" size="30">
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>抢购时间<font color='red'>*</font>：</th>
+	             <td>
+	              <input type="text" name="start_time" id="J_time_start" class="date" size="20" value="{$info.start_time}">
+	               ～
+	               <input type="text" name="end_time" id="J_time_end" class="date" size="20" value="{$info.end_time}">
+	             </td>
+	           </tr>
+	           <tr>
+					<th width='120'>是否开启<font color='red'>*</font>：</th>
+					<td>
+						<label class='attr'><input type='radio' name='is_close' value='0' <eq name="info.is_close" value="0">checked="checked"</eq>/>是</label>
+						<label class='attr'><input type='radio' name='is_close' value='1' <eq name="info.is_close" value="1">checked="checked"</eq> />否</label>
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>设置抢购商品：</th>
+					<td>
+						<table class='border_table' border="1" style='width:65%'>
+							<input type='hidden' id="condition" name='condition' value="{$info.condition}"/>
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>名称</th>
+									<th width="60">原价格</th>
+									<th width="60">抢购价格</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id='speed_goods' style="background:#fff;">
+									<empty name="item">
+									<td colspan="4">关联商品被删除，请重新选择要抢购的商品</td> 
+									<else />
+									<td><img src="{:attach($item['img'])}" style="max-width:50px;max-height:50px;" /></td>
+									<td style="text-align:center;">{$item.title}</td>
+									<td style="text-align:center;">{$item.price}</td>
+									<td><input text="text" value="{$info.award_value}"  size="5" name="award_value" />元 </td>
+									</empty>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>活动介绍：</th>
+					<td><textarea name='intro' rows="4" style="width:788px" >{$info.intro}</textarea></td>
+				</tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+Calendar.setup({
+    inputField : "J_time_start",
+    ifFormat   : "%Y-%m-%d %H:%M:%S",
+    showsTime  : true,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "J_time_end",
+    ifFormat   : "%Y-%m-%d %H:%M:%S",
+    showsTime  : true,
+    timeFormat : "24"
+});
+function relationCallBack(content){
+	if(content){
+		$('[name="condition"]').val(content['data']['id']);
+		var html =   '<td><img src="'+content['data']['img']+'" style="max-width:140px;" /></td>'
+					+'<td>'+content['data']['title']+'</td>'
+					+'<td>'+content['data']['price']+'</td>'
+					+'<td><input text="text"  name="award_value" />元 </td>';
+		$('#speed_goods').html(html).show();
+		$('#speed_goods td').css('background',"#fff");
+	}
+}
+$(function(){
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				//执行处理回调
+				var content = {
+					"data":
+					{
+						"goodsId":goodsList.attr('goodsId'),
+						"title":goodsList.attr('title'),
+						"id":goodsList.attr('id'),
+						"img":goodsList.attr('img'),
+						"price":goodsList.attr('price')
+					}
+				};
+				relationCallBack(content);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return validForm();
+		},onError:function(msg){
+	}});
+	 $("#name").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入名称"});
+	 $("#award_value").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入抢购价格"});
+	 $("#J_time_end").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请选择有效期时间"});
+})
+
+function validForm(){
+	var J_time_start = $.trim($('#J_time_start').val());
+	var J_time_end = $.trim($('#J_time_end').val());
+	if(J_time_start == '' || J_time_end == ''){
+		SHOP.msg('请选择对应日期', {icon: 5});
+		return false;
+	}
+	if(!SHOP.validTime2(J_time_start,J_time_end)){
+		 SHOP.msg('结束日期不能小于开始日期', {icon: 5});
+		 return false;
+	}
+	var award_value = $("input[name=award_value]").val();
+	if( award_value== '' || !SHOP.isFloat(award_value)){
+		alert('请输入正确的抢购价格');
+		return false;
+	}
+	if($("#condition").val()){
+		return true;
+	}else{
+		alert('请选择一个商品');
+		return false;
+	}
+}
+</script>
+<include file="public:_footer" />
+</body>
+</html>

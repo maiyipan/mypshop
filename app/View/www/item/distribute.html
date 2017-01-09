@@ -1,0 +1,116 @@
+<include file="public:header"/>
+<style>
+#area_list{
+  font-size: 28px;  
+  background: #fff;
+}
+#area_list li span {
+  display: block;
+  height: 3.214em;
+  line-height: 3.214em;
+  padding: 0 1.035em;
+  border-bottom: 1px solid #dcdcdc;
+  color: #333;
+}
+</style>
+<div>
+	<div class="backDiv " >
+        <i class="ic-back" onclick="goBack()"> </i>
+       	 选择地址
+        <p class=" cancel" onclick="goBack()">取消</p>
+    </div>
+    <div>
+    	<ul id="area_list"></ul>
+    </div>
+	<input type="hidden" id="current_name" name="city_names"  />
+
+<script type="text/javascript">
+var json;			
+var arrNodeChild = new Array();	
+var selected = '';	
+
+$(function(){
+	$.get('{:U('area/ajax_list')}','',function(data){
+		json = data;
+		init();
+	},'json');
+})
+
+var init = function() {
+	var arrSelect = selected.split(',');
+	var option1 = '';
+	var option2 = '';
+	var option3 = '';
+	$.each(json, function(i, n) {
+		var selected1 = (n.id == arrSelect[0]) ? 'class="selected"' : '';
+		option1 += '<li name="province" '+selected1+' id="'+n.id+'"><span>'+n.name+'</span></li>';
+		arrNodeChild[n.id] = n.child;
+		if(n.child && n.child !== null) {
+			$.each(n.child, function(ii, nn) {
+				if(n.id == arrSelect[0]) {
+					var selected2 = (nn.id == arrSelect[1]) ? 'selected="selected"' : '';
+					option2 += '<li name="city" '+selected2+'  id="'+nn.id+'"><span>'+nn.name+'</span></li>';
+				}
+				arrNodeChild[nn.id] = nn.child;
+				if(nn.child && nn.child !== null) {
+					$.each(nn.child, function(iii, nnn) {
+						if(nn.id == arrSelect[1]) {
+							var selected3 = (nnn.id == arrSelect[2]) ? 'selected="selected"' : '';
+							option3 += '<li '+selected3+' id="'+nnn.id+'"><span>'+nnn.name+'</span></li>';
+						}
+						arrNodeChild[nnn.id] = nnn.child;
+					});
+				}
+			});
+		}
+	});
+	$('#area_list').append(option1);
+} 
+$('#area_list li').live('click',function(){
+	var name = $(this).attr('name');
+	var val = $(this).attr('id');
+	var distribute_names = $('#current_name').val()+' '+$(this).text();
+	$('#current_name').val(distribute_names);
+	switch(name) {
+		case 'province':
+			if(arrNodeChild[val] && arrNodeChild[val] !== null) {
+				var select = '';
+				$.each(arrNodeChild[val], function(i, n) {
+					select += '<li name="city" id="'+n.id+'"><span>'+n.name+'</span></li>';
+				});
+				$('#area_list').html(select);
+			}else{
+				$.post("{:U('item/distribute',array('sid'=>$shopid))}",{distribute_names:$('#current_name').val()},function(data){
+					 if (data.status == 1) {
+						 window.location.href = "{:U('item/details',array('id'=>$itemid,'sid'=>$shopid))}";;
+					 }
+				},'json')
+			}
+ 			break;
+		case 'city':
+			if(arrNodeChild[val] &&  arrNodeChild[val] !== null) {
+				var select = '';
+				$.each(arrNodeChild[val], function(i, n) {
+					select += '<li name="area" id="'+n.id+'"><span>'+n.name+'</span></li>'
+				});
+				$('#area_list').html(select);
+			}else{
+				$.post("{:U('item/distribute'array('sid'=>$shopid))}",{distribute_names:$('#current_name').val()},function(data){
+					 if (data.status == 1) {
+						 window.location.href = "{:U('item/details',array('id'=>$itemid,'sid'=>$shopid))}";;
+					 }
+				},'json')
+			}
+			break;
+		case 'area':
+			$.post("{:U('item/distribute',array('sid'=>$shopid))}",{distribute_names:$('#current_name').val()},function(data){
+				 if (data.status == 1) {
+					 window.location.href = "{:U('item/details',array('id'=>$itemid,'sid'=>$shopid))}";;
+				 }
+			},'json')
+			break;
+	}
+})
+</script>
+</div>
+<include file="public:footer"/>

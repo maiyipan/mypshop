@@ -1,0 +1,35 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">商品分类</span>
+</div>
+<div class="sortSecondDiv">
+    <div class="leftList">
+        <ul>
+            <!-- <li class="list recommend">
+            	<a href="{:U('item/index',array('cate_id'=>0,'sid'=>$shopid))}"><span>热销推荐</span></a>
+            </li> -->
+            <volist name="leftlist" id="val" >
+            <li class="list vegetable" <if condition="$val['id'] == $cid">style="background: #fff;"</if>>
+            	<a href="{:U('index/sortSecond',array('id'=>$val['id'],'fid'=>$fid,'cid'=>$pid,'sid'=>$shopid))}">
+            		<span>{$val.name}</span>
+            	</a>
+            </li>
+            </volist>
+        </ul>
+    </div>
+    <div class="rightList">
+        <ul>
+        	<volist name="list" id="val" >  
+            <li class="sortSecond"><a href="{:U('item/index',array('cate_id'=>$val['id'],'sid'=>$shopid))}">
+            	<img src="{:attach2($val['img'],'item_cate')}" title="{$val.name}" ></a> 
+            </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+<include file="public:nav"/>
+<include file="public:footer"/>
+<include file="public:weixin"/>
+<include file="public:weixinPublicShare"/>

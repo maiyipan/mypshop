@@ -1,0 +1,67 @@
+<include file="public:header"/>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">					
+					<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('sms/smssave')}" method="post">
+						
+							<div class="tabbable">
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<table cellpadding="2" cellspacing="2" width="100%" border="0">
+											<tbody>												
+												
+													<div align="center">
+												     <table width="52%" border="1" cellpadding="3" cellspacing="0">
+												      <tr>
+												        <td height="24" colspan="2" align="center" valign="middle"> <span class="style1">短信发送</span></td>
+												        <input type="hidden" name="longsms" value="1"><!-- 隐藏域 -->
+												      </tr>
+   												      <tr>
+												        <td height="29" align="right" valign="middle"><span class="red">*</span>服务器地址</td>
+												        <td align="left" valign="middle">
+												        <input name="Url" type="text" id="CorpID"  maxlength="50" value="{$data.url}"></td>
+												      </tr>
+												      <tr>
+												        <td height="29" align="right" valign="middle"><span class="red">*</span>企业ID号</td>
+												        <td align="left" valign="middle">
+												        <input name="CorpID" type="text" id="CorpID" size="8" maxlength="6" value="{$data.corpid}"></td>
+												      </tr>
+												      <tr>
+												        <td height="27" align="right" valign="middle" ><span class="red">*</span>账户名称</td>
+												        <td align="left" valign="middle" >
+												        <input name="LoginName" type="text" id="LoginName" size="10" maxlength="10" value="{$data.loginname}"></td>
+												      </tr>
+												      <tr>
+												        <td height="27" align="right" valign="middle" ><span class="red">*</span>密码</td>
+												        <td align="left" valign="middle" >
+												        <input name="password" type="password" id="password" size="10" maxlength="24" value="{$data.password}"></td>
+												      </tr>
+												      <tr>
+												        <td width="20%" height="39" align="right" valign="middle" >短信内容</td>
+												        <td width="80%" align="left" valign="middle" >
+												        <textarea name="msg" cols="30" rows="6" id="msg" >{$data.content}</textarea></td>
+												      </tr>												      
+												     </table>
+												   </div>
+													
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+					  
+												
+							<div class="form-actions">
+								<!--<a class="btn btn-link btn_submit" href="{:u('shop/setadd')}">提交</a> -->
+								 <button class="btn btn-link btn_submit" type="submit">修改</button>
+								 <a class="btn btn-link btn_submit" href="{:u('sms/sms_send')}">测试短信</a> 
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+<include file="public:common" />

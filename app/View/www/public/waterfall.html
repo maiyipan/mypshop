@@ -1,0 +1,145 @@
+<volist name="item_list" id="item" mod="2">
+	<if condition="$item.goods_stock gt 0 ">
+<!--<li class="ji">-->
+		<li class="<eq name="mod" value="1">ou</eq> <eq name="mod" value="0">ji</eq>" >
+	<div class="singleList <eq name="mod" value="1">ou</eq> <eq name="mod" value="0">ji</eq>">
+		<div class="top <if condition="$item.prom neq null"> mj    <elseif condition="$item.mbdscnt neq null " /> hyzk </if>  ">
+			<a href="{:U('item/details',array('id'=>$item['id'], 'sid'=>$shopid))}">
+				<img src="{:attach(get_thumb($item['img'], '_m'), '')}" class="nomalImg" >
+			</a>
+		</div>
+		<div class="info">
+			<a href="{:U('item/details',array('id'=>$item['id'], 'sid'=>$shopid))}" >
+				<p class="name">{$item.title}</p>
+			</a>
+                    <p class="price">{$item.price}
+                        <?php 
+                        if ($item['price'] < $item['prime_price']) {
+                          ?>
+                        <span class="del"  >{$item.prime_price}</span>
+                        <?php } ?>
+                       
+                    </p>
+                        
+			<a href="#">
+				<i onclick="buys({$item.id},$(this))" price="{$item.price}"  oldprice="{$item.price}" id="cart1" class="ic-cart"></i>
+			<if condition="$item.likeflag neq null ">
+				<i  class="ic-heart" style=" right: 60px;"></i>
+				<else/>
+				<i class="ic-heart-empty" style=" right: 60px;"></i>
+			</if>
+		</a>
+		</div>
+	</div>
+</li>
+	<else/>
+	<li class="<eq name="mod" value="1">ou</eq> <eq name="mod" value="0">ji</eq>" >
+	<div class="singleList <eq name="mod" value="1">ou</eq> <eq name="mod" value="0">ji</eq>">
+		<div class="top ">
+			<div class="mask">
+				<p>售罄</p>
+			</div>
+		<a href="{:U('item/details',array('id'=>$item['id'], 'sid'=>$shopid))}">
+			<img src="{:attach(get_thumb($item['img'], '_m'), '')}" class="nomalImg" >
+		</a>
+	</div>
+	<div class="info">
+		<a href="{:U('item/details',array('id'=>$item['id'], 'sid'=>$shopid))}" >
+			<p class="name">{$item.title}</p>
+		</a>
+		<p class="price">{$item.price}
+                 <?php 
+                        if ($item['price'] < $item['prime_price']) {
+                          ?>
+                        <span class="del"  >{$item.prime_price}</span>
+                        <?php } ?>
+                
+                </p>
+		<a href="#">
+			<i onclick="buys({$item.id},$(this))" price="{$item.price}"  oldprice="{$item.price}" id="cart1" class="ic-cart"></i>
+			<if condition="$item.likeflag neq null ">
+				<i  class="ic-heart" style=" right: 60px;"></i>
+				<else/>
+				<i class="ic-heart-empty" style=" right: 60px;"></i>
+			</if>
+		</a>
+	</div>
+	</div>
+	</li>
+	</if>
+</volist>
+		        
+<script>
+function addFavor(_this){
+	if(_this.prop("checked")){
+		_this.parents("li").find("label i").removeClass("ic-heart-empty").addClass("ic-heart");
+		$(".noneBtnAlertSpan").text("放进您的心愿单了");
+		$(".noneBtnAlertSpan").show();
+		var likeval = 1;
+		var goodid= _this.attr("data-id");
+		$.ajax({
+			type:'post',
+			url:'{:U("market/likefun_ajax")}',
+			dataType:'json',
+			timeout:15000,
+			data:{
+				likeval:likeval,
+				goodid:goodid
+			},
+			success:function(data){
+				if(data.status ==1){
+
+				}
+				else
+				{
+					alert(data.result_msg);
+				}
+			},
+			error:function(){
+				//alert('网络超时，请刷新后再试！');
+			}
+		});
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+	}else{
+		_this.parents("li").find("label i").removeClass("ic-heart").addClass("ic-heart-empty");
+		$(".noneBtnAlertSpan").text("不好意思！！！");
+		$(".noneBtnAlertSpan").show();
+		var likeval = 0;
+		//	var goodid = document.getElementById('favorCheckInput').value;
+		var goodid= _this.attr("data-id");
+		$.ajax({
+			type:'post',
+			url:'{:U("market/likefun_ajax")}',
+			dataType:'json',
+			timeout:15000,
+			data:{
+				likeval:likeval,
+				goodid:goodid
+			},
+			success:function(data){
+				if(data.status ==1){
+					//		alert(goodid);
+					//successful
+				}
+				else
+				{
+					alert(data.result_msg);
+				}
+			},
+			error:function(){
+				//alert('网络超时，请刷新后再试！');
+			}
+		});
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+	}
+}
+	</script>
+	<!--<script type="text/javascript" src="__STATIC__/home/js/jquery/jquery-2.1.4.min.js"></script>-->

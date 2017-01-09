@@ -1,0 +1,221 @@
+<include file="public:_header"/>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">添加满减活动</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	        <table class="shop-form" >
+	           <!-- <tr>
+	             <th width='120'>商品名称<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="name" class="input-text" size="30">
+	             </td>
+	           </tr> -->
+	           <tr>
+	             <th width='120'>商品名称<font color='red'>*</font>：</th>
+	             <td>
+	               <table class='border_table' border="1" style='width:65%'>
+	               			<input type='hidden' id="name" name='name' />
+							<input type='hidden' id="condition" name='condition' />
+							<thead>
+								<tr>
+									<th style="text-align:center">图片</th>
+									<th style="text-align:center">名称</th>
+									<th style="text-align:center">原价格</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id='speed_goods' style="display:none;background:#fff;"></tr>
+								<tr>
+									<td colspan='4'>
+										<button type='button' id="searchGoods" data-id="edit" data-uri="{:U('promotion/search_items')}" 
+				data-title="商品筛选"  data-width="600" data-height="300" class='btn'><span>选择商品</span></button>
+										<label>* 设置要满减满赠商品，仅能选择一件商品</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>活动时间<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" name="start_time" id="J_time_start" class="date" size="12" value="">
+	               ～
+	               <input type="text" name="end_time" id="J_time_end" class="date" size="12" value="">
+	             </td>
+	           </tr>
+	           <tr>
+					<th width='120'>是否开启<font color='red'>*</font>：</th>
+					<td>
+						<label class='attr'><input type='radio' name='is_close' value='0' checked=checked />是</label>
+						<label class='attr'><input type='radio' name='is_close' value='1' />否</label>
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>活动介绍：</th>
+					<td><textarea name='intro' rows="4" style="width:788px" ></textarea></td>
+				</tr>
+				<tr>
+					<th width='120'>该商品总金额条件<font color='red'>*</font>：</th>
+					<td><input type='text' name='reserve' id="reserve" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')" />元<br/>
+					 <label style="color:#878585;"> 当该商品总金额达到所填写的现金额度时规则生效</label></td>
+				</tr>
+	            <tr>
+					<th width='120'>活动规则<font color='red'>*</font>：</th>
+					<td>
+						<select id="award_type" name='award_type' onchange="change_rule(this.value);">
+							<option>请选择</option>
+							<option value='1'>当该商品总金额金额满 M 元时,优惠 N 元</option>
+							<option value='2'>当该商品总金额金额满 M 元时,赠送商品 </option>
+						</select>
+					</td>
+				</tr>
+	           <tr id='rule_box'></tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+
+//修改规则
+function change_rule(selectVal){
+	if(selectVal != $('#rule_box').data('index')){
+		$('#rule_box').data('index',selectVal);
+	}else{
+		return;
+	}
+
+	var html = '';
+	switch(selectVal){
+		case "1":{
+				html = "<th>减免金额<font color='red'>*</font>：</th>"
+					+"<td><input type='text' name='award_value'/>元"
+					+"<label style='color:#878585;'> 从该商品总金额中减掉此部分金额</label></td>";
+				}
+			break;
+		case "2":{
+				html = "<th>赠送商品<font color='red'>*</font>：</th>"
+					+"<td><input type='text' name='award_value'/>"
+					+"<label style='color:#878585;'> 当该商品总金额到达时,赠送的商品</label></td>";
+				}
+			break;
+	}
+	$('#rule_box').html(html);
+}
+Calendar.setup({
+    inputField : "J_time_start",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "J_time_end",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+function validForm(){
+	var J_time_start = $.trim($('#J_time_start').val());
+	var J_time_end = $.trim($('#J_time_end').val());
+	if(J_time_start == '' || J_time_end == ''){
+		SHOP.msg('请选择对应日期', {icon: 5});
+		return false;
+	}
+	if(!SHOP.validTime(J_time_start,J_time_end)){
+		 SHOP.msg('结束日期不能小于开始日期', {icon: 5});
+		 return false;
+	}
+	if($("#condition").val() == ''){
+		SHOP.msg('请选择一个商品', {icon: 5});
+		return false;
+	}
+	if($("input[name=award_value]").val() == ''){
+		SHOP.msg('请输入满减满赠优惠', {icon: 5});
+		return false;
+	}
+	return true;
+}
+function relationCallBack(content){
+	if(content){
+		$('[name="condition"]').val(content['data']['id']);
+		var html =   '<td><img src="'+content['data']['img']+'" style="height:50px;width:50px;" /></td>'
+					+'<td>'+content['data']['title']+'</td>'
+					+'<td style="text-align:center">'+content['data']['price']+'</td>';
+		$('#name').val(content['data']['title']);
+		$('#speed_goods').html(html).show();
+	}
+}
+
+$(function(){
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				//执行处理回调
+				var content = {
+					"data":
+					{
+						"goodsId":goodsList.attr('goodsId'),
+						"title":goodsList.attr('title'),
+						"id":goodsList.attr('id'),
+						"img":goodsList.attr('img'),
+						"price":goodsList.attr('price')
+					}
+				};
+				relationCallBack(content);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return validForm();
+		},onError:function(msg){
+	}});
+	 $("#award_type").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请选择活动规则"});
+	 $("#award_value").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入满减金额或者赠送商品"});
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

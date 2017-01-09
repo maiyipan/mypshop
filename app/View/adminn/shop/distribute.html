@@ -1,0 +1,64 @@
+<include file="public:_header" />
+<div class="pad_lr_10" style="margin-top:10px;">
+	 <form action="{:U('shop/edit_distribute')}" method="post">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            	<th width="100"><input type="checkbox" id="checkall_t" class="J_checkall">全选</th>
+                <th colspan="2">配送地区设置</th>
+            </tr>
+        </thead>
+    	<tbody>
+            <volist name="list" id="val" >
+            <tr>
+               <td align="center" width="100" id="{$val.id}">
+               		<input type="checkbox" class="J_checkitem child" name="area_id[]" <if condition="$val.checked eq 'checked'">checked="checked"</if> value="{$val.id}">{$val.title}
+               </td>
+            </tr>
+           <volist name="val['child']" id="val2" >
+           	<tr class="child{$val.id}">
+           	   <td align="center"></td>
+               <td align="center" id="{$val2.id}" >
+               		<input type="checkbox" class="J_checkitem child" pid="{$val.id}" <if condition="$val2.checked eq 'checked'">checked="checked"</if> name="area_id[]" value="{$val2.id}">{$val2.title}
+               </td>
+               <td class="child{$val2.id}">
+               	 <volist name="val2['child']" id="val3" >
+               	 	<input type="checkbox" class="J_checkitem" pid="{$val2.id}" <if condition="$val3.checked eq 'checked'">checked="checked"</if> name="area_id[]" value="{$val3.id}">{$val3.title}&nbsp;&nbsp
+               	 </volist>
+               </td>
+            </tr>
+           </volist>
+            </volist>
+    	</tbody>
+    </table>
+
+    <div class="btn_wrap_fixed">
+        <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+       <input type="submit" class="btn" name="dosubmit" value="{:L('submit')}"/>
+    </div>
+    </div>
+    </form>
+</div>
+<include file="public:_footer" />
+<script>
+$('.J_checkitem').click(function(){
+	var id = $(this).val();
+	if($(this).attr("checked")){
+		$('.child'+id).find('.J_checkitem').attr('checked',true);
+		var pid = $(this).attr("pid");
+		if(pid){
+			 var p = $('#'+pid).find('.J_checkitem').attr('checked',true);
+			 var ppid = $('#'+pid).attr("pid");
+			 if(ppid){
+				 $('#'+ppid).find('.J_checkitem').attr('checked',true);
+			 }
+		}
+	}else{
+		$('.child'+id).find('.J_checkitem').attr('checked',false);
+	}
+	
+})
+</script>
+</body>
+</html>

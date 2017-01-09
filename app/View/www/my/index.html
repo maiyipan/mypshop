@@ -1,0 +1,97 @@
+<include file="public:header"/>
+<style>
+<!--
+
+.promo_code{font:24px/70px 'Microsoft YaHei';position:absolute;top:189px;left:396px;color:#8f8c79;height:0px;}
+-->
+</style>
+<title>我的佳鲜农庄</title>
+<div id="myCenterPage">
+<div class="backDiv dis_none">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">我的佳鲜农庄</span>
+</div>
+<div class="centerMainDiv">
+    <div class="centerInfoDiv" >
+        <img class="centerBg" src="__STATIC__/home/images/centerBg.jpg">
+        <div class="centerInfo">
+            <img  class="touxiang" src="{$visitor.headimgurl}">
+            <p class="name">{$visitor.username}</p>
+            <if condition="$promo_code['random'] eq null">
+                <p class="promo_code dis_none">推荐码:<span>{$promo_code.random}</span></p>
+                <else/>
+                <p class="promo_code">推荐码:<span>{$promo_code.random}</span></p>
+                </if>
+            <div class="numDiv">
+                <p class="num">余额:<span class="num">￥{$card.card_balance}</span></p>
+                <p class="lottery">积分:<span class="lottery">{$card.card_score}</span></p>
+            </div>
+        </div>
+        <div class="centerSort">
+            <a class="allOrder" style="    border-right: 1px solid #ccc;" href="{:U('order/index',array('status'=>0,'sid'=>$shopid))}">全部订单</a>
+            <a class="waitMoney" href="{:U('order/index',array('status'=>1,'sid'=>$shopid))}">还未付款</a>
+            <a class="waitGoods" href="{:U('order/index',array('status'=>2,'sid'=>$shopid))}">等待发货</a>
+            <a class="waitGet" href="{:U('order/index',array('status'=>3,'sid'=>$shopid))}">还未收货</a>
+            <a  href="{:U('my/publishEvaluation',array('sid'=>$shopid))}" class="assess">请您评价</a>
+        </div>
+    </div>
+    <div class="sortMainDiv">
+         <a class="singSort" href="{:U('my/coupon',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="coupon label">优惠券</span>
+                <span class="backSpan"><i class="ic-more"></i> </span>
+            </div>
+        </a> 
+        <a class="singSort" href="{:U('usercard/activateMenbership',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="menbershipCard label">会员卡</span>
+                <!-- <span class="youhui">充500送100</span> -->
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+        <a class="singSort" href="{:U('my/favorable',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="favor label">心愿单</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+        <a class="singSort" href="{:U('my/address',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="address label">收货地址</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+        <!-- <a class="singSort" href="#">
+            <div class="singDiv">
+                <span class="buyInfo label">购买信息</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a> -->
+        <a class="singSort" href="{:U('message/index',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="messageCenter label">消息中心</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+        <!-- <a class="singSort" href="#">
+            <div class="singDiv">
+                <span class="viewhistory label">浏览历史</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a> -->
+        <a class="singSort" href="{:U('my/onlinechat',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="lineConsultation label">在线咨询</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+        <a class="singSort" href="{:U('my/aboutikshop',array('sid'=>$shopid))}">
+            <div class="singDiv">
+                <span class="aboutMe label">关于佳鲜农庄</span>
+                <span class="backSpan"><i class="ic-more"></i></span>
+            </div>
+        </a>
+    </div>
+</div>
+<include file="public:nav"/>
+<include file="public:footer"/>

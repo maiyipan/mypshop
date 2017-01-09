@@ -1,0 +1,25 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">我的心愿单</span>
+</div>
+<div class="listDiv">
+    <ul>
+        <li>
+        <volist name="item_list" id="item">
+            <div class="singleList">
+                <div class="left"><a href="{:U('item/details',array('id'=>$item['id'], 'sid'=>$shopid))}"><img src="{:attach($item['baseid']['img'])}"> </a> </div>
+                <div class="right">
+                    <a href="{:U('item/details',array('id'=>$item['id'], 'sid'=>$shopid))}" ><p class="name">{$item.baseid.title}</p></a>
+                   <!--  <p class="description">{$item.stitle}</p> -->
+                    <p class="price">{$item.price}<a href="#"></a> </p>
+                    <p class="info">产地：<span class="address">{$item.baseid.originplace}</span></p>
+                </div>
+            </div>
+            </volist>
+        </li>
+    </ul>
+</div>
+
+<include file="public:footer"/>

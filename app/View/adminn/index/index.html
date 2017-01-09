@@ -1,0 +1,63 @@
+<include file="public:header" />
+<include file="public:navbar" />
+
+<div class="main-container" id="main-container">
+	<div class="main-container-inner">
+		
+			<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+				<!-- <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+							<button class="btn btn-link">
+								<i class="icon-signal"></i>
+							</button>
+
+							<button class="btn btn-link">
+								<i class="icon-pencil"></i>
+							</button>
+
+							<button class="btn btn-link">
+								<i class="icon-group"></i>
+							</button>
+
+							<button class="btn btn-link">
+								<i class="icon-cogs"></i>
+							</button>
+						</div>
+
+						<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+							<span class="btn btn-link"></span>
+
+							<span class="btn btn-link"></span>
+
+							<span class="btn btn-link"></span>
+
+							<span class="btn btn-link"></span>
+						</div> -->
+				<!-- 当前店铺：{$shop.name}  -->
+			</div>
+			<!-- #sidebar-shortcuts -->
+		<div id="sidebar" class="sidebar" data-uri="{:U('index/left')}">
+		</div>
+		<script type="text/javascript" language="javascript">
+			function iframeResize(iframe) {
+				iframe.height = $(window).height() - 90;
+			}
+		</script>
+		<div class="main-content">
+			<div class="breadcrumbs" id="breadcrumbs">
+				<ul class="breadcrumb">
+					<i class="icon-home home-icon"></i>
+					<li><a href="javascript:void(0);">商城设置</a></li>
+					<li class="active">商城设置</li>
+				</ul>
+			</div>
+			<div id="content_main">
+				<iframe src="{:U('index/panel')}" id="main_iframe"
+					name="main_iframe" style="width: 100%;" frameborder="0"
+					onload="iframeResize(this);" scrolling="yes"></iframe>
+			</div>
+		</div>
+
+	</div>
+</div>
+<include file="public:footer" />
+

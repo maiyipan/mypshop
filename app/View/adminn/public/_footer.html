@@ -1,0 +1,32 @@
+<script src="__STATIC__/js/shop/formValidator/formValidator-4.1.3.js"></script>
+<script src="__STATIC__/js/shop/layer/layer.js"></script>
+<script src="__STATIC__/js/shop/common.js"></script>
+
+<script src="__STATIC__/js/pinphp.js"></script>
+
+
+<script src="__STATIC__/js/admin.js?v1442"></script>
+<script>
+//初始化弹窗
+(function (d) {
+    d['okValue'] = lang.dialog_ok;
+    d['cancelValue'] = lang.dialog_cancel;
+    d['title'] = lang.dialog_title;
+})($.dialog.defaults);
+
+$(function(){
+	$('.toback').click(function(){
+		history.go(-1);
+	})
+});
+</script>
+
+<script src="__STATIC__/js/jquery/plugins/listTable.js?v1442"></script>
+<script>
+$(function(){
+	$('.J_tablelist').listTable();
+});
+</script>
+<!-- 
+      <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+      <script src="__STATIC__/zui/js/zui.min.js"></script>  -->

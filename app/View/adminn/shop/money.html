@@ -1,0 +1,128 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="pad_lr_10" style="padding-top:10px;background-color: #eff1f2;">
+    <div class="data-item">
+    	<ul>
+    		<li>
+                <h2>总金额</h2>
+                <div class="itemSum"><span>￥{$countValue}</span></div>
+    		</li>
+    		<li>
+                <h2>今天金额</h2>
+                <div class="itemSum"><span>￥{$todayValue}</span></div>
+    		</li>
+    		<li>
+                <h2>昨天金额</h2>
+                <div class="itemSum"><span>￥{$yesterdayValue}</span></div>
+    		</li>
+    		<li>
+                <h2>本月金额</h2>
+                <div class="itemSum"><span>￥{$curMonValue}</span></div>
+    		</li>
+    	</ul>
+    </div>
+    <div class="clearfix databox-line">
+    	<div class="inner">
+        	<h2>最近一个月收入</h2>
+            <div>
+				<div id="main" style="height:400px;width:100%;padding:10px;"></div>
+ 			</div>
+ 			<div style="margin:20px auto ;width:800px;">
+                <table width="100%" class="table table-hover">
+				<thead>
+					<tr>
+						<th width="100" class="td_center">编号</th>
+						<th width="150">日期</th>
+						<th width="50"><span>收入</span></th> 
+					</tr>
+				</thead>
+				<tbody id="text">
+				</tbody>
+				</table>
+            </div>
+ 		</div>
+    </div>
+    
+</div>
+<script src="__STATIC__/js/shop/echarts/echarts.js" type="text/javascript"></script>
+<script type="text/javascript">
+    require.config({
+        paths: {
+            echarts: '__STATIC__/js/shop/echarts/'
+        }
+    });
+    
+    $(function(){
+        loadReportData();
+    });
+
+    function loadReportData(){
+        $.ajax({
+        	dataType:"json",
+            url:"{:U('shop/money_json')}",
+            async:false,
+            success:function(resObj){
+                if(resObj.status==1){
+                    var categoryData = new Array;
+                    var seriesData = new Array;
+                    var text = ''
+                    for(var index in resObj.data){
+                    	text += '<tr>';
+                    	var dd = resObj.data[index];
+                        categoryData.push(dd.name);
+                        seriesData.push(dd.value);
+                        text += '<td>'+(parseInt(index)+1)+'</td>';
+                        text += '<td>'+dd.displayDate+'</td>';
+                        text += '<td>'+dd.value+'</td>';
+                        text += '</tr>';
+                    }
+                    $('#text').html(text);
+                    showReport(categoryData,seriesData);
+                }
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert(XMLHttpRequest.status);
+            }
+        });
+    }
+
+    function showReport(categoryData,seriesData){
+        require(
+                [
+                    'echarts',
+                    'echarts/chart/bar',
+                    'echarts/chart/line',
+                ],
+                function (ec) {
+                    var myChart = ec.init(document.getElementById('main'));
+                    myChart.setOption({
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data :categoryData
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'line',
+                                splitArea : {show : true}
+                            }
+                        ],
+                        series : [
+                            {
+                                type:'line',
+                                data:seriesData
+                            }
+                        ]
+                    });
+                }
+        );
+    }
+</script>
+<include file="public:_footer" />
+</body>
+</html>

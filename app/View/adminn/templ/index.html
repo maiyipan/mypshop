@@ -1,0 +1,40 @@
+<include file="public:_header" />
+<!--广告列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list" data-acturi="{:U('ad/ajax_edit')}">
+		<table width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th width="25"><input type="checkbox" name="checkall" class="J_checkall"></th>
+            <th>ID</th>
+            <th align="left"><span data-tdtype="order_by" data-field="name">模板名称</span></th>
+            <th align="left"><span data-tdtype="order_by" data-field="url">模板ID号</span></th>
+            <th width="147">{:L('operations_manage')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <volist name="list" id="val" >
+          <tr>
+            <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center">{$val.id}</td>
+            <td align="center">{$val.name}</td>
+            <td align="center">{$val.val}</td>
+            <td align="center">
+            	<a href="javascript:void(0);" class="J_showdialog btn btn-link" data-uri="{:U('templ/edit', array('id'=>$val['id']))}" data-title="{:L('edit')} - {$val.name}" data-id="edit" data-width="520" data-height="410">{:L('edit')}</a> | 
+                <a href="javascript:void(0);" class="J_confirmurl btn btn-link" data-acttype="ajax" data-uri="{:u('templ/delete', array('id'=>$val['id']))}" data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">{:L('delete')}</a></td>
+          </tr>
+          </volist>
+        </tbody>
+      	</table>
+		<div class="btn_wrap_fixed">
+    		<label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+            <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('ad/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+    		<div id="pages">{$page}</div>
+    	</div>
+    </div>
+</div>
+<include file="public:_footer" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script type="text/javascript" src="__STATIC__/js/calendar/calendar.js"></script>
+</body>
+</html>

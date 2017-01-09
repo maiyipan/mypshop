@@ -1,0 +1,59 @@
+
+<include file="public:header" />
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home2" class="tab-pane in active">
+						<form action="__URL__/code" method="post">
+							<div class="row">
+								<div class="col-xs-12 no-padding-right">
+									<div class="table-responsive">
+										<table cellpadding="2" cellspacing="2" width="100%" border="0"
+											class="table_form">
+											<tbody>
+												<tr>
+													<th align="left">二维码类型</th>
+													<td>
+														<div class="form_group">
+															<select name="sex">
+																<option value="1">永久</option>
+																<option value="0">临时</option>
+															</select>
+														</div>
+													</td>
+												</tr>
+
+												<tr>
+													<th align="left">使用时间</th>
+													<td><select name="num">
+															<option value="1">1</option>
+															<option value="2">2</option>
+															<option value="3">3</option>
+															<option value="4">4</option>
+															<option value="5">5</option>
+															<option value="6">6</option>
+															<option value="7">7</option>
+													</select></br></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="form-actions">
+									<button class="btn btn-link btn-submit J_ajax_submit_btn"
+										type="submit">生成</button>
+								</div>
+							</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<include file="public:common" />

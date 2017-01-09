@@ -1,0 +1,389 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div id="indexPage">
+  <div class="searchDiv " name="website" id="website">
+        <!-- 门店选择 begin -->
+        <!--<textarea class="address"  value="dd" name="address" id="shopval" onchange="transfer()">长虹-->
+<!--</textarea>-->
+      <p class="address"  value="dd" name="address" id="shopval" onchange="transfer()">
+          <!--<option selected> </option>-->
+          <!--<option > ddd</option>-->{$shopname}
+      </p>
+        <!-- end -->
+        <!-- 搜索 begin -->
+        <form method="post" action="{:U('index/doSearch',array('sid'=>$shopid))}" onsubmit="return validate()" id="serch_form" name="serch_form" class="srhtf">
+            <input class="search inputBind" type="text" id="keyword" value="{$keyword}" name="keyword" placeholder="搜索佳鲜农庄">
+            <i class="ic-search"></i>
+        </form>
+        <!-- end -->
+        
+        <!-- 扫描 begin -->
+        <span class="number">
+            <i class="ic-scan" ></i>
+              <img src="__STATIC__/home/images/line.png" id="line" class="">
+        </span>
+        <!-- end -->
+   </div>
+    <script type="text/javascript">
+        function stopScrolling( e ) {
+            e.preventDefault();
+        }
+        $(function(e){
+        	/* if (sessionStorage.getItem("isgetloca") != 0 ) {
+            	$(".loadingSection").show();
+                document.addEventListener( 'touchmove' , stopScrolling , false );
+            } */
+            $('.ic-search').click(function(){
+                if(validate())
+                    $('#serch_form').submit();
+            })
+        })
+        function validate() {
+            var ival = document.getElementById('keyword');
+           // if(!ival.value) { alert("请输入关键字！"); return false; }
+            return true;
+        }
+    </script>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <volist name='ad' id='vo'>
+					<div class="swiper-slide">
+            			<a href="{$vo.url}"> <img  class="bannerImg" title="{$vo.desc}" src="__ROOT__/data/upload/advert/{$vo.content}"></a>
+           			</div>
+			</volist>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <!-- 公告栏-->
+    <div class="ad" style="position: relative">
+        <img src="__STATIC__/home/images/Shape-130.png" style="position: absolute ;left: 34px;top:17px;">
+        <ul>
+			<volist name='postList' id='vo'  key="k">
+				<li data-id=""><span>{$vo.notice}</span>  </li>
+			</volist>
+        </ul>
+    </div>
+	<div class="sortDiv">
+        <ul class="preUl"  style="display:none">
+            <li class="pre"><a href="{:U('score/integration',array('sid'=>$shopid))}">
+            	<i class="ic-shopbag" ></i><em>积分有礼</em></a>
+            </li>
+            <li class="pre">
+            	<a href="{:U('market/enterpriceInfo',array('sid'=>$shopid))}"> <i class="ic-groupbuy" ></i><em>企业团购</em></a>
+            </li>
+            <li class="pre">
+            	<a href="{$today.url}"> <i class="ic-gift" ></i><em>天天有奖</em></a>
+            </li>
+        </ul>  
+        
+         <!--  <ul class="preUl">
+         <volist name='section' id='sec'>
+        	 <li class="newUl">
+            	<a href="{$sec.url}">
+            	</a>
+            </li>
+        </volist>
+        </ul>  -->
+      <ul class="aftUl">
+            <li class="aft">
+              <a href="{:U('market/limitbuy',array('sid'=>$shopid))}">
+              	<!-- <img src="__STATIC__/home/images/qianggou.jpg"> -->
+              	<img src="{:attach(C('section_qianggou'), 'section')}" >   
+              </a>
+            </li>
+            <li class="aft">
+            	<a href="{:U('market/recommend',array('sid'=>$shopid))}">
+            		<!-- <img src="__STATIC__/home/images/jingpin.jpg"> -->
+            		<img src="{:attach(C('section_jingpin'), 'section')}" >
+            	</a>
+            </li>
+            <li class="aft">
+            	<a href="{:U('market/lingxian',array('sid'=>$shopid))}">
+            	<!-- 	 <img src="__STATIC__/home/images/lingxian.jpg">-->
+            	<img src="{:attach(C('section_lingxian'), 'section')}" >
+            	</a>
+            </li>
+        </ul> 
+    </div>
+    <if condition="$index_order eq 0">
+				<div class="bigMoreDiv">
+			        <ul>
+			            <volist name='activityList' id='vo'>
+			                  <div class="seeMoreDiv">
+			                    <div class="moreBtn">
+			                        <span class="activity_name">{$vo.name}</span>
+			                        <!--<a href="#">查看更多<i class="ic-more"></i> </a>-->
+			                    </div>
+			                    <div class="specialPriceDiv">
+			                             <volist name="vo.list" id="valkey">
+			                              <div class="<if condition="$valkey.ismain eq 0">left<elseif condition="$valkey.ismain eq 1"/>top<else />bottom</if> ">
+			                                 <a href="{:U('market/promotionList',array('id'=>$valkey['id'],'sid'=>$shopid))}"> 
+			                                   <img title="{$valkey.name}" src="__ROOT__/data/upload/shop_expand/{$valkey.img}">
+			                                 </a>
+			                              </div>
+			                           </volist> 
+			                    </div>
+			                </div>
+			            </volist>
+			        </ul>
+   			 	</div>
+
+				<div class="banners">
+					     <ul>
+					        <volist name='bannersList' id='banner'>
+					    	  <li>
+					        	<a href="{$banner.url}">
+					        		<img title="{$banner.name}" src="__ROOT__/data/upload/{$banner.img}">
+					        	</a>
+					          </li>
+					        </volist>
+					    </ul>
+				</div>
+	<else />
+			<div class="banners">
+					     <ul>
+					        <volist name='bannersList' id='banner'>
+					    	  <li>
+					        	<a href="{$banner.url}">
+					        		<img title="{$banner.name}" src="__ROOT__/data/upload/{$banner.img}">
+					        	</a>
+					          </li>
+					        </volist>
+					    </ul>
+				</div>
+				
+			<div class="bigMoreDiv">
+			        <ul>
+			            <volist name='activityList' id='vo'>
+			                  <div class="seeMoreDiv">
+			                    <div class="moreBtn">
+			                        <span class="activity_name">{$vo.name}</span>
+			                        <!--<a href="#">查看更多<i class="ic-more"></i> </a>-->
+			                    </div>
+			                    <div class="specialPriceDiv">
+			                             <volist name="vo.list" id="valkey">
+			                              <div class="<if condition="$valkey.ismain eq 0">left<elseif condition="$valkey.ismain eq 1"/>top<else />bottom</if> ">
+			                                 <a href="{:U('market/promotionList',array('id'=>$valkey['id'],'sid'=>$shopid))}"> 
+			                                   <img title="{$valkey.name}" src="__ROOT__/data/upload/shop_expand/{$valkey.img}">
+			                                 </a>
+			                              </div>
+			                           </volist> 
+			                    </div>
+			                </div>
+			            </volist>
+			        </ul>
+   			 	</div>
+   </if>
+
+    
+
+
+    <section class="addressChoiceSection dis_none">
+        <div class="addressChoice" >
+            <div class="dis_none nomal">
+                <p >获取到距您最近的店为：</p>
+                <p  class="newestAddress " data-id="{$website}/{$shopinfo.uid}">{$shopname}</p>
+                <p >为您推荐：</p>
+            </div>
+            <div class="proAddress">
+                <ul>
+                    <volist name='shopinfo' id='shopinfo'>
+                        <p data-id="{$website}/{$shopinfo.uid}"  >
+                        {$shopinfo.name}
+                        </p>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="loadingSection dis_none">
+        <div class="loadDiv ">
+            <img src="__STATIC__/home/images/loading.png">
+            <p>定位中.....</p>
+        </div>
+    </section>
+    <!-- <div class="seeMoreDiv">
+        <div class="moreBtn">
+            <a href="#">查看更多<i class="ic-more"></i> </a>
+        </div>
+        <div class="specialPriceDiv">
+            <table>
+                <tr>
+                    <td rowspan=2 class="left">
+                    	<a href="{:U('market/promotionList')}"><img src="__STATIC__/home/images/tehui.jpg"></a>
+                    </td>
+                    <td class="top">
+                    	<a href="{:U('market/promotionList')}"><img src="__STATIC__/home/images/eggs.jpg"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bottom">
+                    	<a href="{:U('market/promotionList')}"><img src="__STATIC__/home/images/caihua.jpg"></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> -->
+    
+	<include file="public:nav"/>
+</div>
+
+<include file="public:footer"/>
+<include file="public:weixin"/> 
+<!-- <script type="text/javascript" src="__STATIC__/home/js/weixinapi.js"></script> -->
+<script type="text/javascript" src="__STATIC__/home/js/swiper3.js"></script>
+<script type="text/javascript">
+    function stopScrolling( e ) {
+        e.preventDefault();
+    }
+    $(function(){
+        runNews()
+    })
+    //公告栏滚动
+    function runNews() {
+        var $li = $(".ad ul li"), liNum = $li.length, k = 0;
+        function run() {
+            if (k == 0) {
+                $li.eq(k).show();
+                k++
+            } else if (k == liNum) {
+                $li.eq(0).show();
+                k = 1;
+            } else {
+                $li.eq(k).show();
+                $li.eq(k - 1).hide();
+                k++
+            }
+        }
+        run();
+        setInterval(run, 4000)
+    }
+    
+    function ScrollImgLeft(){ 
+    	var speed=50; 
+    	var scroll_begin = document.getElementById("scroll_begin"); 
+    	var scroll_end = document.getElementById("scroll_end"); 
+    	var scroll_div = document.getElementById("scroll_div"); 
+    	scroll_end.innerHTML=scroll_begin.innerHTML; 
+    	function Marquee(){ 
+    	if(scroll_end.offsetWidth-scroll_div.scrollLeft<=0) 
+    	scroll_div.scrollLeft-=scroll_begin.offsetWidth; 
+    	else 
+    	scroll_div.scrollLeft++; 
+    	} 
+    	var MyMar=setInterval(Marquee,speed); 
+    	scroll_div.onmouseover=function() {clearInterval(MyMar);} 
+    	scroll_div.onmouseout=function() {MyMar=setInterval(Marquee,speed);} 
+    	} 
+
+
+       /*  $(".addressChoiceSection p").on("click",function(){
+            var id=$(this).attr("data-id");
+            console.log(id)
+            $(".searchDiv p.address ").val(id) ;
+            $(".searchDiv p.address ").text($(this).text())
+            $(".searchDiv p.address ").attr("data-id",id)
+            window.location.href=id;
+            $(".addressChoiceSection ").hide();
+            document.removeEventListener( 'touchmove' , stopScrolling  );
+
+        })*/
+        $(".searchDiv p").on("click",function(){
+            //$(".addressChoiceSection ").show();
+            //document.addEventListener( 'touchmove' , stopScrolling , false );
+             var uidurl  = '{:U('index/storeList',array('sid'=>$shopid))}';
+             console.log(uidurl)
+             window.location.href=uidurl;
+        }) 
+
+    var mySwiper = new Swiper ('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+//        // 如果需要分页器
+        pagination: '.swiper-pagination',
+        autoplay : 3000,
+//        // 如果需要前进后退按钮
+//        nextButton: '.swiper-button-next',
+//        prevButton: '.swiper-button-prev',
+//        // 如果需要滚动条
+//        scrollbar: '.swiper-scrollbar',
+    })
+    //调取微信二维码
+    $(".number .ic-scan").on("click",function(){
+   		//alert(1111) 
+        wx.scanQRCode({
+          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function (res) {
+              var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+              //alert (result);
+              if (IsURL (result)) {
+            	  //alert ('if');
+            	  window.location.href=result;
+              } else {
+            	  scan (result);
+              }
+              
+         }
+        });
+    })
+    
+    function scan(code) {
+    	$.ajax({
+            type: 'get',
+            url:'{:U('item/scan')}',
+            dataType: 'json',
+            timeout: 15000,
+            data: {
+            	code: code
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                	//alert (data.data.url);
+                	window.location.href=data.data.url;
+                } else {
+                    alert(data.data.msg);
+                }
+            },
+            error: function (xhr, type) {
+                //alert('网络超时，请刷新后再试！');
+            }
+        })
+    }
+    
+    
+    function IsURL (str_url) { 
+    	var strRegex = '^((https|http|ftp|rtsp|mms)?:\/\/)' 
+    	+ '?(([0-9a-z_!~*\'().&=+$%-]+: )?[0-9a-z_!~*\'().&=+$%-]+@)?' //ftp的user@ 
+    	+ '(([0-9]{1,3}.){3}[0-9]{1,3}' // IP形式的URL- 199.194.52.184 
+    	+ '|' // 允许IP和DOMAIN（域名） 
+    	+ '([0-9a-z_!~*\'()-]+\.)*' // 域名- www. 
+    	+ '([0-9a-z][0-9a-z-]{0,61})?[0-9a-z].' // 二级域名 
+    	+ '[a-z]{2,6})' // first level domain- .com or .museum 
+    	+ '(:[0-9]{1,4})?' // 端口- :80 
+    	+ '((\/\?)|' // a slash isn't required if there is no file name 
+    	+ '(\/[0-9a-zA-Z_!~\*\'\(\)\.;\?:@&=\+\$,%#-\/]*)?)$'; 
+    	var re=new RegExp(strRegex); 
+    	//re.test() 
+    	if (re.test(str_url)) { 
+    		return true; 
+    	} else { 
+    		return false; 
+    		} 
+    	} 
+    
+	function transfer(){
+	/*  var shopinfo = document.getElementById('shopval');
+	 var uidurl =  shopinfo.options[shopinfo.selectedIndex].value; */
+//        var uidurl =  $("#shopval").attr("data-id");
+	 var uidurl  = '{:U('index/doSearch',array('sid'=>$shopid))}';
+        console.log(uidurl)
+        
+		if(uidurl!=""){
+		  window.location.href=uidurl;
+		}
+    }
+</script>       
+<!-- <option value="http://ik.shop.com/index.php/index/index/sid/{$shopinfo.uid}" >{$shopinfo.name}</option> -->
+<include file="public:weixinPublicShare"/>
+

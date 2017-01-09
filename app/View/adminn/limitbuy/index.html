@@ -1,0 +1,64 @@
+<include file="public:_header"/>
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	<a class="add fb btn btn-add" href="{:U('limitbuy/add')}"><em>添加限时抢购</em></a></div>
+</div>
+<!--栏目列表-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+                <th>名称</th>
+	            <th>活动时间</th>
+	            <th style="background: #F5F4F4;" >抢购商品 </th>
+	            <th>状态</th>
+	            <th>添加时间</th>
+	            <th width="250">管理操作</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center" >{$val.name}</td>
+            <td align="center">{$val.start_time}～{$val.end_time}</td>
+            <td style="padding:0;">
+         		<table width="100%">
+         			<volist name="val['items']" id="item">
+         			<tr>
+         				<td  style="background: #F5F4F4;">
+         				<if condition="$item.img neq ''">
+         				<img src="{:attach($item['img'])}" style="max-width:50px;max-height:50px" />
+         				</if>{$item.title}</td>
+						<td style="background: #F5F4F4;">{$item.original_price}</td>
+						<td style="background: #F5F4F4;color:#ff0000;">抢:{$item.limitbuy_price}元</td>
+         			</tr>
+         			</volist>
+         		</table>
+         	</td>
+            <td align="center" >
+            	<if condition="$val['is_close'] eq 1 ">关闭<else />开启</if>
+            </td>
+            <td align="center">{$val.add_time}</td>
+			<td align="center">
+			<a href="{:U('limitbuy/edit', array('id'=>$val['id']))}" class="button button2">编辑</a> | 
+			<a href="{:U('limitbuy/items', array('id'=>$val['id']))}" class="button button2">商品列表</a> | 
+			<a href="javascript:void(0);" class="J_confirmurl" data-acttype="ajax" data-uri="{:u('limitbuy/delete', array('id'=>$val['id']))}" 
+			data-msg="{:sprintf(L('confirm_delete_one'),$val['name'])}">删除</a>
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('limitbuy/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

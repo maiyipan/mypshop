@@ -1,0 +1,45 @@
+<include file="public:_header" />
+<div <notempty name="big_menu">class="pad_lr_10"<else/>class="pad_10"</notempty> >
+    <div class="J_tablelist table_list" data-acturi="{:U('message/ajax_edit')}">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                <th width="150">发信人</th>
+                <th width="150">收信人</th>
+                <th>信息内容</th>
+                <th width="140">发送时间</th>
+                <if condition="$type eq 2">
+				<th width="80">{:L('status')}</th>
+				</if>
+                <th width="80">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+    	<tbody>
+            <volist name="list" id="val">
+            <tr>
+                <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                <td align="center">{$val.from_name}</td>
+                <td align="center"><if condition="$val['to_id'] eq 0">所有会员<else />{$val.to_name}</if></td>
+                <td align="left">{$val.info|strip_tags}</td><!--|msubstr=0,26-->
+                <td align="center">{$val.add_time|date='Y-m-d H:i:s',###}</td>  
+                <if condition="$type eq 2">
+				<td align="center">
+				    <if condition="$val['status'] eq 3"><span class="strike gray">已删(接受者)</span><elseif condition="$val['status'] eq 2" /><span class="strike gray">已删(发送者)</span><elseif condition="$val['status'] eq 1">已读<else/><span class="red">未读</span></if>
+				</td>
+				</if>
+                <td align="center"><a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('message/delete', array('id'=>$val['id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['form_name'])}">{:L('delete')}</a></td>
+            </tr>
+            </volist>
+    	</tbody>
+    </table>
+	</div>
+    <div class="btn_wrap_fixed">
+        <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('message/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<include file="public:_footer" />
+</body>
+</html>

@@ -1,0 +1,208 @@
+<include file="public:_header"/>
+<style>
+	.border_table {margin: 10px 0;background: #fff;}
+	.border_table thead tr th {color: #333;white-space: nowrap;text-align: center;background: #f6f6f6;}
+	.ptable td{padding: 5px 10px 5px;}
+	.border_table .btn{margin-left:10px;}
+	#speed_goods td{background:#fff;}
+	.border_table tr th,.border_table tr td{border:1px solid #e1e1e1;vertical-align:middle;white-space:nowrap;word-break:keep-all}
+</style>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">添加组合商品</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	        <table class="shop-form" >
+	           <tr>
+	             <th width='120'>组合商品名称<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="name" class="input-text" size="30">
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>促销时间<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" name="start_time" id="J_time_start" class="date" size="12" value="">
+	               ～
+	               <input type="text" name="end_time" id="J_time_end" class="date" size="12" value="">
+	             </td>
+	           </tr>
+	           <tr>
+					<th width='120'>是否开启<font color='red'>*</font>：</th>
+					<td>
+						<label class='attr'><input type='radio' name='online' value='0'  checked=checked/>是</label>
+						<label class='attr'><input type='radio' name='online' value='1' />否</label>
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>设置组合商品：</th>
+					<td>
+						<table class='border_table' border="1" style='width:65%'>
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>名称</th>
+									<th>主商品</th>
+									<th colspan="2">原价格</th>
+								</tr>
+							</thead>
+							<tbody id='speed_goods'>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan='4'>
+										<button type='button' id="searchGoods" data-id="edit" data-uri="{:U('assemble/search_items')}" 
+				data-title="商品筛选"  data-width="600" data-height="300" class='btn'><span>选择商品</span></button>
+										<label>* 设置要组合促销的商品，建议设置二种商品</label>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>原价：</th>
+					<td>
+						<input type="text" id="original_price" name="original_price" class="input-text" size="30">
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>组合价<font color='red'>*</font>：</th>
+					<td>
+						<input type="text" id="assemble_price" name="assemble_price" class="input-text" size="30">
+					</td>
+				</tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+Calendar.setup({
+    inputField : "J_time_start",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "J_time_end",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+function relationCallBack(goodsList){
+	if(goodsList){
+		var length = $('#speed_goods tr').length;
+		/* if((length+goodsList.length) > 2){
+			alert('选择的组合商品超过了2种');
+			return false;
+		} */
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList,function(){
+			var value = $(this).attr('price');
+			if($('input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			$('#speed_goods').append('<input type="hidden" class="itemid" name="itemid[]" value="'+$(this).attr('id')+'" />');
+			html += '<tr><td><img src="'+$(this).attr('img')+'" style="max-width:50px;max-height:50px;" /></td>'
+						+'<td>'+$(this).attr('title')+'</td>'
+						+'<td align=center><input type="radio" name="main" value="'+$(this).attr('id')+'"/></td>'
+						+'<td align=center>'+$(this).attr('price')+'</td>'
+						+'<td><span class="del">&nbsp;&nbsp;删除</span></td></tr>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#speed_goods').append(html);
+	}
+}
+$(function(){
+	$('.del').live('click',function(){
+		$(this).parent().parent().remove();
+	})
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return validForm();
+		},onError:function(msg){
+	}});
+	 $("#name").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入名称"});
+	 $("#assemble_price").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入组合价格"});
+	 $("#J_time_end").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请选择有效期时间"});
+})
+
+function validForm(){
+	var J_time_start = $.trim($('#J_time_start').val());
+	var J_time_end = $.trim($('#J_time_end').val());
+	if(J_time_start == '' || J_time_end == ''){
+		SHOP.msg('请选择对应日期', {icon: 5});
+		return false;
+	}
+	if(!SHOP.validTime(J_time_start,J_time_end)){
+		 SHOP.msg('结束日期不能小于开始日期', {icon: 5});
+		 return false;
+	}
+	if($('.itemid').length == 0){
+		alert('请选择商品');
+		return false;
+	}
+	if($('input[name=main]:checked').length == 0){
+		alert('请选择主商品');
+		return false;
+	}else{
+		return true;
+	}
+}
+</script>
+<include file="public:_footer" />
+</body>
+</html>

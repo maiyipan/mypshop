@@ -1,0 +1,64 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<input id="1" hidden>
+<div class="backDiv ">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <form method="post" action="{:U('index/doSearch',array('sid'=>$shopid))}" onsubmit="return validate()" id="serch_form" name="serch_form" class="srhtf">
+        <input class="search inputBind" type="text" id="keyword" name="keyword" placeholder="搜索佳鲜农庄" >
+        <i class="ic-search" id="search"></i>
+    </form>
+</div>
+<div class="listDiv orderListDiv" data-id="1" data-classId="{$classId}">
+    <div class="randLableDiv">
+        <span   class="selesLable">销量优先</span>
+				<span  class="priceLable ">价格
+					<div class="iDiv">
+                        <i class="ic-up-dir up" ></i>
+                        <i class="ic-down-dir down" ></i>
+                    </div>
+				</span>
+        <span  class="timeLable">时间</span>
+    </div>
+     <div id="goodlist" style="height: 850px;">
+    	<ul>
+    	</ul>
+    </div>
+     <span class="loadingMoreBtn dis_none">点击加载更多.......</span>
+</div>
+
+<style>
+    .loadingMoreBtn{
+        content: "";
+        width: 16px;
+        height: 15px;
+        position: absolute;
+        left: 3px;
+        background-image: url(//img11.360buyimg.com/cms/jfs/t490/282/1327111733/2166/b74c372a/54c9cd79N04238576.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        top: 50%;
+        margin-top: -8px;
+    }
+</style>
+<script>
+    $(".orderListDiv .randLableDiv>span.selesLable").css("color","#f29200").show().siblings().css("color","#8f8c79");
+   /*  var   url="{:U('market/limit_ajax',array('sid'=>$shopid))}";
+    var classId=$(".listDiv").attr("data-classId");
+    pageLoading(1,url,classId); */
+//搜索
+    $('#search').click(function(){
+        if(validate())
+            $('#serch_form').submit();
+    })
+    function validate() {
+        var ival = document.getElementById('keyword');
+        if (!ival.value) {
+            alert("请输入关键字！");
+            return false;
+        }
+        return true;
+    }
+</script>
+<include file="public:cart_foot"/>
+<include file="public:nav"/>
+<include file="public:footer"/>

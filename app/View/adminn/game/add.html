@@ -1,0 +1,69 @@
+<!--礼金券-->
+<div class="dialog_content">
+    <form id="info_form" name="info_form" action="{:u('game/add')}" method="post">
+    <table width="100%" class="table_form">
+        <tr>
+            <th width="80">活动名称:</th>
+            <td><input type="text" name="name" id="name" class="input-text"></td>
+        </tr>
+        <tr>
+            <th>活动链接:</th>
+            <td><input type="text" name="url" id="url" class="input-text" onkeyup=""></td>
+        
+        </tr>
+          <tr>
+            <th>活动描述</th>
+            <td><input type="text" name="desc" id="desc" class="input-text" onkeyup=""></td>
+        
+        </tr>
+        	<tr>
+      <th>时间范围:</th>
+      <td>
+        <input type="text" name="start_time" id="start_time" class="date" size="12"> - 
+        <input type="text" name="end_time" id="end_time" class="date" size="12">
+      </td>
+    </tr>
+<tr>
+        <th>{:L('enabled')} :</th>
+        <td>
+            <label><input type="radio" name="status" value="1" checked> {:L('yes')}</label>&nbsp;&nbsp;
+            <label><input type="radio" name="status" value="0"> {:L('no')}</label>
+        </td>
+    </tr>        
+    </table>
+    </form>
+</div>
+<script>
+Calendar.setup({
+    inputField : "start_time",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "end_time",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+
+$(function(){
+    $.formValidator.initConfig({formid:"info_form",autotip:true});
+    //$("#discount_num").formValidator({ onshow:lang.please_input+lang.discount, onfocus:lang.please_input+lang.discount, oncorrect:lang.input_right}).inputValidator({ min:1, onerror:lang.please_input+lang.discount});
+
+    $('#info_form').ajaxForm({success:complate,dataType:'json'});
+    function complate(result){
+        if(result.status == 1){
+            $.dialog.get(result.dialog).close();
+            $.pinphp.tip({content:result.msg});
+            window.location.reload();
+        } else {
+            $.pinphp.tip({content:result.msg, icon:'alert'});
+        }
+    }
+    
+    $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+});
+</script>

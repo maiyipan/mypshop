@@ -1,0 +1,126 @@
+<include file="public:_header"/>
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	<a class="add btn btn-add" href="{:U('market/url_create')}"><em>添加优惠券</em></a>
+    	</div>
+</div>
+<!--栏目列表-->
+<div class="pad_lr_10">
+<form name="searchform" method="get" >
+  		<input type="hidden" name="status" value="{$search.status}"/>
+	    <table width="100%" cellspacing="0" class="search_form">
+	        <tbody>
+	            <tr>
+	                <td>
+	                <div class="explain_col">
+	                    <input type="hidden" name="g" value="adminn" />
+	                    <input type="hidden" name="m" value="market" />
+	                    <input type="hidden" name="a" value="ticket" />
+	                    <input type="hidden" name="menuid" value="{$menuid}" />
+	                                                   开始时间 :
+	                    <input type="text" name="begintime_min" id="begintime_min" class="date" size="12" value="{$search.begintime_min}">
+	                    -
+	                    <input type="text" name="begintime_max" id="begintime_max" class="date" size="12" value="{$search.begintime_max}">
+	                   	 到期时间 :
+	                    <input type="text" name="expiretime_min" id="expiretime_min" class="date" size="12" value="{$search.expiretime_min}">
+	                    -
+	                    <input type="text" name="expiretime_max" id="expiretime_max" class="date" size="12" value="{$search.expiretime_max}">
+	                                                   活动名称:
+	                    <input name="title" type="text" class="input-text" size="18" value="{$search.random}" />
+	                    <input type="submit" name="search" class="btn" value="搜索" />
+	                    <div class="bk8"></div>                
+	                </div>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	 </form>
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+				<th>活动名称</th>
+                <th>数量</th>
+	            <th>类型</th>
+           		<th>有效期</th>
+	            <th width="250">管理操作</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.urlid}"></td>
+			<td align="center" >{$val.title}</td>
+            <td align="center" >{$val.share}</td>
+            <td align="center" >{$val.coupons}</td>
+            <td align="center" >{$val.begintime}~{$val.expiretime}</td>
+			<td align="center">
+			<a href="javascript:;" class="J_showdialog btn btn-link" data-id="edit" data-uri="{:u('market/pre', array('urlid'=>$val['urlid']))}" 
+							data-title="预览 - {$val.title}"  data-width="400" data-height="130">预览</a> | 
+			<a href="javascript:void(0);" class="J_confirmurl btn btn-link" data-acttype="ajax" data-uri="{:u('market/url_delete', array('urlid'=>$val['urlid']))}" 
+			data-msg="{:sprintf(L('confirm_delete_one'),$val['title'])}">删除</a>
+			</td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+
+Calendar.setup({
+    inputField : "begintime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "begintime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "expiretime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "expiretime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+//创建优惠券
+function create_dialog(ticket_id){
+	$.dialog.prompt('请输入生成线下实体代金券数量：',function(num){
+		var num = parseInt(num);
+		if(isNaN(num) || num <= 0)
+		{
+			alert('请填写正确的数量');
+			return false;
+		}
+		var url = '{:u("market/ticket_create", array("ticket_id"=>"@ticket_id@","num"=>"@num@"))}';
+	    url = url.replace('@ticket_id@',ticket_id).replace('@num@',num);
+		window.location.href = url;
+	});
+}
+function copyUrl2()
+{
+	 var Url2=document.getElementById("text");
+	 Url2.select(); // 选择对象
+ 	document.execCommand("Copy"); // 执行浏览器复制命令
+ 	alert("已复制好，可贴粘。");
+ }
+
+</script>
+<include file="public:_footer" />
+</body>
+</html>

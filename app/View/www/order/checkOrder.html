@@ -1,0 +1,67 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">订单详情</span>
+</div>
+<div class="orderDetail">
+    <div class="orderInfo">
+        <p class="orderStatus">订单状态:<span class="status"><switch name="order.status"><case value="1">待付款</case><case value="2">待发货</case><case value="3">待收货</case><default/>完成</switch></span> </p>
+        <p class="orderNum">订单号：<span class="num">{$order.orderId}</span></p>
+        <p class="orderTime">下单时间：<span class="time">{$order.add_time|date='Y-m-d H:i:s',###}</span></p>
+    </div>
+    <div class="infoTotail" >
+    	<volist name='item_detail' id='item' >
+	        <div class="goodsInfo" style="  height: 150px;   " >
+	            <img src="{:attach(get_thumb($item['img'], '_b'), '')}" style="width: 146px; height: 114px; float: left;padding: 20px">
+	            <div class="goods" style="   margin-top: 20px;">
+	                <p class="goodsName">{$item.title}</p>
+	                <!--<p class="goodsDetail">¥{$item.intro}</p>-->
+	                <p class="goodsPrice">¥{$item.price}<span class="guige">  &nbsp x  &nbsp {$item.quantity}</span></p>
+	            </div>
+	        </div>
+        </volist>
+        
+    </div>
+     <div class="payMode">
+      	<p class="paystyle">支付方式： 
+                      <switch name="order.supportmetho">
+                           <case value='3'>微信支付</case>
+                           <case value='4'>会员支付</case>
+                          <default/>
+                        	  未知
+                      </switch>
+         </p>
+        <p class="freetype">配送方式： 
+        		<if condition="$order.freetype eq '2'">到店自提
+        		<else/>佳鲜配送</if>
+        </p>
+        <p class="expressNum">验&nbsp&nbsp证&nbsp&nbsp码：<span class="status">{$order.shipcode}</span> </p>
+        <p class="orderTime">发货时间：<span class="time"> <if condition="$order.fahuo_time eq ''">-<else/>{$order.fahuo_time|date='Y-m-d H:i:s',###}</if></span></p>
+       <p class="billtrack"  style="height: auto;">门&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp店：<span class="billtrack"> {$shop.name}( <a href="tel:{$shop.tel}"> {$shop.tel}</a>) - {$shop.address}</span> </p>
+    </div>
+
+    <div class="getGood">
+        <p class="gooder">收货人：<span class="geter">{$order.address_name}</span></p>
+        <p class="phone">联系电话:<span class="cellphone">{$order.mobile}</span> </p>
+        <p class="getAddress">收货地址：<span class="address">{$order.address}</span></p>
+    </div>
+    
+    <if condition='$order.status eq 1'>
+                <div class="btn_list  handle">
+                	<span class="left">
+                        <a class="order_cancel" href="{:U('order/cancelOrder',array('orderId'=>$order['orderId'],'sid'=>$shopid))}"
+                           id="order118_action_cancel"> 取消订单</a>
+                    </span>
+                    <span class="right">
+                        <a class="order_pay" href="{:U('order/pay',array('orderId'=>$order['orderId'],'sid'=>$shopid))}"
+                           id="order118_action_pay">付款</a>
+                    </span>
+                </div>
+    </if>
+    
+   
+</div>
+
+<include file="public:nav"/>
+<include file="public:footer"/>

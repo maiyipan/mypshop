@@ -1,0 +1,60 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<input id="{$typeid}" hidden>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <form method="post" action="{:U('index/doSearch',array('sid'=>$shopid))}" onsubmit="return validate()" id="serch_form" name="serch_form" class="srhtf">
+        <input class="search inputBind" type="text" id="keyword" name="keyword" placeholder="搜索佳鲜农庄" onblur="inputBind()">
+        <i class="ic-search" id="search"></i>
+    </form>
+</div>
+<div class="listDiv orderListDiv" data-id="{$typeid}" data-classId="{$classId}" >
+    <div class="randLableDiv">
+        <span   class="selesLable">销量优先</span>
+		<span  class="priceLable ">价格
+			<div class="iDiv">
+                      <i class="ic-up-dir up"></i>
+                      <i class="ic-down-dir down" ></i>
+                  </div>
+		</span>
+        <span  class="timeLable">时间</span>
+    </div>
+    <div id="goodlist" class="promotionList" >
+    	<ul style="overflow: hidden">
+    	</ul>
+    </div>
+   <div style="margin-top: 50px;">
+			<span class="loadingMoreBtn dis_none"></span>
+			</div>
+    
+</div>
+<!--<a href="{:U('shopcart/index')}">-->
+<!--<div class="cartDiv"><i class="ic-cart"></i></div>-->
+<!--</a>-->
+<include file="public:nav"/>
+<include file="public:cart_foot"/>
+<include file="public:footer"/>
+<script>
+    $(".orderListDiv .randLableDiv>span.selesLable").css("color","#f29200").show().siblings().css("color","#8f8c79");
+  // var     url='../item/index_ajax/type/'+ {$typeid} ;
+    /* var classId=$(".listDiv").attr("data-classId")
+  	var url = '{:u("item/index_ajax", array("type"=>"@typeid@"))}';
+    url = url.replace('@typeid@','{$typeid}');
+    pageLoading(1,url,classId); */
+    $('#search').click(function(){
+        if(validate())
+            $('#serch_form').submit();
+    })
+
+    function validate() {
+        var ival = document.getElementById('keyword');
+        if (!ival.value) {
+            alert("请输入关键字！");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<include file="public:weixin"/>
+<include file="public:weixinPublicShare"/>

@@ -1,0 +1,240 @@
+<include file="public:_header"/>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">添加优惠券</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	        <table class="shop-form" >
+	         <tr>
+	             <th width='120'>大标题<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="title" name="title" class="input-text" size="30"  placeholder="如：九折券">
+	             </td>
+	           </tr>
+	            <tr>
+	             <th width='120'>小标题<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="sub_title" name="sub_title" class="input-text" size="30" placeholder="如：全场商品九折优惠">
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>数量<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="name" class="input-text" size="30" placeholder="10">
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>类型<font color='red'>*</font>：</th>
+	             <td>
+	             <select  id="type" name="type">
+	             <option value="请选择">请选择</option>
+	             <option value="1">折扣券</option>
+	             <option value="2">满减券</option>
+	             <option value="3">代金券</option>
+	             </select>
+	             <!--   <input type="text" id="type" name="type" class="input-text" size="30"> -->
+	             </td>
+	           </tr>
+	           
+	           <tr id="discount" style="display:none;">
+	             <th width='120'>折扣<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="discount" name="discount" class="input-text" placeholder="请填写数字如:8" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')"  size="30">
+	             </td>
+	           </tr>
+	           
+	            <tr id="full_cut" style="display:none;">
+	            <th width="120">{:L('full')}<font color='red'>*</font> :</th>
+	            <td><input type="text" name="full" id="full" class="input-text" size="30" placeholder="请填写数字如:100"></td>
+	            
+	            <th width="120">{:L('cut')}<font color='red'>*</font> :</th>
+	            <td><input type="text" name="cut" id="cut" class="input-text" size="30" placeholder="请填写数字如:10"></td>           
+        		</tr>
+        		
+        		<tr id="gift" style="display:none;">
+	            <th width="120">{:L('gift')}<font color='red'>*</font> :</th>
+	            <td><input type="text" name="gift" id="gift" class="input-text" size="30" placeholder="请填写数字如:100"></td>
+	        	</tr>
+		        
+		         <tr>
+	             <th width='120'>有效期<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" name="start_time" id="J_time_start" class="date" size="12" placeholder="2015-11-11">
+	               ～
+	               <input type="text" name="end_time" id="J_time_end" class="date" size="12" placeholder="2015-12-12">
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>内容<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="explain" class="input-text" size="30" placeholder="新年活动全场商品九折优惠">
+	             </td>
+	           </tr>
+	           <tr>
+				<th width="120"><label class="control-label"><em font="red">*</em>可使用商品：</label></th>
+				<td><label class="radio inline"><input id="rad1" type="radio" name="commend" value="全店通用" checked="checked" class="rad">全店通用</label> 
+				<label class="radio inline"><input id="rad2" type="radio" name="commend" value="指定商品" class="rad">指定商品</label></br>
+				<div id="title" stly="disply:none"></div>
+				<div name="itemadd" id="item_add" style="display: none">
+				<button type='button' id="searchGoods" data-id="edit" data-uri="{:U('discount/itemadd')}"  data-title="商品筛选"  data-width="600" data-height="300" class='btn'><span>添加商品</span></button></div>
+				<div id="div"></div></td>
+				</tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {  
+$("#type").change(function(){  
+		var name = $("#type option:selected").val();
+		if(name==1){
+			document.getElementById("discount").style.display="";
+			var name="您选择了折扣券！";
+		}else{
+			document.getElementById("discount").style.display="none";
+		}
+		if(name == 2){
+			document.getElementById("full_cut").style.display="";
+			var name="您选择了满减券！";
+		}else{
+			document.getElementById("full_cut").style.display="none";
+		}
+		if(name ==3){
+			document.getElementById("gift").style.display="";
+			var name= "您选择了代金券！";
+		}else{
+			document.getElementById("gift").style.display="none";
+		}
+		//alert( name );
+	})  	
+	}); 
+Calendar.setup({
+    inputField : "J_time_start",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "J_time_end",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+$(function(){
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   
+		   return true;
+		},onError:function(msg){
+			
+	}});
+	 $("#title").formValidator({onShow:"",onFocus:"大标题在1个字符和3个字符之间",onCorrect:"输入正确"}).inputValidator({min:1,max:10,onError:"大标题在1个字符和3个字符之间"});
+	 $("#name").formValidator({onShow:"",onFocus:"只能是数字的",onCorrect:"输入正确"}).inputValidator({min:1,max:100000000000,type:"value",onError:"只能为数字"});
+	 $("#sub_title").formValidator({onShow:"",onFocus:"小标题在1个字符和15个字符之间",onCorrect:"输入正确"}).inputValidator({min:1,max:30,onError:"小标题在1个字符和15个字符之间"});
+	 $("#amount").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,type:"value",onError:"请输入金额"});
+	 $("#J_time_end").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请选择有效期时间"});
+})
+function relationCallBack(goodsList){
+	if(goodsList){
+		var length = $('#speed_goods tr').length;
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList,function(){
+			var value = $(this).attr('price');
+			if($('input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			$('#div').append('<input type="hidden" class="itemid" name="itemid[]" value="'+$(this).attr('id')+'" />');
+			html += '<tr><td><img src="'+$(this).attr('img')+'" style="max-width:50px;max-height:50px;" /></td>'
+						+'<td>'+$(this).attr('title')+'</td>'
+						+'<td align=center>'+$(this).attr('price')+'</td>'
+						+'<td><span class="del">&nbsp;&nbsp;删除</span></td></tr>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#div').append(html);
+	}
+}
+//添加商品
+$(function(){
+	$('.del').live('click',function(){
+		$(this).parent().parent().remove();
+	})
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return validForm();
+		},onError:function(msg){
+	}});
+})		
+//DIV隐藏
+$(function(){
+	   $(".rad").click(function(){
+	  if($(this).attr("value")=="1"){
+		  $("#item_add").hide();
+	  }
+	  else{
+		  $("#item_add").show();}
+	   });
+	});
+function shu( num ) {
+	 if (!/^([0-9]){1,2}$/g.test( num )) {
+	 alert('请输入1-10之间的数字'); 
+	 return false;
+	 }
+	 }
+</script>
+<include file="public:_footer" />
+</body>
+</html>

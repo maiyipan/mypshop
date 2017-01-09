@@ -1,0 +1,193 @@
+<include file="public:_header" />
+<!--添加折扣券-->
+<div class="dialog_content">
+	<div class="container">
+		<div class="widget-box">
+			<div class="header">
+				<div class="toolbar">
+					<ul class="nav nav-tabs" id="myTab">
+						<li class="active"><a data-toggle="tab" href="#home1">添加折扣劵</a></li>
+					</ul>
+				</div>
+			</div>
+			<form id="info_form" name="info_form" action="{:u('full_cut/add')}"
+				method="post">
+				<table width="100%" class="shop-form">
+					<tbody>
+						<tr>
+							<th>活动名称 :</th>
+							<td><input type="text" name="name" id="name"
+								class="input-text"></td>
+						</tr>
+						<tr>
+							<th width="80">{:L('full')} :</th>
+							<td><input type="text" name="full" id="full"
+								class="input-text"></td>
+
+							<th width="80">{:L('cut')} :</th>
+							<td><input type="text" name="cut" id="cut"
+								class="input-text"></td>
+
+						</tr>
+						<tr>
+							<th>{:L('num')} :</th>
+							<td><input type="text" name="num" id="num"
+								class="input-text" onkeyup="value=this.value.replace(/\D+/g,'')"></td>
+						<tr>
+
+							<th width="120">{:L('begintime')} :</th>
+							<td><input type="text" name="begintime" id="begintime"
+								class="date input-text" size="17" data-date-format="yyyy-mm-dd"></td>
+						</tr>
+						<th width="120">{:L('expiretime')} :</th>
+						<td><input type="text" name="expiretime" id="expiretime"
+							class="date input-text" size="17" data-date-format="yyyy-mm-dd"></td>
+						</tr>
+						<tr>
+							<th><label class="control-label"><em font="red">*</em>可使用商品</label>
+							</th>
+							<td><label class="radio inline"><input id="rad1"
+									type="radio" name="commend" value="全店通用" checked="checked"
+									class="rad">全店通用</label> <label class="radio inline"><input
+									id="rad2" type="radio" name="commend" value="指定商品" class="rad">指定商品
+							</label></br>
+								<div id="title" stly="disply:none">
+									<!-- 隐藏HTML -->
+								</div>
+								<div id="div">
+									<!-- 隐藏input -->
+								</div>
+								<div name="itemadd" id="item_add" style="display: none">
+								<button type='button' id="searchGoods" data-id="edit" data-uri="{:U('discount/itemadd')}" data-title="商品筛选"  
+								data-width="600" data-height="300" class='btn'><span>添加商品</span></button>
+								</div></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+		<div class="btn btn-xs btn-primty">
+			<a href="javascript:void(0)" onclick="document.info_form.submit();">提交</a>
+		</div>
+	</div>
+</div>
+<include file="public:_footer" />
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css" />
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+function relationCallBack(goodsList){
+	if(goodsList){
+		var length = $('#speed_goods tr').length;
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList,function(){
+			var value = $(this).attr('price');
+			if($('input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			$('#div').append('<input type="hidden" class="itemid" name="itemid[]" value="'+$(this).attr('id')+'" />');
+			html += '<tr><td><img src="'+$(this).attr('img')+'" style="max-width:50px;max-height:50px;" /></td>'
+						+'<td>'+$(this).attr('title')+'</td>'
+						+'<td align=center>'+$(this).attr('price')+'</td>'
+						+'<td><span class="del">&nbsp;&nbsp;删除</span></td></tr>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#div').append(html);
+	}
+}//添加商品
+$(function(){
+	$('.del').live('click',function(){
+		$(this).parent().parent().remove();
+	})
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return validForm();
+		},onError:function(msg){
+	}});
+})	
+//div隐藏
+		$(function(){
+			   $(".rad").click(function(){
+			  if($(this).attr("value")=="1")
+				  $("#item_add").hide();
+			   
+			  else
+				  $("#item_add").show();
+			   });
+			});
+		Calendar.setup({
+		    inputField : "begintime",
+		    ifFormat   : "%Y-%m-%d",
+		    showsTime  : false,
+		    timeFormat : "24"
+		});
+		Calendar.setup({
+		    inputField : "expiretime",
+		    ifFormat   : "%Y-%m-%d",
+		    showsTime  : false,
+		    timeFormat : "24"
+		});			
+
+</script>
+<script>
+/* $(function(){
+    $.formValidator.initConfig({formid:"info_form",autotip:true});
+    //$("#discount_num").formValidator({ onshow:lang.please_input+lang.discount, onfocus:lang.please_input+lang.discount, oncorrect:lang.input_right}).inputValidator({ min:1, onerror:lang.please_input+lang.discount});
+
+    $('#info_form').ajaxForm({success:complate,dataType:'json'});
+    function complate(result){
+        if(result.status == 1){
+            $.dialog.get(result.dialog).close();
+            $.pinphp.tip({content:result.msg});
+            window.location.reload();
+        } else {
+            $.pinphp.tip({content:result.msg, icon:'alert'});
+        }
+    }
+    
+    $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+}); */
+</script>

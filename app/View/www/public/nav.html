@@ -1,0 +1,18 @@
+﻿<nav class="navlist"  >
+    <a id="cur" <eq name="currentid" value="1">class="curNav"</eq> href="{:U('index/index',array('sid'=>$shopid))}">
+    	<i class="ic-home"></i><em>首页</em>
+    </a>
+    <a id="sort" <eq name="currentid" value="2">class="curNav"</eq> href="{:U('index/sortFirst',array('sid'=>$shopid))}">
+    	<i class="ic-app"></i><em>分类</em>
+    </a>
+    <a id="search" <eq name="currentid" value="3">class="curNav"</eq> href="{:U('index/search',array('sid'=>$shopid))}">
+    	<i class="ic-search" ></i><em>搜索</em>
+    </a>
+    <a id="cart" <eq name="currentid" value="4">class="curNav"</eq> s="cartNonePage.html" href="{:U('shopcart/index',array('sid'=>$shopid))}">
+    <!--<span></span>-->
+    	<i class="ic-cart"></i><em>购物车<span>{$amount}</span></em>
+    </a>
+    <a id="my" <eq name="currentid" value="5">class="curNav"</eq>  href="{:U('my/index',array('sid'=>$shopid))}">
+    	<i class="ic-my"></i><em>我的佳鲜</em>
+    </a>
+</nav>

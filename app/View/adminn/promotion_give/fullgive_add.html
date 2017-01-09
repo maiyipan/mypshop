@@ -1,0 +1,338 @@
+<include file="public:_header"/>
+<div class="container">
+	<div class="widget-box">
+		<div class="header">
+			<div class="toolbar">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">添加满赠活动</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<form name="myform" method="post" id="myform" autocomplete="off">
+	        <table class="shop-form" >
+	         <tr>
+	             <th width='120'>活动名称<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" id="name" name="name" class="input-text" size="30">
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120' style="vertical-align: top;">选择商品<font color='red'>*</font>：</th>
+	             <td>
+	             		
+						<label class='attr'><input type='radio' name='good_type' value='3' checked=checked />全场</label>
+	             		<label class='attr'><input type='radio' name='good_type' value='1'  id="searchGoods" data-id="edit" data-uri="{:U('promotion_give/search_items')}" 
+				data-title="商品筛选"  data-width="600" data-height="300" class='btn'/>商品</label>
+	               		<label class='attr'><input type='radio' name='good_type' value='2' />分类</label>
+	               		<div id='speed_goods' style="display:none;background:#fff;"></div>
+	               		<div id='speed_types' style="display:none;background:#fff;">
+	               			<select class="J_cate_select mr10" id="J_cate_select2" data-pid="0" data-uri="{:U('item_cate/ajax_getchilds', array('type'=>0))}" data-selected="{$search.selected_ids}"></select>
+                    		<input type="hidden" name="cate_id" id="J_cate_id" value="{$search.cate_id}" /><br/>
+	               		</div>
+	             </td>
+	           </tr>
+	           <tr>
+	             <th width='120'>活动时间<font color='red'>*</font>：</th>
+	             <td>
+	               <input type="text" name="start_time" id="J_time_start" class="date" size="12" value="">
+	               ～
+	               <input type="text" name="end_time" id="J_time_end" class="date" size="12" value="">
+	             </td>
+	           </tr>
+	           <tr>
+					<th width='120'>是否开启<font color='red'>*</font>：</th>
+					<td>
+						<label class='attr'><input type='radio' name='is_close' value='0' checked=checked />是</label>
+						<label class='attr'><input type='radio' name='is_close' value='1' />否</label>
+					</td>
+				</tr>
+				<tr>
+					<th width='120'>活动介绍：</th>
+					<td><textarea name='intro' rows="4" style="width:788px" ></textarea></td>
+				</tr>
+				<tr>
+					<th width='120' style="vertical-align: top;">赠送规则<font color='red'>*</font>：</th>
+					<td>
+						<select id="reserve" name='reserve' onchange="change_rule(this.value);">
+							<option value='0'>请选择</option>
+							<option value='1'>当购买商品金额满 M 元时赠送</option>
+							<option value='2'>当购买商品数量满 M 时赠送</option>
+						</select>
+					</td>
+				</tr>
+				<tr id='rule_box' style="display:none;"></tr>
+				<tr>
+					<th width='120'>赠送类型<font color='red'>*</font>：</th>
+					<td>
+						<label class='attr'><input type='radio' name='award_type' value='2' onclick="change_rule2(this.value);" checked=checked />商品</label>
+						<label class='attr'><input type='radio' name='award_type' value='3' onclick="change_rule2(this.value);" id="ajaxCoupons" />优惠劵</label>
+					</td>
+				</tr>
+	           	<tr id='rule_box2'>
+	           		<th style="vertical-align: top;">赠送商品<font color="red">*</font>：</th>
+	           		<td><input type='text' name="award_value"/><label style="color:#878585;"> 当该商品到达条件时,赠送的商品</label></td>
+	          	</tr>
+	         </table>
+	          <div class="form-actions">
+				<button class="btnf" type="submit">提交</button>
+				<a class="btn toback" href="">返回</a>
+			</div>
+	     </form>
+	</div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+//修改规则
+function change_rule(selectVal){
+	if(selectVal != $('#rule_box').data('index')){
+		$('#rule_box').data('index',selectVal);
+	}else{
+		return;
+	}
+	
+	var html = '';
+	switch(selectVal){
+		case "1":{
+				html = "<th style='vertical-align: top;'>商品总金额<font color='red'>*</font>：</th>"
+					+"<td><input type='text' name='condition' onkeyup=\"this.value=this.value.replace(/[^0-9.]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^0-9.]/g,'')\" />元<br/>"
+					+"<label style='color:#878585;'>  &nbsp;&nbsp;购买商品的总金额</label></td>";
+				}
+			break;
+		case "2":{
+				html = "<th style='vertical-align: top;'>商品总数量<font color='red'>*</font>：</th>"
+					+"<td><input type='text' name='condition' onkeyup=\"this.value=this.value.replace(/[^0-9]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^0-9]/g,'')\" /><br/>"
+					+"<label style='color:#878585;'> &nbsp;&nbsp;购买商品的总数量</label></td>";
+				}
+			break;
+	}
+	$('#rule_box').show().html(html);
+}
+
+//修改规则
+function change_rule2(selectVal){
+	if(selectVal != $('#rule_box2').data('index')){
+		$('#rule_box2').data('index',selectVal);
+	}
+
+	var html = '';
+	switch(selectVal){
+		case "2":{
+				html = "<th style='vertical-align: top;'>赠送商品<font color='red'>*</font>：</th>"
+					+"<td><input type='text' name='award_value'/>"
+					+"<label style='color:#878585;'> 当该商品到达条件时,赠送的商品</label></td>";
+				}
+			break;
+		case "3":{
+			html = "<th style='vertical-align: top;'>赠送优惠劵<font color='red'>*</font>：</th>"
+				+"<td><input type='text' name='award_value_text'/><input type='hidden' name='award_value'/>"
+				+"<label style='color:#878585;'> 当该商品到达条件时，赠送优惠劵</label></td>";
+			};
+			ajaxCoupons();
+		break;
+	}
+	$('#rule_box2').show().html(html);
+}
+function ajaxCoupons(){
+	var 
+		dtitle = '优惠券筛选',
+		did = 'ajaxCoupons',
+		duri = '{:U("promotion_give/coupons")}';
+	$.dialog({id:did}).close();
+	$.dialog({
+		id:did,
+		title:dtitle,
+		width:600,
+		height:300,
+		lock:true,
+		ok:function(){
+			var goodsList = $('input[name="id[]"]:checked');
+			//添加选中的商品
+			if(goodsList.length == 0){
+				alert('请选择优惠劵');
+				return false;
+			}
+			return relationCallBack2(goodsList);
+		},
+		cancel:function(){}
+	});
+	$.getJSON(duri, function(result){
+		if(result.status == 1){
+			$.dialog.get(did).content(result.data);
+		}
+	});
+	return false;
+}
+function relationCallBack2(goodsList){
+	if(goodsList){
+		var isreturn = false;
+		$.each(goodsList, function(){
+			var id = $(this).attr('id');
+			var name = $(this).attr('name');
+			var sub_title = $(this).attr('sub_title');
+			var title = $(this).attr('title');
+			$('input[name=award_value_text]').val(title+'--'+sub_title);
+			$('input[name=award_value]').val(id);
+		})
+		if(isreturn){
+			return false;
+		}
+		return true;
+	}
+}
+Calendar.setup({
+    inputField : "J_time_start",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "J_time_end",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+function validForm(){
+	if($("#name").val() == ''){
+		SHOP.msg('请输入名称', {icon: 5});
+		return false;
+	}
+	var typeid = $('input[name=good_type]:checked').val();
+	if(typeid == 1){
+		if($('.itemid').length == 0){
+			SHOP.msg('请选择一个商品', {icon: 5});
+			return false;
+		}
+	}
+	if(typeid == 2){
+		var cate_id = $('#J_cate_id').val();
+		if(!cate_id || cate_id == 0){
+			SHOP.msg('请选择对应分类', {icon: 5});
+			return false;
+		}
+	}
+	var J_time_start = $.trim($('#J_time_start').val());
+	var J_time_end = $.trim($('#J_time_end').val());
+	if(J_time_start == '' || J_time_end == ''){
+		SHOP.msg('请选择对应日期', {icon: 5});
+		return false;
+	}
+	if(!SHOP.validTime(J_time_start,J_time_end)){
+		 SHOP.msg('结束日期不能小于开始日期', {icon: 5});
+		 return false;
+	}
+	var reserve = $("#reserve").val() ;
+	if(reserve == 0){
+		SHOP.msg('请选择赠送规则', {icon: 5});
+		return false;
+	}
+	if($("input[name=condition]").val() == ''){
+		SHOP.msg('请输入优惠条件', {icon: 5});
+		return false;
+	}
+	if($("input[name=award_value]").val() == ''){
+		SHOP.msg('请输入赠送商品', {icon: 5});
+		return false;
+	}
+	return true;
+}
+function relationCallBack(goodsList){
+	if(goodsList){
+		var length = $('#speed_goods tr').length;
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList, function(){
+			var value = $(this).attr('price');
+			if($('input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			html += '<div><span><img src="'+$(this).attr('img')+'" style="max-width:50px;max-height:50px;" /></span>'
+						+'<input type="hidden" class="itemid" name="itemid[]" value="'+$(this).attr('id')+'" />'
+						+'&nbsp;&nbsp;<span>'+$(this).attr('title')+'</span>'
+						+'&nbsp;&nbsp;<span style="text-align:center;color:#ff2200;">'+$(this).attr('price')+'元</span>'
+						+'&nbsp;&nbsp;<span class="del">删除</span></div>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#speed_goods').append(html).show();
+		$("input[name=good_type]:eq(1)").attr("checked",'checked'); 
+		return true;
+	}
+}
+
+$(function(){
+	$('input[name=good_type]').click(function(){
+		var value = $("input[name=good_type]:checked").val();
+		if(value == 1){
+			$('#speed_goods').show();
+			$('#speed_types').hide();
+			searchGoods($(this));
+		}
+		if(value == 2){
+			$('#speed_types').show();
+			$('#speed_goods').hide();
+		}
+		if(value == 3){
+			$('#speed_goods').hide();
+			$('#speed_types').hide();
+		}
+	})
+	function searchGoods(self){
+		var 
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	}
+	
+	$.formValidator.initConfig({
+	   theme:'Default',mode:'AutoTip',formID:"myform",debug:false,submitOnce:true,onSuccess:function(){
+		   return validForm();
+		},onError:function(msg){
+	}});
+	 $("#award_type").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请选择活动规则"});
+	 $("#award_value").formValidator({onShow:"",onFocus:"",onCorrect:"输入正确"}).inputValidator({min:1,max:50,onError:"请输入满减金额或者赠送商品"});
+	 
+	 
+	 $('.del').live('click',function(){
+		 $(this).parent().remove();
+	 })
+	 $('#J_cate_select2').cate_select({top_option:lang.all}); //分类联动
+	 
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

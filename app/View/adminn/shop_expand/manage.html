@@ -1,0 +1,169 @@
+<include file="public:_header" />
+<script>
+$(function () {
+	$('.shop-tab-nav li').click(function(){
+		$(this).addClass("on").siblings().removeClass();
+		var t = $(this).attr('t');
+		$('#'+t).show();
+		$('#'+t).siblings().hide();
+	});
+});
+</script>
+<style>
+.item{float:left;position: relative;width:152px;padding:20px 20px 0 0;}
+.item p{background:#DBD8D8;text-align: center;height: 16px;line-height:16px;word-wrap: break-word;color: #726767;width:132px;overflow: hidden;}
+.item .setdel{cursor: pointer; background: none repeat scroll 0 0 #3b72a5; top: 20px; color: #FFF; height: 18px; line-height: 18px; padding: 0 5px; position: absolute; right: 20px;}
+table{border-collapse: collapse; border-spacing: 0;}
+td{border-bottom:none;}
+.inputText{background-color: #fff; border: 1px solid #ccc; border-radius: 2px; box-shadow: 2px 2px 2px #f0f0f0 inset; font-family: inherit; font-size: 100%; margin: 8px; padding: 5px; vertical-align: middle;}
+</style>
+<div class="pad_10" >
+	<ul class="shop-tab-nav">
+		<li t="item" class="on">商品列表</li>
+  		<!-- <li t="advert">广告列表</li> -->
+  	</ul>
+  	<form name="myform" id="myform" action="{:U('shop_expand/domanage',array('id'=>$info['id']))}"  method="post" enctype="multipart/form-data">
+	<div class="J_tablelist ">
+		<div id="item">
+			<div style="padding-top:20px;">
+				<button type="button" id="searchGoods" data-id="edit" data-uri="{:U('item/search_dialog')}" 
+					data-title="选择商品" data-width="600" data-height="400" class="btn">
+				<span>选择商品</span>
+				</button>
+			</div>
+			<ul >
+				 <volist name="items" id="val">      
+				 <li class="item" id="item{$val.item_id}">  
+				 	<input type="hidden" name="itemid[]" value="{$val.item_id}"/>
+				 	<img id="imgPreview" src="{:attach($val['img'])}" height="152" width="152"/><br/>
+				 	<p>{$val.title}</p><p>(￥{$val.price})</p>
+				 	<span class="setdel" onclick="imglidel(this,{$info.id},{$val.item_id})">删除</span>
+				 </li>	
+				 </volist>
+			</ul>
+		</div>    
+		<!-- <div id="advert" style="display:none;padding-top:20px;">
+			<ul>
+				 <volist name="adverts" id="val">      
+				 <li class="item" id="item{$val.id}">
+				 	<img id="imgPreview" src="{:attach($val['imageurl'])}" height="152"  width="152"/><br/>
+				 	<p>{$val.link}</p>
+				 	<span class="setdel" onclick="advertlidel(this,{$val.id})">删除</span>
+				 </li>	
+				 </volist>
+			</ul>
+			<table width="100%" cellpadding="2" cellspacing="1" class="table_form" id="first_upload_file">
+                <tbody class="uplode_file">
+                <tr>
+                    <td width="100"><a href="javascript:void(0);" class="blue" onclick="add_file();">
+                    <img src="__STATIC__/css/adminn/bgimg/tv-expandable.gif" /></a> 上传文件 :
+                    </td>
+                    <td><input type="file" name="advertsimg[]">
+                    	链接：<input type="text" size="30" class="inputText" name="advertslink[]"/></td>
+                </tr>
+                </tbody>
+            </table>
+		</div> -->
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-actions">
+		<button class="btnf" type="submit">提交</button>
+		<a class="btn toback" href="">返回</a>
+	</div>
+    </form>
+</div>
+<include file="public:_footer" />
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script>
+function add_file(){
+    $("#next_upload_file .uplode_file").clone().insertAfter($("#first_upload_file .uplode_file:last"));
+}
+function relationCallBack(goodsList){
+	if(goodsList){
+		var html = '';
+		var isreturn = false;
+		$.each(goodsList,function(){
+			var value = $(this).attr('price');
+			if($('#item ul input[value='+$(this).attr('id')+']').length > 0){
+				alert('请不要选择同一种商品');
+				isreturn = true;
+				return false;
+			}
+			html += '<li class="item" id="item1">';
+			html += '<input type="hidden" name="itemid[]" value="'+$(this).attr('id')+'"/>';
+			html += '<img id="imgPreview" src="'+$(this).attr('img')+'" height="152" width="152"/><br/>';
+			html += '<p>'+$(this).attr('title')+'</p><p>(￥'+$(this).attr('price')+')</p>';
+			html += '<span class="setdel" onclick="imglidel(this)">删除</span>';
+			html += '</li>';
+		})
+		if(isreturn){
+			return false;
+		}
+		$('#item ul').append(html);
+	}
+}
+function advertlidel(elem,id){
+	var url = "{:U('shop_expand/delete_advert')}";
+    $.post(url,{id:id}, function(data){
+		if(data.status==1){
+		    $(elem).parents('li').remove();
+		};
+    },'json');
+}
+function imglidel(elem,id,itemid){
+	var url = "{:U('shop_expand/delete_item')}";
+    $.post(url,{id:id,itemid:itemid}, function(data){
+		if(data.status==1){
+			$(elem).parents('li').remove();
+		};
+    },'json');
+}
+$(function(){
+	$('#searchGoods').live('click', function(){
+		var self = $(this),
+			dtitle = self.attr('data-title'),
+			did = 'searchGoods',
+			duri = self.attr('data-uri'),
+			dwidth = parseInt(self.attr('data-width')),
+			dheight = parseInt(self.attr('data-height')),
+			dpadding = (self.attr('data-padding') != undefined) ? self.attr('data-padding') : '',
+			dcallback = self.attr('data-callback');
+		$.dialog({id:did}).close();
+		$.dialog({
+			id:did,
+			title:dtitle,
+			width:dwidth ? dwidth : 'auto',
+			height:dheight ? dheight : 'auto',
+			padding:dpadding,
+			lock:true,
+			ok:function(){
+				var goodsList = $('input[name="id[]"]:checked');
+				//添加选中的商品
+				if(goodsList.length == 0){
+					alert('请选择要添加的商品');
+					return false;
+				}
+				return relationCallBack(goodsList);
+			},
+			cancel:function(){}
+		});
+		$.getJSON(duri, function(result){
+			if(result.status == 1){
+				$.dialog.get(did).content(result.data);
+			}
+		});
+		return false;
+	});
+})
+</script>
+<table id="next_upload_file" style="display:none;">
+<tbody class="uplode_file">
+   <tr>
+      <td width="100"><a href="javascript:void(0);" onclick="del_file_box(this);" class="blue"><img src="__STATIC__/css/adminn/bgimg/tv-collapsable.gif" /></a>上传文件 :</td>
+      <td><input type="file" name="advertsimg[]">链接：<input type="text" class="inputText" size="30" name="advertslink[]"/></td>
+   </tr>
+</tbody>
+</table>
+</body>
+</html>

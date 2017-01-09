@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-salert ('{:C('pin_appid')}');tatus-bar-style" content="black">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <meta equiv="Expires" content="0">
+    <script type="text/javascript">
+        var phoneWidth = parseInt(window.screen.width),
+                phoneScale = phoneWidth / 640,
+                ua = navigator.userAgent;
+        if (/Android (\d+\.\d+)/.test(ua)) {
+            var version = parseFloat(RegExp.$1);
+            // andriod 2.3
+            if (version > 2.3) {
+                document.write('<meta name="viewport" content="width=640, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+                // andriod 2.3以上
+            } else {
+                document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+            }
+            // 其他系统'{:C('pin_appid')}'
+        } else {
+            document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/home/css/loading.css">
+    
+    <link rel="stylesheet" type="text/css" href="__STATIC__/home/css/animation.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/home/font/css/ico.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/home/css/popup.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/home/css/index.css?v142">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/home/css/swiper.min.css">
+    
+    
+    <style type="text/css">
+.progressloading{z-index: 2000} 
+.maskloading{position: fixed;top: 0;right: 0;bottom: 0;left: 0; z-index: 1000; background-color: #2F2F2F} 
+</style>
+    <script type="text/javascript" src="__STATIC__/home/js/zepto.min.js"></script>
+      <script type="text/javascript" src="__STATIC__/home/js/iscroll.js"></script>
+   
+<!-- 	<script type="text/javascript" src="__STATIC__/home/js/index.js"></script>
+ -->	<script type="text/javascript">
+        
+    </script>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2d269f54b0a79bc607afb9cb010b209f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body >
+<div class="noneBtnAlertSpan dis_none">成功关注</div>
+<div class="tableDiv dis_none">
+    <div class="sureTable">
+        <p class="content">确定要删除吗？</p>
+        <div class="btnDiv">
+            <p class="yes">是</p>
+            <p class="no">否</p>
+        </div>
+    </div>
+</div>
+
+
+ <img id="progressImgage" class="progressloading" style="display:none" alt="" src="__STATIC__/home/images/ajax-loader.gif"/> 
+<div id="maskOfProgressImage" class="maskloading" style="display:none"></div> 
+
+ <script>
+var imgloading = $("#progressImgage"); 
+var maskloading = $("#maskOfProgressImage");
+
+function beforeAjaxSend() {
+	imgloading.show().css({ 
+		"position": "fixed", 
+		"top": "40%", 
+		"left": "45%", 
+		"margin-top": function () { return -1 * img.height() / 2; }, 
+		"margin-left": function () { return -1 * img.width() / 2; } 
+		}); 
+	maskloading.show().css("opacity", "0.1"); 
+}
+
+function completeAjaxSend() {
+	imgloading.hide(); 
+	maskloading.hide();  
+}
+</script>

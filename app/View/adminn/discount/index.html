@@ -1,0 +1,167 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="subnav">
+<div class="content_menu ib_a blue line_x">
+	<a class="add btn btn-add" href="{:U('discount/add')}"><em>添加折扣券</em></a></div>
+</div>
+</div>
+<div class="pad_lr_10">
+		
+		<form name="searchform" method="get" >
+  		<input type="hidden" name="status" value="{$search.status}"/>
+	    <table width="100%" cellspacing="0" class="search_form">
+	        <tbody>
+	            <tr>
+	                <td>
+	                <div class="explain_col">
+	                    <input type="hidden" name="g" value="adminn" />
+	                    <input type="hidden" name="m" value="discount" />
+	                    <input type="hidden" name="a" value="index" />
+	                    <input type="hidden" name="menuid" value="{$menuid}" />
+	                                                   开始时间 :
+	                    <input type="text" name="begintime_min" id="begintime_min" class="date" size="12" value="{$search.begintime_min}">
+	                    -
+	                    <input type="text" name="begintime_max" id="begintime_max" class="date" size="12" value="{$search.begintime_max}">
+	                   	 到期时间 :
+	                    <input type="text" name="expiretime_min" id="expiretime_min" class="date" size="12" value="{$search.expiretime_min}">
+	                    -
+	                    <input type="text" name="expiretime_max" id="expiretime_max" class="date" size="12" value="{$search.expiretime_max}">
+	                                                   生成时间 :
+	                    <input type="text" name="createtime_min" id="createtime_min" class="date" size="12" value="{$search.createtime_min}">
+	                    -
+	                    <input type="text" name="createtime_max" id="createtime_max" class="date" size="12" value="{$search.createtime_max}">
+	                     	折扣：
+	                     <select id='discount' name="discount">
+	                      <option value="0" >全部</option>
+					      <option value="1" <if condition="$search.discount eq 1">selected="selected"</if>>1</option>
+					      <option value="2" <if condition="$search.discount eq 2">selected="selected"</if>>2</option>
+					      <option value="3" <if condition="$search.discount eq 3">selected="selected"</if>>3</option>
+					      <option value="4" <if condition="$search.discount eq 4">selected="selected"</if>>4</option>
+					      <option value="5" <if condition="$search.discount eq 5">selected="selected"</if>>5</option>
+					      <option value="6" <if condition="$search.discount eq 6">selected="selected"</if>>6</option>
+					      <option value="7" <if condition="$search.discount eq 7">selected="selected"</if>>7</option>
+					      <option value="8"<if condition="$search.discount eq 8">selected="selected"</if>>8</option>
+					      <option value="9" <if condition="$search.discount eq 9">selected="selected"</if>>9</option>
+					      </select>
+	                                                   折扣劵:
+	                    <input name="random" type="text" class="input-text" size="18" value="{$search.random}" />
+	                    <input type="submit" name="search" class="btn" value="搜索" />
+	                    <input type="button" name="search" class="btn export" value="导出" />
+	                    <div class="bk8"></div>                
+	                </div>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	 </form>
+    <div class="J_tablelist table_list" data-acturi="{:U('discount/ajax_edit')}">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+                <th width="40">ID</th>
+                <th align="left">{:L('discount')}</th>
+      			<th align="left">{:L('discount_random')}</th>
+                <th align="left">{:L('begintime')}</th>
+                <th>{:L('expiretime')}</th>
+                <th>{:L('role_status')}</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+            <td align="center">{$val.id}</td>
+            <td><span  data-field="name" >{$val.discount}</span></td>
+            <td><span data-field="name" >Z{$val.random}</span></td>
+            <td><span  data-field="remark"  >{$val.begintime}</span></td>
+            <td align="center"><span  data-field="ordid" >{$val.expiretime}</span></td>
+            <td align="center">
+                <img data-tdtype="toggle" data-field="valid" data-id="{$val.id}" data-value="{$val.valid}" src="__STATIC__/images/admin/toggle_<if condition="$val.valid eq 0">enabled<else/>disabled</if>.gif" />
+            </td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+    	<input type="button" class="btn export" data-uri="{:U('discount/phpexcel')}" value="导出" />
+        <div id="pages">{$page}</div>
+    </div>
+   <!--  <form id="exportTarget" action="{:U('discount/phpexcel')}" target="_blank"></form> -->
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+Calendar.setup({
+    inputField : "begintime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "begintime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "expiretime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "expiretime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "createtime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "createtime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+$(function(){
+	$('.export').click(function(){
+		/* $('#exportTarget').html($('#searchform #htmltext').html());
+		$('#exportTarget').submit();
+		$('#exportTarget').html(''); */
+		
+		var begintime_min = $('#begintime_min').val();
+		 var begintime_max = $('#begintime_max').val();
+		 var expiretime_min = $('#expiretime_min').val();
+		 var expiretime_max = $('#expiretime_max').val();
+		 var createtime_min = $('#createtime_min').val();
+		 var createtime_max = $('#createtime_max').val();
+		 var discount = $('#discount').val();
+        
+		 
+		 if (begintime_min != "" && begintime_max != "" 
+				 && expiretime_min != "" && expiretime_max != "" 
+				     && createtime_min != "" && createtime_max != "" ) {
+		
+			 var url = "{:U('discount/phpexcel')}" + "?&begintime_min="+ begintime_min +"&begintime_max=" + begintime_max
+	         +"&expiretime_min=" + expiretime_min
+	         +"&expiretime_max=" + expiretime_max
+	         +"&createtime_min=" + createtime_min
+	         +"&createtime_max=" + createtime_max
+	         +"&discount=" + discount;
+	         
+	         window.open(url,"_blank");
+		 } else {
+			 alert("请阁下先选择时间范围，再导出");
+		 }
+	})
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

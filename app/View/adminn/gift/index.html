@@ -1,0 +1,156 @@
+<include file="public:_header"/>
+<!--栏目列表-->
+<div class="pad_lr_10">
+	<form name="searchform" id="searchform" method="get" >
+  		<input type="hidden" name="status" value="{$search.status}"/>
+	    <table width="100%" cellspacing="0" class="search_form">
+	        <tbody>
+	            <tr>
+	                <td>
+	                <div class="explain_col">
+	                    <input type="hidden" name="g" value="adminn" />
+	                    <input type="hidden" name="m" value="gift" />
+	                    <input type="hidden" name="a" value="index" />
+	                    <div id="htmltext">
+	                    <input type="hidden" name="menuid" value="{$menuid}" />
+	                                                   开始时间 :
+	                    <input type="text" name="begintime_min" id="begintime_min" class="date" size="12" value="{$search.begintime_min}">
+	                    -
+	                    <input type="text" name="begintime_max" id="begintime_max" class="date" size="12" value="{$search.begintime_max}">
+	                   	到期时间 :
+	                    <input type="text" name="expiretime_min" id="expiretime_min" class="date" size="12" value="{$search.expiretime_min}">
+	                    -
+	                    <input type="text" name="expiretime_max" id="expiretime_max" class="date" size="12" value="{$search.expiretime_max}">
+	                     <div style="padding-top:5px;">    生成时间 :
+	                    <input type="text" name="createtime_min" id="createtime_min" class="date" size="12" value="{$search.createtime_min}">
+	                    -
+	                    <input type="text" name="createtime_max" id="createtime_max" class="date" size="12" value="{$search.createtime_max}">
+	                     	 礼金：
+	                     	   <input id="gift" name="gift" type="text" class="input-text" size="3" value="{$search.gift}" />
+	                                                   礼金卡:
+	                    <input name="random" type="text" class="input-text" size="10" value="{$search.random}" />
+	                    <input type="submit" name="search" class="btn" value="搜索" />
+	                    <input type="button" class="btn export" id="export" value="导出" />
+	                    <input type="button" id="reset" class="btn" value="清除" />
+	                    </div>	
+	                    </div>
+	                    <div class="bk8"></div>                
+	                </div>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	 </form>
+    <div class="J_tablelist table_list" data-acturi="{:U('gift/ajax_edit')}">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+				<th width="30"><input type="checkbox" name="checkall" class="J_checkall"></th>
+				<th width="40">ID</th>
+                <th align="left">{:L('gift')}</th>
+      			<th align="left">{:L('surplus')}</th>
+      			<th align="left">{:L('gift_random')} </th>
+                <th align="left">{:L('begintime')}</th>
+                <th>{:L('expiretime')}</th>
+                <th>{:L('role_status')}</th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val">
+		<tr>
+			<td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+           	<td align="center">{$val.id}</td>
+            <td><span  data-field="name" >{$val.gift}</span></td>
+            <td><span  data-field="name" >{$val.surplus}</span></td>
+            <td><span  data-field="remark"  >B{$val.random}</span></td>
+            <td><span  data-field="remark"  >{$val.begintime}</span></td>
+            <td align="center"><span  data-field="ordid" >{$val.expiretime}</span></td>
+            <td align="center">
+                <img data-tdtype="toggle" data-field="valid" data-id="{$val.id}" data-value="{$val.valid}" src="__STATIC__/images/admin/toggle_<if condition="$val.valid eq 0">enabled<else/>disabled</if>.gif" />
+            </td>
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    <div class="btn_wrap_fixed">
+    	<input type="button" class="btn export" data-uri="{:U('gift/phpexcel')}" value="导出" />
+        <div id="pages">{$page}</div>
+    </div>
+</div>
+<link rel="stylesheet" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script src="__STATIC__/js/calendar/calendar.js"></script>
+<script type="text/javascript">
+
+Calendar.setup({
+    inputField : "begintime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "begintime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "expiretime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "expiretime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "createtime_min",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+Calendar.setup({
+    inputField : "createtime_max",
+    ifFormat   : "%Y-%m-%d",
+    showsTime  : false,
+    timeFormat : "24"
+});
+$(function(){
+	$('#reset').click(function(){
+		$('#searchform input[type=text]').val('');
+		$('#searchform select').val('');
+	})
+	$('.export').click(function(){
+		var begintime_min = $('#begintime_min').val();
+		 var begintime_max = $('#begintime_max').val();
+		 var expiretime_min = $('#expiretime_min').val();
+		 var expiretime_max = $('#expiretime_max').val();
+		 var createtime_min = $('#createtime_min').val();
+		 var createtime_max = $('#createtime_max').val();
+		 var gift = $('#gift').val();
+        
+		 
+		 if (begintime_min != "" && begintime_max != "" 
+				 && expiretime_min != "" && expiretime_max != "" 
+				     && createtime_min != "" && createtime_max != "" ) {
+		
+			 var url = "{:U('gift/phpexcel')}" + "?&begintime_min="+ begintime_min +"&begintime_max=" + begintime_max
+	         +"&expiretime_min=" + expiretime_min
+	         +"&expiretime_max=" + expiretime_max
+	         +"&createtime_min=" + createtime_min
+	         +"&createtime_max=" + createtime_max
+	         +"&gift=" + gift;
+	         
+	         window.open(url,"_blank");
+		 } else {
+			 alert("请阁下先选择时间范围，再导出");
+		 }
+	})
+})
+</script>
+<include file="public:_footer" />
+</body>
+</html>

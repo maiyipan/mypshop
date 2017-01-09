@@ -1,0 +1,69 @@
+<include file="public:header"/>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 no-padding-right">
+								<div class="table-responsive">
+									<table id="J_cate_tree"
+										class="table table-striped table-bordered table-hover ">
+										<thead>
+											<tr>
+												<th class="center" width="30"><label> <input
+														type="checkbox" class="ace"> <span class="lbl"></span>
+												</label></th>
+												    <th width="30"><span data-tdtype="order_by" data-field="id">ID</span></th>
+									                <th>{:L('menu_name')}</th>
+               										<th><span tdtype="order_by" >{:L('sort_order')}</span></th>
+									                <th width="280">{:L('operations_manage')}</th>
+											</tr>
+										</thead>
+										<tbody>
+										{$menu_list}
+										</tbody>
+									</table>
+									<div class="pagination" style="margin:0px;">
+									    {$page}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<include file="public:common" />	
+		<script src="__STATIC__/Plugin/style/js/jquery.treetable.js"></script>
+		<script type="text/javascript">
+			function addSubmenu(o) {
+				var subid = $(o).parent().prev().prev().html();
+				$('select[name="parent"]').val(subid);
+				$('input[name="addmenu"]').val('0');
+				$('input[name="name"]').val('');
+				
+				$('#myTab li').eq(1).find('a').click();
+			}
+			function reSubmenu(o){
+				var name = $(o).parent().prev().html().replace(/&nbsp;/g,'').replace('����','');
+				var pid = $(o).parent().prev().prev().attr('parent');
+				var subid = $(o).parent().prev().prev().html();
+				$('select[name="parent"]').val(pid);
+				$('input[name="name"]').val(name);
+				$('input[name="addmenu"]').val(subid);
+				$('#myTab li').eq(1).find('a').click();
+			}
+			
+			$(function(){
+			    //initialState:'expanded'
+			    $("#J_cate_tree").treeTable({indent:20,treeColumn:2});
+			    $(".J_preview").preview();
+			});
+		</script>
+		
+		
+	</div>
+</div>

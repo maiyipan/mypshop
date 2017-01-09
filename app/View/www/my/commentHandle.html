@@ -1,0 +1,194 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">商品评价</span>
+</div>
+
+<div class="publishEvaluation" style="height: auto;" name='orderTitle' id='orderTitle'>
+    <ul style="margin-bottom:20px;">
+        <volist name="list" id="item">
+        	<if condition='$item["bId"] eq ""'>
+        	<li style="height: 520px;" itemId="{$item.itemId}">
+	            <div class="evaluationGoodsInfo" name="flag" id="flag">
+	                <div class="left"><a href="#"><img src="{:attach($item['img'])}"> </a> </div>
+	               
+		                <div class="info">
+		                    <p class="name">{$item.title} </p>
+		                </div>
+						<div class="evaluation" >
+							<div class="dianzan fl" style="margin-bottom: 20px;margin-top: 20px">
+								<span>点赞：</span>
+								<div name="rankLevel{$i}" id="rankLevel">
+									<i></i><i></i><i></i><i></i><i></i>
+								</div>
+								<textarea  class="textComments" style="" name="commentText" type="text">您的评价对我们的改进非常重要哦，点击旁边的拍照按钮可以分享你的照片</textarea>
+								<div><img class="photo" id="snap" src="__STATIC__/home/images/photo.png"/><br/></div>
+								<div id="imgList">
+								</div>
+								<div style="margin:0 auto;width: 100%; height: 100%;">
+									<a class="btn-submit" style="padding-top:10px;clear: both;display:block;" href="javascript:;">
+										<button class="comments">评价</button>
+									</a>
+								</div>
+							</div>
+						</div>
+	            </div>
+            </li>
+            <else/>
+            <li style="height:auto;">
+	            <div class="evaluationGoodsInfo" name="flag" id="flag">
+	
+	                <div class="left"><a href="#"><img src="{:attach($item['img'])}"> </a> </div>
+	                <div class="info">
+	                    <p class="name" style="padding-top:10px;height:auto;">{$item.title} </p>
+	                    <p class="name" style="padding:8px 0;">评价：  {$item.info}</p>
+	                    <p>
+	                    	<volist name="item.images" id="image" >
+		                	<span class="img_border">
+		                 	<img src="{:attach($image)}" height="80" width="80" class="J_preview" data-bimg="{:attach($image)}">
+		                	</volist>
+	                    </p>
+	               </div> 
+	                   
+	            </div>
+            </li>  
+			</if>
+        </volist>
+    </ul>
+</div>
+<style>
+.comments{
+	border: 1px solid #ffffff;
+	height: 50px;
+	width: 140px;
+	background-color: #f29200;
+	color: #ffffff;
+	cursor: pointer;
+	font: 24px/50px '';
+	margin-left: 250px;
+}
+</style>
+<script>
+$(function(){
+	$(".dianzan>div>i").on("click",function(){
+		$(".dianzan>div>i").removeClass("zan");
+	    var n=$(this).index()+1;
+	    $(this).parents('li').attr('dianzan',n);
+	     setTimeout(function(){
+	         for(var i=0;i<n;i++){
+	             $(".dianzan>div>i").eq(i).addClass("zan")
+	         }
+	     },10)
+	})
+	$(".textComments").focus(function(){
+		$(".textComments").text('');
+	}).blur(function(){
+		$(".textComments").text('您的评价对我们的改进非常重要哦，点击旁边的拍照按钮可以分享你的照片');
+	})
+	//提交评论
+	$(".comments").on("click",function(){
+		var li = $(this).parents('li');
+		var point = li.attr('dianzan');
+		var itemId = li.attr('itemId');
+		if(!point || point == 0){
+			$(".noneBtnAlertSpan").show()
+			$(".noneBtnAlertSpan").text("需要您先点赞哦");
+			setTimeout(function(){
+				$(".noneBtnAlertSpan").hide()
+			},1000)
+			return;
+		}
+		var content = li.find('textarea[name=commentText]').val();
+		if($.trim(content) == ''||$.trim(content)=='您的评价对我们的改进非常重要哦，点击旁边的拍照按钮可以分享你的照片'){
+			$(".noneBtnAlertSpan").show()
+			$(".noneBtnAlertSpan").text("请输入您宝贵的评价");
+			setTimeout(function(){
+				$(".noneBtnAlertSpan").hide()
+			},1000)
+			return;
+		}
+		var serverIds = new Array();
+		$.each($('input[name=serverId]'), function(i, n){
+			serverIds.push( $(n).val() );
+		});
+		var orderId = "{$orderId}";
+		var sendData ={'point':point,'content':content,'orderId':orderId,'itemId':itemId,'serverIds':serverIds.toString()};
+		$.post("{:U('my/postComment')}", sendData, function(data){
+			alert(data.msg);
+			if(data.status == 1){
+				window.location.reload();
+			}
+		},'json')
+	})
+})
+$(".photo").on("click",function(){
+//    拍照
+    wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+            $('#imgList').append('<img class="img" width="80" height="80" src="'+localIds[0]+'" style="margin-top: 7px;"/>');
+//            上传
+            wx.uploadImage({
+                localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                isShowProgressTips: 1, // 默认为1，显示进度提示
+                success: function (res) {
+                    var serverId = res.serverId; // 返回图片的服务器端ID
+                    $('#imgList img').last().attr('serverId',serverId);
+                    $('#imgList').append('<input type="hidden" name="serverId" value="'+serverId+'"/>');
+                },
+                fail: function (res) {
+                	alert(JSON.stringify(res));
+                }
+            });
+        }
+    })
+    ;
+})
+</script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+wx.config({
+    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: '{$appid}', // 必填，公众号的唯一标识
+    timestamp: '{$signPackage["timestamp"]}', // 必填，生成签名的时间戳
+    nonceStr: '{$signPackage["nonceStr"]}', // 必填，生成签名的随机串
+    signature: '{$signPackage["signature"]}',// 必填，签名，见附录1
+    jsApiList: [
+                'checkJsApi',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+    ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+/*
+ * 注意：
+ * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+ * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+ * 3. 完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+ *
+ * 如有问题请通过以下渠道反馈：
+ * 邮箱地址：weixin-open@qq.com
+ * 邮件主题：【微信JS-SDK反馈】具体问题
+ * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+ */
+wx.ready(function() {
+//	console.log('exect');
+	wx.checkJsApi({
+		jsApiList : ['checkJsApi','chooseImage','previewImage', 'uploadImage','downloadImage'],
+		success : function(res) {
+		}
+	});
+	function stopScrolling( e ) {
+		e.preventDefault();
+	}
+});
+wx.error(function(res) {
+});
+</script>
+<include file="public:footer"/>

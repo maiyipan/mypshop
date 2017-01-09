@@ -1,0 +1,10 @@
+
+.ic-app:before { content: '\e800'; } /* '' */
+.ic-cart:before { content: '\e801'; } /* '' */
+.ic-class:before { content: '\e802'; } /* '' */
+.ic-delete:before { content: '\e803'; } /* '' */
+.ic-eidt:before { content: '\e804'; } /* '' */
+.ic-home:before { content: '\e805'; } /* '' */
+.ic-my:before { content: '\e806'; } /* '' */
+.ic-search:before { content: '\e807'; } /* '' */
+.ic-tick:before { content: '\e808'; } /* '' */

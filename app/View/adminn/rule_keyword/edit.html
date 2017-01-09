@@ -1,0 +1,97 @@
+<include file="public:header"/>
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/weixin/css/dingcan/css2.css" />
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					
+					<div id="home2" class="tab-pane in active">
+						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('rule_keyword/eidt')}" method="post">
+							<div class="tabbable">
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<table cellpadding="2" cellspacing="2" width="100%" border="0" class="table_form">
+											<tbody>
+												<tr> 
+													<th> 规则名 </th>
+													<td> 
+														<div class="form-group">
+															<div class="col-sm-9">
+															 	<input type="text" name="rule_name" value="{$info.name}"> 
+															 </div>
+														</div>
+													</td>
+														 
+												</tr>
+												
+												<tr>
+												<th>关键词</th>
+												<td>
+														<div class="form-group">
+														<div class="col-sm-9">
+															<input type="text" name="keywords" id="form-field-tags" value="{$kwordStr}" placeholder="输入关键词，回车" />
+														</div>
+														</div>
+												</td>
+												</tr>
+												
+												<tr> 
+												<th>
+												回复内容
+												</th>
+												<td>
+													<select class="" id="" name="media_id" data-placeholder="">
+														 <volist name='media' id='vo' >
+													                <option <if condition="$vo.id eq $info.media_id "> selected="selected"</if> value="{$vo.id}" >{$vo.name}</option>
+													     </volist>
+													</select>
+												</td>
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<input type="hidden" name="kid" value="{$kid}" />
+							<input type="hidden" name="id" value = "{$info.id}" /> 
+							 <div class="form-actions">
+								<button class="btn btn-link btn_submit J_ajax_submit_btn"
+									type="submit" >提交</button>
+								<a class="btn" href="">返回</a>
+							</div> 
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<include file="public:common" />
+<script src="__STATIC__/Plugin/weixin/js/weixin.js"></script>
+<script src="__STATIC__/Plugin/style/js/bootstrap-tag.min.js"></script>
+
+<script type="text/javascript">
+			jQuery(function($) {
+					var tag_input = $('#form-field-tags');
+								if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) ) 
+								{
+									tag_input.tag(
+									  {
+										placeholder:tag_input.attr('placeholder'),
+										//enable typeahead by specifying the source array
+										source: ace.variable_US_STATES,//defined in ace.js >> ace.enable_search_ahead
+									  }
+									);
+								}
+								else {
+									//display a textarea for old IE, because it doesn't support this plugin or another one I tried!
+									tag_input.after('<textarea id="'+tag_input.attr('id')+'" name="'+tag_input.attr('name')+'" rows="3">'+tag_input.val()+'</textarea>').remove();
+									//$('#form-field-tags').autosize({append: "\n"});
+								}
+							});
+			</script>

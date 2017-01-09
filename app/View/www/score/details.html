@@ -1,0 +1,38 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">商品详情</span>
+</div>
+<div class="detailDiv">
+	<div style="height:300px">
+	 <img style="height:300px;width:100%;max-width:640px;" src="{:attach($item['img'])}">
+	</div>
+    <div class="info" style="max-height:150px;">
+        <div class="dianzan  fl">
+            <p>{$item.intro}</p>
+        </div>
+        <div class="dianzan  fl" style="padding-top:10px;">
+            <p>
+            	兑换条件: <span class="price">{$item.score}积分</span>
+            	<if condition="$item['price'] != 0">
+            		+ <span class="price">￥{$item.price}</span>
+            	</if>
+            </p>
+            <p>
+            	限兑: <span>{$item.user_num}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            	库存: <span>{$item.stock}</span>
+            </p>
+        </div>
+    </div>
+   <div class="displayDiv">
+	    <p style="padding-left:10px;">商品展示</p>
+	    <div style="margin:0px; font: 22px/50px 'Microsoft YaHei';padding: 20px;    color: #656043;">
+	    	{$item.desc}
+	    </div>
+	</div>
+	<div class="buyBtnDiv">
+	    <a href="{:U('score/exchange',array('id'=>$item['id'],'sid'=>$shopid))}"><button>立即兑换</button></a>
+	</div>
+</div>
+<include file="public:footer"/>

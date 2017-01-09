@@ -1,0 +1,474 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div id="cartPage">
+    <div class="backDiv ">
+
+        <span class="applySpan" style="     text-align: center;width: 100%;display: block;">我的购物车</span>
+        <?php if(count($_SESSION[$cartKey]) > 0){ ?>
+        <p class="editGoodsDetail" style=" font-size: 30px;position: absolute; right: 0;top: 0;"><i class="ic-delete"></i></p>
+        <?php } ?>
+    </div>
+    <?php if(count($_SESSION[$cartKey])==0){ ?>
+    <div class="cartNoneDiv">
+        <img class="bigCart" src="__STATIC__/home/images/bigCart.png">
+
+        <p>购物车尚无商品，您可能需要</p>
+        <a href="{:U('index/index',array('sid'=>$shopid))}"> <img class="toGo"
+                                                                  src="__STATIC__/home/images/toGo.png"></a>
+    </div>
+    <?php }else{  ?>
+    <div class="cartHaveDiv ">
+        <div class="cartListDiv">
+            <p class="cartlable">已购商品</p>
+            <ul>
+                <volist name='item' id='vo'>
+                    <!-- 组合商品 -->
+                    <if condition="$vo['types'] eq 1">
+                        <li id="{$vo.id}">
+                            <div class="good" style="border-bottom: 1px dotted #c5c5c5;height:50px; display: none; ">
+                                <label style="height:48px;" id="cancle_{$vo.id}">
+                                    <input class="checkboxInput" type="checkbox" id="sel"
+                                    <if condition="$vo['status'] eq 0">checked="checked"
+                                        <else/>
+                                    </if>
+                                    >
+                                    <i style="height:48px;font: 36px/60px 'Microsoft YaHei';"
+                                       class="ic-tick ic-gtick"
+                                        <if condition="$vo['status'] eq 0">style="color: #7b9e5c;"
+                                        <else/>style="color: #AEB1AC;"
+                                        </if>>
+                                    </i>
+                                </label>
+
+                                <!-- -->
+                                <div style="height:48px;padding:0;" class="goodsInfo">
+                                    <p class="title" style="margin-top:0;padding-left:0;display: inline-block;">
+                                        <if condition="$vo['types'] == 1">
+                                            <a style="color:#676666;max-width: 220px;display: block;float: left;"href="{:U('item/promotionTeam',array('id'=>$vo['id'],'sid'=>$shopid))}">组合商品:{$vo.name}</a>
+                                            <else/>
+                                            <a style="color:#676666;max-width: 220px;display: block;float: left;" href="{:U('item/details',array('id'=>$vo['id'],'sid'=>$shopid))}">{$vo.name}</a>
+                                        </if>
+                                        <!--<div class="closeDiv">-->
+                                        <img class="closeDiv" src="__STATIC__/home/images/close.png">
+                                        <!--</div>-->
+                                    </p>
+                                </div>
+                                <div style="float:right;width:150px;height:40px;padding-top:8px;">
+                                    <p style="display: inline-block;" class="price">￥<span
+                                            class="goodPrice">{$vo.price}</span></p>
+
+                                    <p style="display: inline-block;">
+                                    <div class="numChoiceDiv fl">
+                                    <a class="numchangeBtnR"
+                                       onclick="cul(0,'{$vo.id}',$(this),'{$vo.limit_buy}')">-</a>
+                                    <input class="cartInput" value={$vo.num}
+                                           onchange="inputChange('{$vo.id}',$(this),'{$vo.limit_buy}' )" type="text"
+                                           onafterpaste="this.value=this.value.replace(/\D/g,'')"
+                                           onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+                                    <a class="numchangeBtnA"
+                                       onclick="cul(1,'{$vo.id}',$(this),'{$vo.limit_buy}')">+</a>
+                                </div>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- 组合商品列表 -->
+                            <?php foreach($assembles[$vo['id']] as $vo2){?>
+                            <div class="good">
+                                <label id="cancle_{$vo.id}">
+                                </label>
+                                <a href="{:U('item/details',array('id'=>$vo2['id'],'sid'=>$shopid))}">
+                                    <img src1="images/orange.png" src="{:attach(get_thumb($vo2['img'], '_m'), '')}">
+                                </a>
+
+                                <div class="goodsInfo">
+                                    <p class="title">
+                                        <if condition="$vo['types'] == 1">
+                                            <a style="color:#676666;max-width: 220px;display: block;float: left;"href="{:U('item/promotionTeam',array('id'=>$vo['id'],'sid'=>$shopid))}">组合商品:{$vo.name}</a>
+                                            <else/>
+                                            <a style="color:#676666;max-width: 220px;display: block;float: left;" href="{:U('item/details',array('id'=>$vo['id'],'sid'=>$shopid))}">{$vo.name}</a>
+                                        </if>
+                                        <!--<div class="closeDiv">-->
+                                        <img class="closeDiv"  style="display: none;" src="__STATIC__/home/images/close.png">
+                                        <!--</div>-->
+                                    </p>
+                                    <p class="price">￥<span class="goodPrice">{$vo2.price}</span></p>
+
+                                    <p>
+
+                                    <div class="numChoiceDiv fl"  >
+                                        <a class="numchangeBtnR" style="display: none"
+                                           onclick="cul(0,'{$vo.id}',$(this),'{$vo.limit_buy}')">-</a>
+                                        <input class="cartInput" value={$vo.num} readonly
+                                               onchange="inputChange('{$vo.id}',$(this) ,'{$vo.limit_buy}')" type="text"
+                                               onafterpaste="this.value=this.value.replace(/\D/g,'')"
+                                               onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+                                        <a class="numchangeBtnA" style="display: none"
+                                           onclick="cul(1,'{$vo.id}',$(this),'{$vo.limit_buy}')">+</a>
+                                    </div>
+
+                                        <!--<span class="guigeNum">{$vo.num}</span>-->
+                                    </p>
+                                    <if condition="!empty($vo2['youhui'])">
+                                        <switch name="vo.award_type">
+                                            <case value="1"><p class="fudaiInfo">满 {$vo2.reserve}元,减{$vo2.youhui}元</p>
+                                            </case>
+                                            <case value="2"><p class="baoyouInfo">满 {$vo2.reserve}元,赠送{$vo2.youhui}</p>
+                                            </case>
+                                        </switch>
+                                    </if>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        </li>
+                        <else/>
+                        <!-- 普通商品 -->
+                        <li id="{$vo.id}">
+                            <div class="good">
+                                <label id="cancle_{$vo.id}">
+                                    <input class="checkboxInput" type="checkbox" id="sel"
+                                    <if condition="$vo['status'] eq 0">checked="checked"
+                                        <else/>
+                                    </if>
+                                    >
+                                    <i class="ic-tick ic-gtick"    <if condition="$vo['status'] eq 0">style="color: #7b9e5c;"
+                                    <else/>style="color: #AEB1AC;"
+                                </if>>
+
+                                    </i>
+                                </label>
+                                <a href="{:U('item/details',array('id'=>$vo['id'],'sid'=>$shopid))}">
+                                    <img src1="images/orange.png" src="{:attach(get_thumb($vo['img'], '_m'), '')}">
+                                </a>
+
+                                <div class="goodsInfo">
+                                    <p class="title">
+                                        <if condition="$vo['types'] == 1">
+                                            <a style="color:#676666;max-width: 220px;display: block;float: left;"href="{:U('item/promotionTeam',array('id'=>$vo['id'],'sid'=>$shopid))}">组合商品:{$vo.name}</a>
+                                         <else/>
+                                            <a style="color:#676666;max-width: 220px;display: block;float: left;" href="{:U('item/details',array('id'=>$vo['id'],'sid'=>$shopid))}">{$vo.name}</a>
+                                        </if>
+                                        <!--<div class="closeDiv">-->
+                                            <img class="closeDiv" src="__STATIC__/home/images/close.png">
+                                        <!--</div>-->
+                                    </p>
+                                    <p class="price">
+                                        ￥<span class="goodPrice">{$vo.price}</span>
+                                        <div class="numChoiceDiv fl">
+                                            <a class="numchangeBtnR"
+                                               onclick="cul(0,'{$vo.id}',$(this),'{$vo.limit_buy}')">-</a>
+                                            <input class="cartInput" value={$vo.num}
+                                                   onchange="inputChange('{$vo.id}',$(this), '{$vo.limit_buy}')" type="number"
+                                                   onafterpaste="this.value=this.value.replace(/\D/g,'')"
+                                                   onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+                                            <a class="numchangeBtnA"
+                                               onclick="cul(1,'{$vo.id}',$(this),'{$vo.limit_buy}')">+</a>
+                                        </div>
+                                    </p>
+                                  <if condition="!empty($vo['youhui'])">
+                                        <switch name="vo.award_type">
+                                            <case value="1"><p class="fudaiInfo">满 {$vo.reserve}元,减{$vo.youhui}元</p></case>
+                                            <case value="2"><p class="baoyouInfo">满 {$vo.reserve}元,赠送{$vo.youhui}</p></case>
+                                         </switch>
+                                    </if> 
+                                </div>
+                            </div>
+                        </li>
+                    </if>
+                </volist>
+                <if condition="!empty($fullgive)">
+                    <a href="{:U('index/index',array('sid'=>$shopid))}">
+                        <div class="cuDiv cf">
+                        <div style="float: left" class='cf'>
+                            <img  style=" margin: 0 20px;" src="__STATIC__/home/images/01.png">
+                        </div>
+                        <span style="font: 24px/35px '微软雅黑';color: #676666;    max-width: 90%;display: block;float: left;">满 {$fullgive.condition} 元时,优惠￥{$fullgive.award_value}</span>
+                        <img style=" margin: 0 20px;position: absolute;right: 20px" src="__STATIC__/home/images/02.png">
+                        </div>
+                    </a>
+                </if>
+            </ul>
+
+        </div>
+        <div class="balanceDiv">
+            <label>
+                <!-- <input type="checkbox" class="checkboxInput" checked> -->
+            </label>
+
+            <div class="balanceInfo">
+                <p class="zongji " style="font:20px/40px 'Microsoft YaHei'">共计金额:<span class="totalPriceLable">￥ </span>
+              <span class="totalPrice">{$sumPrice}
+            <if condition="!empty($youhui)"><span style="font-size:14px;">(已优惠￥{$youhui})</span></if></span>
+            		<if condition="!empty($fullgive)">
+            		<switch name="fullgive.award_type">
+                       <case value="1"><br/><span style="font-size:14px;">满 {$vo.reserve}元,减{$vo.youhui}元</span></case>
+                       <case value="2"><br/><span style="font-size:14px;">满 {$vo.reserve}元,赠送{$vo.youhui}</span></case>
+                       <br/><span style="font-size:14px;">满 {$fullgive.condition} 元时,优惠￥{$fullgive.award_value}</span>
+                    </switch>
+                    </if>
+                </p>
+                <!--<p class="yunfei">运费：<span class="addressPrice">￥0</span></p>-->
+            </div>
+            <a class="a1" href="{:U('order/jiesuan',array('sid'=>$shopid))}"><p class="balanceBtn bgRed">去结算</p></a>
+            <a class="a3 dis_none" onclick="noneHref()"><p class="balanceBtn bgGrey">去结算</p></a>
+            <!--<a class="a2 dis_none"  ><p class="balanceBtn">去结算（<span class="num">{count($_SESSION[$cartKey]}</span>）</p></a>-->
+        </div>
+    </div>
+    <?php } ?>
+</div>
+
+<script>
+    //批量删除按钮
+    $(".editGoodsDetail").on("click",function(){
+    var checkedPLi=$(".cartHaveDiv  li .checkboxInput:checked").parents(" li");
+    var checkedLength=$(".cartHaveDiv  li .checkboxInput:checked").length;
+    if(checkedLength>0){
+        //var flag=$(".cartEditDiv li .checkInput").attr("checked");alert();
+        // if(flag==true){
+        $(".tableDiv").show();
+        $(".tableDiv p.yes").on("click",function(){
+            $(".tableDiv").hide();
+            var ids = new Array();
+            $.each(checkedPLi, function(i, n){
+                ids.push( $(n).attr('id') );
+            });
+            console.log(ids)
+            $.post("{:U('shopcart/remove_cart_item',array('sid'=>$shopid))}", {itemId: ids.toString()}, function (data) {
+                if (data.status == 1) { //成功
+                    checkedPLi.remove();
+                    $(".cartHaveDiv ").find(".totalPrice").text(data.sumPrice)
+//                    $(".cartListDiv").hide();
+                } else{
+                    alert(data.msg);
+                }
+            }, 'json');
+        })
+        $(".tableDiv p.no").on("click",function(){
+            $(".tableDiv").hide();
+        })
+    }else{
+        alert("请先选中");
+    }
+
+})
+    //单个删除按钮  editGoodsDetail
+    $("img.closeDiv").on("click",function(){
+        var delBtnLi=$(this).parents("li");
+        var itemId = delBtnLi.attr('id');
+        $(".tableDiv").show();
+        $(".tableDiv p.yes").on("click",function(){
+            $(".tableDiv").hide();
+            $.post("{:U('shopcart/remove_cart_item',array('sid'=>$shopid))}", {itemId: itemId}, function (data) {
+                if (data.status == 1) { //成功
+                    delItem(delBtnLi);
+                    $('.balanceInfo .totalPrice').text(data.sumPrice);
+                    if($(".cartHaveDiv li").length==0){
+                        $(".cartListDiv ").hide();
+                    }
+                } else{
+                    alert(data.msg);
+                }
+            }, 'json');
+//            Todo 数据改变存储
+        })
+        $(".tableDiv p.no").on("click",function(){
+            $(".tableDiv").hide();
+        })
+    })
+    function delItem(delBtnLi){
+        delBtnLi.remove();
+    }
+    function cul(p,itemId,_this,status){
+//        console.log(_this.next("input"))
+        var o=0;
+        if(p==1){
+            o= _this.prev("input").val()
+        }else{
+            o= _this.next("input").val()
+        }
+        if(p==1){
+            o++;
+            _this.prev().val(o);
+        }else{
+            if(parseInt(o)!=1){
+                o--;
+                _this.next().val(o);
+            }
+        }
+        //限购
+        if(status != 0 && o >= status){
+            _this.prev("input").val(status)
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('该商品是限购商品');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+            o = status;
+        }
+        if(!isNaN(o)){
+            $.ajax({
+                        type: 'post',
+                        url:'{:U('shopcart/change_quantity',array('sid'=>$shopid))}',
+                        dataType: 'json',
+                        timeout: 15000,
+                        data: {
+                            itemId: itemId,
+                            quantity:o,
+                        },beforeSend:function(xhr){
+                            beforeAjaxSend()
+                        },
+                        success: function (data) {
+                            if (data.status == 1) {
+                              $('.totalPrice').text(data.sumPrice)
+                            } else {
+                                alert(data.msg);
+                            }
+
+                        },
+                        error: function (xhr, type) {
+                            alert('网络超时，请刷新后再试！');
+                        },
+                        complete:function(xhr){
+                            completeAjaxSend()
+                        }
+                    })
+        }else{
+            console.log(o)
+        }
+
+    }
+    $(function () {
+        balanceNum();
+        $(".good .checkboxInput").on("click", function () {
+            var itemId = $(this).parents("li").attr('id');
+            console.log(itemId);
+            $.post("{:U('shopcart/cancle_item',array('sid'=>$shopid))}", {itemId: itemId}, function (data) {
+                if (data.status == 1) { //成功
+                    $(".totalPrice").text(data.sumPrice)
+                } else {
+                    alert(data.msg);
+                }
+            }, 'json');
+            checkboxLi();
+            console.log($(this).prop("checked"))
+            if ($(this).prop("checked")) {
+                $(this).siblings(".ic-tick").css("color", "#7b9e5c")
+                $(this).prop("checked", true)
+                console.log(11)
+                console.log($(this).prop("checked"))
+            } else {
+                console.log(12)
+                console.log($(this).prop("checked"))
+                $(this).siblings(".ic-tick").css("color", "#AEB1AC")
+                $(this).prop("checked", false)
+                $(".cartHaveDiv .balanceDiv .checkboxInput").siblings(".ic-tick").css("color", "#AEB1AC");
+                $(".cartHaveDiv .balanceDiv .checkboxInput").prop("checked", false)
+            }
+        })
+        $(".balanceDiv .checkboxInput").on("click", function () {
+            checkboxBlance($(this));
+            balanceNum();
+        })
+
+//        checkboxLi();
+//        checkboxBlance();
+
+
+    });
+    //    input的值改变
+    function inputChange(itemId, _this , status) {
+        if (_this.val() == 0) {
+            console.log(_this.val());
+            _this.val(1);
+        }
+
+        //限购
+        if(status != 0 && _this.val() >= status){
+            _this.prev("input").val(status)
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('该商品是限购商品');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+            _this.val(status);
+        }
+
+        $.post("{:U('shopcart/change_quantity',array('sid'=>$shopid))}", {
+            itemId: itemId,
+            quantity: _this.val()
+        }, function (data) {
+            if (data.status == 1) { //成功
+                _this.parents(".cartEditDiv").find(".totalPrice").text(data.sumPrice)
+            } else {
+                alert(data.msg);
+            }
+        }, 'json');
+
+
+
+    }
+    function noneHref() {
+        alert("请先选中");
+    }
+    function checkboxLi() {
+        var liLength = $(".cartListDiv li ").length;
+        var checkedLength = $(".cartListDiv li .checkboxInput:checked").length;
+
+        if (liLength == checkedLength) {
+            $(".cartHaveDiv .balanceDiv .checkboxInput").prop("checked", true)
+            $(".cartHaveDiv .balanceDiv .checkboxInput").siblings(".ic-tick").css("color", "#f29200");
+            $(".cartHaveDiv .balanceDiv p.balanceBtn").css("background-color", "#f29200");
+        } else {
+            if (checkedLength == 0) {
+                $(".cartHaveDiv .balanceDiv p.balanceBtn").css("background-color", "#AEB1AC");
+                $(".balanceDiv .a1").addClass("dis_none");
+                $(".balanceDiv .a3").removeClass("dis_none");
+                $(".cartHaveDiv .balanceDiv p.balanceBtn span.num").text(0);
+                $(".cartHaveDiv .balanceDiv .checkboxInput").siblings(".ic-tick").css("color", "#AEB1AC");
+                $(".cartHaveDiv .balanceDiv .checkboxInput").prop("checked", false)
+            } else {
+                $(".balanceDiv a.a2").addClass("dis_none");
+                $(".balanceDiv a.a1").removeClass("dis_none");
+                $(".cartHaveDiv .balanceDiv p.balanceBtn").css("background-color", "#f29200");
+                $(".balanceDiv .a3").addClass("dis_none");
+                $(".balanceDiv .a1").removeClass("dis_none");
+                $(".cartHaveDiv .balanceDiv .checkboxInput").siblings(".ic-tick").css("color", "#f29200");
+                $(".cartHaveDiv .balanceDiv .checkboxInput").prop("checked", true)
+            }
+        }
+    }
+    function checkboxBlance(obj) {
+        if (obj.attr("checked")) {
+            obj.siblings(".ic-tick").css("color", "#f29200");
+            $(".cartListDiv li .checkboxInput").siblings(".ic-tick").css("color", "#7b9e5c");
+            $(".good .checkboxInput").prop("checked", true);
+            $(".cartHaveDiv .balanceDiv p.balanceBtn").css("background-color", "#f29200");
+            $(".balanceDiv .a3").addClass("dis_none");
+            $(".balanceDiv .a1").removeClass("dis_none")
+        } else {
+            obj.siblings(".ic-tick").css("color", "#AEB1AC")
+            $(".good .checkboxInput").prop("checked", false);
+            $(".cartListDiv li .checkboxInput").siblings(".ic-tick").css("color", "#AEB1AC");
+            $(".cartHaveDiv .balanceDiv  a").css("disabled", true);
+            $(".cartHaveDiv .balanceDiv p.balanceBtn").css("background-color", "#AEB1AC");
+            $(".balanceDiv .a1").addClass("dis_none");
+            $(".balanceDiv .a3").removeClass("dis_none");
+            $(".cartHaveDiv .balanceDiv p.balanceBtn span.num").text(0);
+        }
+    }
+    function balanceNum() {
+        console.log($(".cartListDiv li .checkboxInput:checked").length)
+        /* var price=0; */
+        for (var i = 0; i < $(".cartListDiv li .checkboxInput:checked").length; i++) {
+            var num = $(".cartListDiv li .checkboxInput:checked").length;
+            $("span.num").text(num);
+            console.log(num)
+            //var k = $(".cartListDiv li .checkboxInput:checked").eq(i).parents("li").find(".goodPrice").text();
+            //var x = $(".cartListDiv li .checkboxInput:checked").eq(i).parents("li").find(".guigeNum").text();
+            //price += parseInt(k)*parseInt(x);
+        }
+        /* if(!price){
+         price=0;
+         } */
+        //$(".totalPrice").text("￥"+price) ;
+    }
+</script>

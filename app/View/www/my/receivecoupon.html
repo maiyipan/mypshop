@@ -1,0 +1,39 @@
+<include file="public:header"/>
+<style>
+<!--
+#demo{
+            width:80%;                /*设置div宽度为500像素*/
+            height:80%;            /*设置div高度为200像素*/
+    		background-color: #eceade;
+    		text-align:center;margin-left:auto; margin-right:auto;
+}
+.time{left: 280px;top: 120px;}
+.subtitle{left: 280px;}
+-->
+</style>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    
+</div>
+<div class="conponDetailDiv">
+    <div class="conponQuan">
+        <div class="conponQuanBg">
+            <span class="companyLable">佳鲜农庄</span>
+            <span class="priceSpan">{$list.title}</span>
+            <span class="rangSpan" style="left: 280px;">{$list.sub_title}</span>
+            <span class="timeSpan" style="left: 280px;top: 120px;">{$list.begintime}-{$list.expiretime}</span>
+        </div>
+    </div>
+    <div class="moreContentDiv">
+        <div class="moreTile">更多说明</div>
+        <p class="moreP">.{$list.shop_name}可用。</p>
+        <p class="moreP">.{$list.explain}</p>
+        <p class="moreP">.活动有效时间 {$list.begintime}-{$list.expiretime}</p>
+        <p class="moreP">.佳鲜农庄，绿色生活新鲜到家。</p>
+    </div>
+    <div class="toUseBtnDiv">
+        <a href="{$list.url}"><div class="useBtn ">立即领取</div></a>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/home/js/swiper3.js"></script>
+<include file="public:footer"/>

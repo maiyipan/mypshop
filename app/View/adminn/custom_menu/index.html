@@ -1,0 +1,179 @@
+<include file="public:header"/>
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+	
+		<!-- <div class="widget-header">
+			<div class="widget-toolbar no-border">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home1">广告列表</a></li>
+					<li><a data-toggle="tab" href="#home2">广告添加</a></li>
+				</ul>
+			</div>
+		</div> -->
+		
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home1" class="tab-pane in active">
+						<div class="row">
+							<div class="col-xs-12 no-padding-right">
+								<div class="table-responsive">
+								
+								<div class="alert alert-info">
+								<strong>说明：</strong>  
+								<ul class="list-unstyled spaced">
+										<li>
+											<i class="icon-bell bigger-110 purple"></i>
+											自定义菜单最多包括3个一级菜单，每个一级菜单最多包含5个二级菜单。
+										</li>
+										<li>
+											<i class="icon-bell bigger-110 purple"></i>
+											一级菜单最多4个汉字，二级菜单最多7个汉字，多出来的部分将会以“...”代替。
+										</li>
+										<li>
+											<i class="icon-bell bigger-110 purple"></i>
+											创建自定义菜单后，由于微信客户端缓存，需要24小时微信客户端才会展现出来。测试时可以尝试取消关注公众账号后再次关注，则可以看到创建后的效果。
+										</li>
+										<li>
+											<i class="icon-bell bigger-110 purple"></i>
+											删除父菜单将同时删除对应的子菜单
+										</li>
+										<li>
+											<i class="icon-bell bigger-110 purple"></i>
+											父菜单有子菜单之后，父菜单对应的跳转或key值回复将自动失效
+										</li>
+								</ul>
+							</div>
+								
+								
+									<div class="row operatehead" style="">
+									    <div class="col-xs-9">
+									        <div id="btnToolBar" class="btn-toolbar">  
+									           <!--  <a href="javascript:void(0);"  data-bb="custom_html" data-uri="{:U('rule_keyword/addrule')}" class="bootbox-html btn btn-link btn-sm">
+									                <i class="ace-icon fa fa-plus align-top bigger-125"></i>
+									            		    添加菜单
+									            </a> -->
+									            
+									             <a href="#" data-bb="custom_html" class="bootbox-html btn btn-link btn-sm" href="javascript:void(0);" 
+								                    	 data-uri="{:U('custom_menu/add')}" data-title="添加一级菜单" data-id="" 
+								                    	 data-width="" data-height="" >
+								                    	 <i class="icon-plus align-top bigger-125"></i>	添加一级菜单
+                    							 </a> 
+									            
+									            
+									           <a href="javascript:;" class="bootbox-confirm btn btn-link btn-sm"  
+										                    	 data-uri="{:U('custom_menu/public_menu')}" 
+										                    	 data-msg="确定发布菜单到微信吗?"  
+										                    	 data-width="" data-height="" >
+										                    	 <i class="icon-bolt align-top bigger-125"></i>	发布菜单
+                    							</a> 
+									         </div>
+									    </div>
+									    <div class="col-xs-3">
+									        <div class="alert alert-warning hidden" id="altercon">
+											   <a href="#" class="close" data-dismiss="alert">
+											      &times;
+											   </a>
+											   <strong >警告！</strong><span id="warntext"> </span>
+											   
+											</div>
+									    </div>
+									</div>
+								
+								
+								
+									<table id="sample-table-1"
+										class="table table-striped table-bordered table-hover listtable">
+										<div class="dd" id="nestable">
+											<ol class="dd-list">
+												 <volist name='list' id='vo' >
+											     	<li class="dd-item" data-id="0">
+													   <div class="dd-handle">{$vo.name}
+														   <div class="pull-right action-buttons">
+														   
+														   
+														    <a href="#" data-bb="custom_html" class="bootbox-html btn btn-pink btn-minier" href="javascript:void(0);" 
+										                    	 data-uri="{:U('custom_menu/add',  array('id'=>$vo['id']))}" data-title="添加一级菜单" data-id="" 
+										                    	 data-width="" data-height="" >
+										                    	 <i class="icon-plus align-top bigger-125"></i>	添加子菜单
+                    							 			</a> 
+                    							 			<a href="#" data-bb="custom_html" class="bootbox-html btn btn-link btn-minier" href="javascript:void(0);" 
+										                    	 data-uri="{:U('custom_menu/edit',  array('id'=>$vo['id']))}" data-title="编辑一级菜单" data-id="" 
+										                    	 data-width="" data-height="" >
+										                    	 <i class="icon-pencil align-top bigger-125"></i>	编辑
+                    							 			</a> 
+                    							 			<a href="javascript:;" class="bootbox-confirm btn btn-link btn-minier"  
+										                    	 data-uri="{:U('custom_menu/delete',  array('id'=>$vo['id']))}" 
+										                    	 data-msg="{:sprintf(L('confirm_delete_one'),$vo['name'])}"  
+										                    	 data-width="" data-height="" >
+										                    	 <i class="icon-trash align-top bigger-125"></i>	删除
+                    							 			</a> 
+
+															</div>
+													   </div>  
+													            
+											             <ol class="dd-list">
+											             	<volist name='vo.childMenu' id='childmenu'>
+													             <li class="dd-item" data-id="4">
+																	<div class="dd-handle">
+																		<span class="orange">{$childmenu.name}</span>
+																		<div class="pull-right action-buttons">
+																			<a href="#" data-bb="custom_html" class="bootbox-html btn btn-link btn-minier" href="javascript:void(0);" 
+														                    	 data-uri="{:U('custom_menu/edit',  array('id'=>$childmenu['id']))}" data-title="编辑二级菜单" data-id="" 
+														                    	 data-width="" data-height="" >
+														                    	 <i class="icon-pencil align-top bigger-125"></i>	编辑
+				                    							 			</a> 
+				                    							 			<a href="javascript:;" class="bootbox-confirm btn btn-link btn-minier"  
+														                    	 data-uri="{:U('custom_menu/delete',  array('id'=>$childmenu['id']))}" 
+														                    	 data-msg="{:sprintf(L('confirm_delete_one'),$vo['name'])}"  
+														                    	 data-width="" data-height="" >
+														                    	 <i class="icon-trash align-top bigger-125"></i>	删除
+				                    							 			</a> 
+																		</div>
+																		</div>
+																	</li>
+											             	</volist>
+											             </ol>
+											         </li>   
+											     	</volist>
+												</ol>
+										</div>
+										
+									</table>
+	
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+ <script src="__STATIC__/Plugin/style/js/jquery.nestable.min.js"></script> 
+ <script src="__TMPL__public/js/admin.js"></script>
+<script type="text/javascript">
+			jQuery(function($){
+			
+				 $('.dd').nestable({
+					 maxDepth:2
+				}
+				); 
+				
+				 $('#nestable').nestable({
+					 group: 1
+					 });
+			
+				 $('.dd-handle a').on('mousedown', function(e){
+					e.stopPropagation();
+				});
+				
+				$('[data-rel="tooltip"]').tooltip(); 
+			
+			});
+		</script>
+<include file="public:common" />

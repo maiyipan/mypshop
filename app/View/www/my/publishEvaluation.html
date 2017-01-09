@@ -1,0 +1,119 @@
+﻿<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div class="backDiv">
+    <i class="ic-back" onclick="goBack()"> </i>
+    <span class="applySpan">发表评论</span>
+</div>
+
+<div class="wrap wod ">
+	<?php if(count($item_orders)==0){ ?>
+	<div class="orderNoneDiv">
+		<img  class="bigCart" src="__STATIC__/home/images/bigCart.png">
+		<p>目前还没有您的相关订单，您可能需要</p>
+		<a href="{:U('index/index',array('sid'=>$shopid))}"> <img class="toGo" src="__STATIC__/home/images/toGo.png"></a>
+	</div>
+	<?php }else{  ?>
+<form  id="comment" class="commentForm"  name=”comment“ action="{:U('my/publishEvaluation',array('sid'=>$shopid))}" method="get" >
+<div class="public" name="orderName">
+        <ul>
+        	<volist name='item_orders' id='vo' >
+            <li>
+                <div class="order_form">
+                    <p class="num">您的订单号:<span>{$vo.orderId}</span></p>
+                    
+                    <volist name='vo.items' id='item' >
+				
+                    <div class="con">    
+                        <p class="ware_pic">
+                            <a href="{:U('item/details',array('id'=>$item['itemId'],'sid'=>$shopid))}" >
+                            	<img src="{:attach(get_thumb($item['img'], '_b'), '')}" height="100%" width="100%">
+                            </a>
+                        </p>
+                        <div class="descri cf">
+                            <div class="ware_text">
+                               <a href="{:U('item/details',array('id'=>$item['itemId'],'sid'=>$shopid))}">{$item.title}</a>
+                                <p></p>
+                            </div>
+                            <div class="priceInfo">
+                             
+                                <p class="amount">X<span>{$item.quantity}</span></p>
+                                 
+                            </div>
+
+                        </div>
+                    </div>  
+    
+                    <!--  
+                    		  <div class="evaluation" >
+				        <div class="dianzan fl" style="margin-bottom: 20px;margin-top: 20px">
+				            <span> 点赞：</span>
+				            <div>
+				                <i></i>
+				                <i></i>
+				                <i></i>
+				                <i></i>
+				                <i></i>
+				            </div>
+				 
+				   <textarea class="commentText"  id="commentText{$i}" name="commentText{$i}" type="text">commentText{$i}</textarea>  
+
+				           <img class="photo" src="__STATIC__/home/images/photo.png">
+				         </div> 
+				         </div> -->  
+                    </volist>
+                  
+                    <div class="clear"></div>
+                    <div class="foot">
+                    	<div style="border-bottom: solid 2px #e5e2d0;height: 50px;">
+						<p class="time">您的下单时间:{$vo.add_time|date='Y-m-d H:i:s',###}</p>
+                      
+                        </div>
+                        <div class="handle">
+                        	 <switch name="vo.status" >
+	                        
+	                         <case value="4"><!-- 待收货 -->
+	                         
+				 			<a href="{:U('my/commentHandle',array('orderId'=>$vo['orderId'],'sid'=>$shopid))}" name="commentBt" id="commentBt" >评价</a>	
+	                         </case>
+	                        <default />
+	                        
+	                      
+	                        </switch>       
+                        
+                        </div>
+                    </div>
+                </div>
+   `          </li>
+   			</volist>
+        </ul>
+	</div>
+</form>
+	<?php } ?>
+</div>
+<include file="public:footer"/>
+    <script>
+$(".publishEvaluation img").on("click",function(){
+//    拍照
+    wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+//            上传
+            wx.uploadImage({
+                localId: '', // 需要上传的图片的本地ID，由chooseImage接口获得
+                isShowProgressTips: 1, // 默认为1，显示进度提示
+                success: function (res) {
+                    var serverId = res.serverId; // 返回图片的服务器端ID
+                }
+            });
+        }
+    });
+})
+    </script>
+    <script>
+    function submint(){
+        	document.getElementById('comment').submit(); //register是上面表单的ID	
+    } 
+    </script>

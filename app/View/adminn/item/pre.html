@@ -1,0 +1,116 @@
+<!--编辑管理员-->
+<div class="dialog_content">
+	
+	<div >
+		<img id="contents" src="{:attach($data['qrcode'])}" data-url="{$data.url}"/>
+	</div>
+	
+	<div >
+		<div class = "yl">
+		<a href="{:U('item/down', array('id'=>$data['id']))}"　target="_blank" class="btn btn-link">二维码下载</a> 
+		<a href="#"  class="btn btn-add " onclick="copyUrl2()" style="width: 75px;">链接复制</a></br>
+		</div>
+	<div class="">
+	<textarea cols="20" rows="10" id="text" class="">{$data.url}</textarea>
+	</div>
+	</div>
+	
+	
+</div>
+<style>
+.yl {
+    height: 39px;
+    /* margin: 0 auto; */
+    margin-left: 26%;
+    width: 100%;
+}
+.btndiv{
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-left: 3px;
+    }
+.p{
+	margin-left: 64px;
+    width: 300px;
+    margin-top: 2px;
+}
+.img{
+	width: 80%;height: 500px
+}
+#text{
+    width: 90%;	border: 0px;
+    margin-right: 10px;
+    margin-top: 2px;
+    height: 50px;
+}
+</style>
+<!-- <script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.zclip.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ZeroClipboard.swf"></script> -->
+<script type="text/javascript">
+ function copyUrl2()
+ {
+	 var Url2=document.getElementById("text");
+ 	 Url2.select(); // 选择对象
+  	document.execCommand("Copy"); // 执行浏览器复制命令
+  	alert("已复制好，可贴粘。");
+  }
+  </script>
+<script type="text/javascript"> 
+	function copyText(){
+		var input=document.getElementById("text");//input的ID值 
+		input.select(); //选择对象 
+		document.execCommand("Copy"); //执行浏览器复制命令 
+	}
+	function copytext(){
+		var name= $('input').val();
+		alert(name);
+		console.log(document.getElementsByTagName('input')[0].value);//打印出test
+		var text=document.getElementById("text");//对象是多行文本框contents 
+		alert(text);
+        document.execCommand("Copy"); //执行浏览器复制命令 
+        /* alert('复制成功！'); */
+        alert(text);
+	}
+
+	$('.aInput').click(function(){ 
+        var content=document.getElementById("contents");
+       	var copyurl= content.getAttribute("data-url");  
+       	copyToClipboard(copyurl);
+    } 
+	)
+    function copyToClipboard(txt) {     
+    	if(window.clipboardData) {             
+    		window.clipboardData.clearData();             
+    		window.clipboardData.setData("Text", txt);     
+   		} else if(navigator.userAgent.indexOf("Opera") != -1) {          
+   			 
+   			      window.location = txt;     
+   		} else if (window.netscape) {          
+   			try {               
+   				  netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");          
+   				  } catch (e) {               
+   					  alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");          
+   					  }          
+   				  var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+   				  if (!clip)               
+   				  return;          
+   				  var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);          
+   				  if (!trans)               
+   					  return;          
+   				  trans.addDataFlavor('text/unicode');          
+   				  var str = new Object();          
+   				  var len = new Object();          
+   				  var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);          
+   				  var copytext = txt;          
+   				  str.data = copytext;          
+   				  trans.setTransferData("text/unicode",str,copytext.length*2);          
+   				  var clipid = Components.interfaces.nsIClipboard;          
+   				  if (!clip)               
+				  return false;          
+   				  clip.setData(trans,null,clipid.kGlobalClipboard);          
+   				  alert("复制成功！")     
+   				  }
+    	}
+
+</script> 

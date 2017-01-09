@@ -1,0 +1,144 @@
+<volist name="list" id="item">
+	<li style="height: 178px">
+		<div class="singleList" style="position: relative;">
+			<div class="left">
+				<a href="{:U('item/details',array('id'=>$item['condition'],'sid'=>$shopid))}">
+					<img style="height:100%;width:100%;" src="{:attach($item['img'])}">
+				</a>
+			</div>
+			<div class="right">
+				<a href="{:U('item/details',array('id'=>$item['condition'],'sid'=>$shopid))}" >
+					<p class="name">{$item.title}</p>
+				</a>
+				<p class="description" style="display: none;">{$item.intro}</p>
+				<p class="price">￥{$item.award_value} <span style="font-size:16px;">市场价 {$item.price}</span>
+					<!-- <label id="kk">
+						<input id="kk" type="checkbox" class="favorCheckInput">
+						<i class="ic-heart-empty" ></i>
+					</label> -->
+					<i onclick="buys({$item.condition},$(this))" price="{$item.award_value}"  oldprice="{$item.price}" id="cart1" class="ic-cart"></i>
+				</p>
+				<p class="info">源产地:<span class="address">{$item.originplace}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					评论数:<span class="number">{$item.comments}</span>
+				</p>
+				<p class="time" start="<?php echo strtotime($item['start_time']);?>" end="<?php echo strtotime($item['end_time']);?>">距结束:
+					<!--<span class="day">{$item.end_time}</span>  -->
+					<span class="day"></span>天
+					<span class="hour"></span>小时
+					<span class="minute"></span>分
+					<span class="second"></span>秒
+				</p>
+			</div>
+		</div>
+	</li>
+</volist>
+<script>
+$(function(){
+	$(function(){
+		var liLength=$(".orderListDiv").find('li').length;
+		console.log(liLength);
+		for(var j=0;j<liLength;j++){
+			var length=$(".right .description").eq(j).text().length;
+			console.log(length);
+			var duoyu=$(".right .description").eq(j).text().substr(0,15);
+			console.log(duoyu);
+			for(var i=0;i<length;i++){
+				if(i>15){
+					$(".right .description").eq(j).text(duoyu+'... ');
+				}
+				console.log();
+			}
+		}
+	})
+})
+//var $pointDiv = $('<div id="pointDivs">').appendTo('body');
+//	for(var i = 0;i<5;i++){
+//	$('<div class="point-outer point-pre"><div class="point-inner"/》</div>').appendTo($pointDiv);
+//	}
+//	})
+//	$(".singleList .ic-cart").on("click",function(){
+//	//获取开始点坐标
+//	//ev.target ====>
+//	var startOffset = $(this).offset();
+//	//获取结束点坐标
+//	var endTop = window.innerHeight - 140, endLeft = 430,left = startOffset.left+10,top = startOffset.top+10;
+//	var outer = $('#pointDivs .point-pre').first().removeClass("point-pre").css({left:left+'px',top:top+'px'});
+//	var inner = outer.find(".point-inner");
+//	setTimeout(function(){
+//	outer[0].style.webkitTransform = 'translate3d(0,'+(endTop)+'px,0)';
+//	inner[0].style.webkitTransform = 'translate3d('+(endLeft - left)+'px,0,0)';
+//	setTimeout(function(){
+//	outer.removeAttr("style").addClass("point-pre");
+//	inner.removeAttr("style");
+//	},800);
+//	},1);
+//	//        console.log( $("nav #cart span").text());
+//	//        var  cal=parseInt($("nav #cart span").text());
+//	//        $("nav #cart span").text(cal+1);
+//
+//	})
+//倒计时
+var days,currentDate,EndTime,num=0;
+var liLength=$(".orderListDiv li").length;
+setInterval(getTime,1000)
+function getTime() {
+	for (var i = 0; i < liLength; i++) {
+		currentDate = $("p.time").eq(i).attr("start");//开始的时间
+		EndTime = $("p.time").eq(i).attr("end");//结束的时间
+		days = EndTime - currentDate-num;
+		if (days < 0) {
+			$("p.time").text(0)
+		} else {
+//			h=Math.floor(timestamp/60/60),
+//					m= Math.floor(timestamp/60-h*60),
+//					s= Math.floor(timestamp-h*3600-m*60);
+
+			var d = Math.floor(days/60/60/24);
+			var h = Math.floor(days/60/60-d*24);
+			var m = Math.floor(days/60-h*60-d*24*60);
+			var s = Math.floor(days-m*60-h*60*60-d*24*60*60);
+//			var m = Math.floor((days - h * 60 * 60) / 60);
+//			var s = Math.floor((days - h * 60 * 60 - m * 60));
+			if (d < 10) {
+				h = "0" + d;
+			}
+			if (h < 10) {
+				h = "0" + h;
+			}
+			if (m < 10) {
+				m = "" + m;
+			}
+			if (s < 10) {
+				s = "0" + s;
+			}
+			$(".time .day").eq(i).text(d)
+			$(".time .hour").eq(i).text(h)
+			$(".time .minute").eq(i).text(m)
+			$(".time .second").eq(i).text(s)
+		}
+	}
+	num++;
+}
+getTime();
+//收藏点击
+$(".favorCheckInput").on("click",function(){
+	console.log($(this));
+	if($(this).prop("checked")){
+		$(this).parents("li").find("label i").removeClass("ic-heart-empty").addClass("ic-heart");
+		//$('<span class="noneBtnAlertSpan ">成功关注</span>').append('body')
+		$(".noneBtnAlertSpan").text("成功收藏");
+		$(".noneBtnAlertSpan").show();
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+	}else{
+		$(this).parents("li").find("label i").removeClass("ic-heart").addClass("ic-heart-empty");
+		$(".noneBtnAlertSpan").text("成功取消关注");
+		$(".noneBtnAlertSpan").show();
+		setTimeout(function(){
+			$(".noneBtnAlertSpan").hide();
+		},1000)
+	}
+
+});
+	</script>

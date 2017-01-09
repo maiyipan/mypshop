@@ -1,0 +1,41 @@
+<!-- 选择指定商品 -->
+<div class="pad_lr_10">
+<form id="info_form" name="info_form" method="post">
+    <div class="J_tablelist table_list">
+    <table width="100%" cellspacing="1" id="J_cate_tree">
+        <thead>
+           <tr>
+                <th class="title"><span> 标题|</span><a class="js-update" href="javascript:void(0)">刷新</a></th>
+      			<th class="time">创建时间</th>
+      			<th class="opts">
+      			<div class="td-cont">
+      			<from class="from-search">
+      			<div class="input-append">
+      			<input class="input-small js-modal-search-input" type="text">
+      			<button  id="btn" name="buttom" onClick="jump()">搜索</button>
+      			</div>
+      			</from>
+      			</div></th>
+			</tr>
+        </thead>
+    	<tbody>
+        <volist name="list" id="val" >
+		<tr>
+			<td><input id="{$val.id}" type="checkbox" name="test" value="{$val.id}"/></td>
+			<td>{$val.title}</td>
+			<td>{$val.id}</td>
+			<!--  <td><button class="btn js-choose" href="javascript:void(0)">选取</button></td>-->
+         </tr>
+         </volist>
+    	</tbody>
+    </table>
+    </div>
+    </form>
+    </div>
+    
+    <script type="text/javascript">
+    function jump(){
+    	
+    }
+    
+    </script>

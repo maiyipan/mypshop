@@ -1,0 +1,21 @@
+<include file="public:header"/>
+<style>
+<!--
+.appPromoDiv{width: 100%;height: 100%;background-color: #eceade; }
+.appPromoDiv div{width: 100%;height: 100%;background-color: #eceade;padding-top: 20px; }
+.appPromoDiv  p{ font: 23px/45px 'Microsoft YaHei';color:#656043;margin-left: 50px;margin-top: 20px;}
+-->
+</style>
+<div class="backDiv">
+    <i class="ic-back " onclick="goBack()"> </i>
+    <span class="applySpan">推荐码详情</span>
+</div>
+<div class="appPromoDiv">
+	<div id="content" style="background: #f4f9f0; padding-top: 1px;">
+		<p>推荐码: <span>{$list.random}</span></p>
+		<p>有效期: <span>{$list.begintime|date='Y-m-d',###}</span> —— <span>{$list.expiretime|date='Y-m-d',###}</span></p>
+		<p>可用店铺: <span>{$list.name}</span></p>
+		<p>地址: <span>{$list.address}</span></p>
+	</div>
+</div>
+<include file="public:footer"/>

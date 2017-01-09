@@ -1,0 +1,133 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<section class="addressChoiceSection ">
+    <!--<div class="backDiv" onclick="goBack()">-->
+    <!--<i class="ic-back"> </i>-->
+    <!--<span class="applySpan">门店选择</span>-->
+    <!--</div>-->
+    <div class="addressChoiceB" >
+        <div style="    padding-bottom: 20px;">
+            <select class="addressSelect provienceInput" id="loc_province">
+                <option selected = ""></option>
+            </select>
+            <select class="addressSelect cityInput" id="loc_city">
+                <option selected = ""></option>
+            </select>
+            <select class="addressSelect townInput" id="loc_town">
+                <option selected = ""></option>
+            </select>
+            <input placeholder="关键字搜索" class="addressSelect keyword"/>
+            <span class="searchAddressBtn">搜索</span>
+        </div>
+        <div class=" nomal">
+            <p >获取到距您最近的店为：</p>
+            <div class="addressIndex" data-id="90baa3315883e80ce926c4034fc811" style="width:100%;height:200px;">
+                <div class="addressBg" data-url="{$website}/{$shopinfo.uid}"
+                     style="width:100%;height:200px;position: absolute; background-size: 100% 100%;"></div>
+                <p class="labelP">{$shopname}</p>
+                <!--<p class="defaultAddr labelP">设为默认</p>-->
+            </div>
+            <!--<p  class="newestAddress " data-id="{$website}/{$shopinfo.uid}">{$shopname}</p>-->
+            <p >为您推荐：</p>
+        </div>
+        <div class="proAddress" id="addressNameSelect" style="    overflow: hidden;" >
+            <ul>
+                <!--<volist name='shopinfo' id='shopinfo'>-->
+                <!--<p data-id="{$website}/{$shopinfo.uid}"  >-->
+                <!--{$shopinfo.name}-->
+                <!--</p>-->
+                <!--</volist>-->
+            </ul>
+        </div>
+    </div>
+</section>
+
+<include file="public:nav"/>
+<include file="public:cart_foot"/>
+<include file="public:footer"/>
+<include file="public:weixinnew"/>  
+<include file="public:weixinPublicShare"/>
+<script type="text/javascript" src="__STATIC__/home/js/area.js"></script>
+<script type="text/javascript" src="__STATIC__/home/js/address.js"></script>
+<script>
+    var pro=$(".provienceInput option").attr('selected');
+    var city=$(".cityInput option").attr('selected');
+    var town=$(".townInput option").attr('selected');
+    console.log(pro,city,town)
+    $(document).ready(function() {
+        showLocation(pro,city,town);
+
+    });
+//    search=0;
+    addressloading(1,null,null,0)
+    addressNameSelect = new IScroll("#addressNameSelect", {
+        bounce: false,
+        useTransform: true,
+        tap: true,
+        zoom: true,
+        probeType: 2
+    });
+    var hei =document.documentElement.clientHeight -410;
+    $("#addressNameSelect").css('height', hei + 'px');
+    addressNameSelect.on("scrollEnd", function () {
+        if (address_totalPage!= 0) {
+            //判定是否划到底
+            if (this.y == this.maxScrollY) {
+                addressPageNum++;
+                search=0;
+                addressloading(addressPageNum,null,null,0)
+            }
+        }
+    })
+    $('.searchAddressBtn').on("click",function(){
+        search=1;
+        var city_names,name,provience,city,town;
+        provience=$(".provienceInput option:checked").text();
+         city=$(".cityInput option:checked").text();
+         town=$(".townInput option:checked").text();
+        city_names=provience+' '+city+ ' '+town;
+        name=$('.addressChoiceB .keyword').val();
+        if(city_names==''&&name==''){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('地址不完整哦');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else if(provience==''||city==''||town==''&&name==''){
+            $(".noneBtnAlertSpan").show()
+            $(".noneBtnAlertSpan").text('地址不完整哦');
+            setTimeout(function(){
+                $(".noneBtnAlertSpan").hide()
+            },1000)
+        }else{
+            addressloading(1,city_names,name,search)
+        }
+    })
+    //设置默认门店
+    $('body').on('tap','.defaultAddr',function(){
+        var uid=$(this).parents('.addressIndex').attr('data-id');
+        console.log($(this).parents('.addressIndex')+'uid')
+        console.log(uid+'uid')
+        setDefault(uid,$(this))
+    })
+    $('body').on('tap','.addressBg',function(){
+        var url=$(this).attr('data-url');
+        window.location.href=url;
+    })
+    $('.nomal .addressBg').on('click',function(){
+        var url=$(this).attr('data-url');
+        window.location.href=url;
+    })
+    $(".addressChoiceB p.newestAddress").on("click",function(){
+        var id=$(this).attr("data-id");
+        window.location.href=id;
+//        console.log(id)
+//        $(".searchDiv p.address ").val(id) ;
+//        $(".searchDiv p.address ").text($(this).text())
+//        $(".searchDiv p.address ").attr("data-id",id)
+
+//        $(".addressChoiceSection ").hide();
+//        document.removeEventListener( 'touchmove' , stopScrolling  );
+
+    })
+</script>

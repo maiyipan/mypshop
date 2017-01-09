@@ -1,0 +1,35 @@
+<!--编辑管理员-->
+<div class="dialog_content">
+	
+	<div >
+		<img id="contents" src="{:attach($data['image'])}" data-url="{$data.aurl}"/>
+	</div>
+	
+	<div >
+		<div class="">
+		<textarea cols="20" rows="10" id="text" class="">{$data.aurl}</textarea>
+		</div>
+		<div class = "yl">
+		<a href="{:U('market/down', array('urlid'=>$data['urlid']))}"　target="_blank" class="btn btn-link">二维码下载</a>
+		<a href="#"  class="btn btn-add " onclick="copyUrl2()" style="width: 75px;">链接复制</a></br>
+		</div>
+	</div>
+	
+	
+</div>
+<style>
+.yl {height: 39px;margin-left: 26%;width: 100%;}
+.btndiv{margin-top: 6px;margin-bottom: 6px;margin-left: 3px;}
+.p{margin-left: 64px;width: 300px;margin-top: 2px;}
+.img{width: 80%;height: 500px}
+#text{width: 90%;	border: 0px;margin-right: 10px;margin-top: 2px;height: 50px;}
+</style>
+<script type="text/javascript">
+ function copyUrl2()
+ {
+	 var Url2=document.getElementById("text");
+ 	 Url2.select(); // 选择对象
+  	document.execCommand("Copy"); // 执行浏览器复制命令
+  	alert("已复制好，可贴粘。");
+  }
+</script>

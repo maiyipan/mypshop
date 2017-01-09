@@ -1,0 +1,67 @@
+<include file="public:header"/>
+<div class="backDiv">
+    <i class="ic-back " onclick="goBack()"> </i>
+</div>
+<div class="applyDiv dis_none">
+    <p class="applyP">申请会员卡</p>
+</div>
+<div class="applyMenbership ">
+    <form form class="infoForm" action="{:U('my/applyMerbership',array('sid'=>$shopid))}" method="post">
+        <li>
+            <label class="space">姓名:</label>
+            <input name='username' placeholder="" type="text">
+        </li>
+        <li>
+            <label class="space">手机:</label>
+            <input name='cellphone' placeholder=""  type="tel">
+        </li>
+        <li>
+            <input name='code' class="code" placeholder=""  type="text">
+            <p class="getCode" onclick="time()">获取验证码</p>
+        </li>
+        <li>
+            <label>证件号码:</label>
+            <input name='idcard' placeholder=""  type="text">
+        </li>
+        <li>
+            <label>生日:</label>
+            <input name='birthday' placeholder="" type="text">
+        </li>
+        <li>
+            <label>地址:</label>
+            <input name='address' placeholder="" type="text">
+        </li>
+        <li>
+            <label class="sex">性别:</label>
+            <input type="radio" name="sex" value="1" checked>
+           <input type="radio" name="sex" value="0">
+            <p class="sex wom"><img id="wom"src="images/circle.png">女</p>
+            <p class="sex man"><img id="man" src="images/circle.png">男</p>
+        </li>
+        <li>
+            <label>电子邮箱:</label>
+            <input name='email' placeholder="" type="text">
+        </li>
+    <input type="submit" />
+    </form>
+</div>
+<script type="text/javascript">
+    var wait=60;
+    function time() {
+        var o=$(".getCode")
+        if (wait == 0) {
+            o.removeAttr("disabled");
+            o.text("获取验证码");
+            wait = 60;
+        } else {
+            o.css("disabled", true);
+            o.text("重新发送(" + wait + ")s");
+            wait--;
+//            console.log(wait);
+            setTimeout(function() {
+                time()
+            },1000)
+        }
+    }
+</script>
+<include file="public:footer"/>

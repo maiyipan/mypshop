@@ -1,0 +1,269 @@
+<include file="public:header"/>
+<title>佳鲜农庄{$shopname}</title>
+<div id="cartPage">
+    <div class="backDiv " >
+        <i class="ic-back" onclick="goBack()"> </i>
+        <span class="applySpan">编辑我的购物车</span>
+    </div>
+    <div class="cartEditDiv  ">
+        <div class="cartListDiv">
+            <ul>
+            	<volist name='item' id='vo'>
+                <li itemId="{$vo.id}">
+                    <div class="good" id="cart_item_{$vo.id}">
+                        <label id="cancle_{$vo.id}">
+                            <input onclick="checkBtn($(this))" type="checkbox" class="checkInput liInput" "<if condition="$vo['status'] eq 0">checked="checked"<else/></if>>
+                            <i class="ic-tick ic-gtick"></i>
+                        </label>
+                        <if condition="$vo['types'] eq 1">
+                        <a href="{:U('item/promotionTeam',array('id'=>$vo['id'],'sid'=>$shopid))}">
+                    		<img src="{:attach(get_thumb($assembles[$vo['id']][0]['img'], '_m'), '')}">
+                    	</a>
+                    	<else/><!-- 普通商品 -->
+                    	<a href="{:U('item/details',array('id'=>$vo['id'],array('sid'=>$shopid)))}">
+                    		<img src1="images/orange.png" src="{:attach(get_thumb($vo['img'], '_m'), '')}">
+                    	</a>
+                    	</if>
+                    	<span class="btnSpan">
+                    	<!-- <p class="price">￥<span class="goodPrice">{$vo.price}</span></p>
+                        <p>商品规格:<span class="guigeNum">{$vo.size}{$vo.unitName}</span></p>
+                             -->
+                            <div class="numberBtn" onclick="cul(0,{$vo.id},$(this),{$vo.mbdscnt})" style="float: left"><p id="btnP">-</p></div>
+                        	<input onchange="inputChange({$vo.id},$(this))" type="text" class="quantity" name="" value="{$vo.num}" class="text width1" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        	<div class="numberBtn" onclick="cul(1,{$vo.id},$(this),{$vo.mbdscnt})" style="float: right"><p id="btnP">+</p></div>
+                    	</span>
+                        <img class="recover" src="__STATIC__/home/images/recover.png">
+                    </div>
+                </li>
+                </volist>
+            </ul>
+        </div>
+        <div class="editBalanceDiv">
+            <label>
+                <input type="checkbox" class="checkInput" >
+                <i class="ic-tick ic-gtick"></i>
+                <!-- <div class="balanceInfo">
+                    <p class="zongji">总计：<span class="totalPrice">{$sumPrice}</span></p>
+                    <p class="yunfei">运费：<span class="addressPrice">￥0</span></p>
+                </div> -->
+                <div class="balanceInfo">
+                    <p class="zongji">共计金额：<span class="totalPrice">{$sumPrice}</span></p>
+                    <!--<p class="yunfei">运费：<span class="addressPrice">￥0</span></p>-->
+                </div>
+                <p class="balanceBtn">批量删除</p>
+               <!--  <p class="editGoodsDetail finishEdit">完成</p> -->
+               <p class="finishBtn">	编辑完成</p>
+            </label>
+            <!--<p class="balanceBtn">批量删除</p>-->
+        </div>
+
+    </div>
+</div>
+<include file="public:footer"/>
+<script>
+    $(function(){
+//        balanceNum()
+//        var checkedLength=$(".cartEditDiv li .checkInput:checked").length;
+//        var liLength=$(".cartEditDiv li").length;
+//        if(checkedLength==liLength){
+//            $(".cartEditDiv .editBalanceDiv .checkInput").prop("checked",true);
+//        }
+    })
+    function inputChange(itemId,_this){
+        if(_this.val()==0){
+            console.log(_this.val());
+            _this.val(1);
+        }
+        console.log(_this.val());
+        $.post("{:U('shopcart/change_quantity',array('sid'=>$shopid))}", {itemId:itemId,quantity:_this.val()}, function (data) {
+            if (data.status == 1) { //成功
+                _this.parents(".cartEditDiv").find(".totalPrice").text(data.sumPrice)
+            } else{
+                alert(data.msg);
+            }
+        }, 'json');
+    }
+//     完成按钮
+    $(".editBalanceDiv .finishBtn").on("click",function(){
+        //Todo 保存用户修改的商品信息
+        window.location.href="{:U('shopcart/index',array('sid'=>$shopid))}";
+    })
+//单个删除按钮
+    $("img.recover").on("click",function(){
+        var delBtnLi=$(this).parents("li");
+        var itemId = delBtnLi.attr('itemId');
+        $(".tableDiv").show();
+        $(".tableDiv p.yes").on("click",function(){
+        	$(".tableDiv").hide();
+            $.post("{:U('shopcart/remove_cart_item',array('sid'=>$shopid))}", {itemId: itemId}, function (data) {
+                if (data.status == 1) { //成功
+                    delItem(delBtnLi);
+                    if($(".cartEditDiv li").length==0){
+                        $(".editBalanceDiv").hide();
+                    }
+                } else{
+                	alert(data.msg);
+                }
+            }, 'json');
+//            Todo 数据改变存储
+        })
+        $(".tableDiv p.no").on("click",function(){
+            $(".tableDiv").hide();
+        })
+    })
+    function delItem(itemId){
+        itemId.remove();
+        console.log(1)
+    }
+//批量删除按钮
+$("p.balanceBtn").on("click",function(){
+    var checkedPLi=$(".cartEditDiv li .checkInput:checked").parents(" li");
+    var checkedLength=$(".cartEditDiv li .checkInput:checked").length;
+    if(checkedLength>0){
+        //var flag=$(".cartEditDiv li .checkInput").attr("checked");alert();
+       // if(flag==true){
+            $(".tableDiv").show();
+            $(".tableDiv p.yes").on("click",function(){
+                $(".tableDiv").hide();
+                var ids = new Array();
+            	$.each(checkedPLi, function(i, n){
+            		ids.push( $(n).attr('itemId') );
+            	});
+                $.post("{:U('shopcart/remove_cart_item',array('sid'=>$shopid))}", {itemId: ids.toString()}, function (data) {
+                    if (data.status == 1) { //成功
+                        checkedPLi.remove();
+                        $(".editBalanceDiv").hide();
+                    } else{
+                    	alert(data.msg);
+                    }
+                }, 'json');
+            })
+        $(".tableDiv p.no").on("click",function(){
+            $(".tableDiv").hide();
+        })
+
+       // }else{}
+    }else{
+        alert("请先选中");
+    }
+
+})
+    function checkBtn(_this){
+        var itemId = _this.parents("li").attr('itemId');
+        checkLi(itemId,_this);
+        if(_this.prop("checked")){
+            _this.siblings(".ic-tick").css("color","#7b9e5c")
+            _this.prop("checked",true)
+            console.log("checked")
+        }else{
+            _this.siblings(".ic-tick").css("color","#AEB1AC")
+            _this.prop("checked",false)
+            console.log("check")
+        }
+    }
+    $(".editBalanceDiv .checkInput").on("click" ,function(){
+        checkBlance($(this));
+        console.log(3)
+    })
+    function checkLi(itemId,_this){
+    	//调用取消商品接口
+    	/* $.post("{:U('shopcart/cancle_item')}", {itemId: itemId}, function (data) {
+           if (data.status == 1) { //成功
+               $(".totalPrice").text(data.sumPrice)
+           } else{
+           		alert(data.msg);
+           }
+       }, 'json'); */
+       var checkdeLiLength= $(".cartEditDiv li .checkInput:checked").length;
+        var liLength= $(".cartEditDiv li").length;
+            if(checkdeLiLength==liLength){
+                $(".editBalanceDiv .checkInput").prop("checked",true);
+                $(".editBalanceDiv .checkInput").siblings(".ic-tick").css("color","#f29200");
+                $(" p.balanceBtn").css("background-color", "#628345");
+            }else{
+                    if(checkdeLiLength==0){
+                        $(".editBalanceDiv .checkInput").prop("checked",false);
+                        $(".editBalanceDiv .checkInput").siblings(".ic-tick").css("color","#AEB1AC");
+                        $(" p.balanceBtn").css("background-color", "#AEB1AC");
+                        $(" p.balanceBtn").css("background-color", "#AEB1AC");
+                    }else{
+                        $(" p.balanceBtn").css("background-color", "#628345");
+                        $(".editBalanceDiv .checkInput").siblings(".ic-tick").css("color","#AEB1AC");
+                    }
+            }
+    }
+    function checkBlance(checkBlanceId){
+        if(checkBlanceId.prop("checked")){
+            $(".cartEditDiv li .checkInput").prop("checked",true);
+            $(".cartEditDiv li .checkInput").siblings(".ic-tick").css("color","#7b9e5c");
+            $(".editBalanceDiv .checkInput").prop("checked",true);
+            $(".editBalanceDiv .checkInput").siblings(".ic-tick").css("color","#f29200");
+            $(" p.balanceBtn").css("background-color", "#628345");
+        }else{
+            console.log(0)
+            $(".cartEditDiv li .checkInput").prop("checked",false);
+            $(".cartEditDiv li .checkInput").siblings(".ic-tick").css("color","#AEB1AC");
+            $(".editBalanceDiv .checkInput").prop("checked",false);
+            $(".editBalanceDiv .checkInput").siblings(".ic-tick").css("color","#AEB1AC");
+            $(" p.balanceBtn").css("background-color", "#AEB1AC");
+        }
+    }
+//    按钮
+    function cul(p,itemId,_this,status){
+//        console.log(_this.next("input"))
+        var o=0;
+        //如果status为0限购
+        if(status == 0){
+        	  _this.prev("input").val(1)
+        	    $(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text('该商品是限购商品');
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+        }else{
+			if(p==1){
+			   o= _this.prev("input").val()
+			}else{
+			    o= _this.next("input").val()
+			}
+		        if(!isNaN(o)){
+		            if(p==1){
+		                o++;
+		                _this.prev().val(o);
+		                console.log(p)
+		            }else{
+		                if(parseInt(o)!=1){
+		                    o--;
+		                    _this.next().val(o);
+		                    console.log(p+'222')
+		                }
+		            }
+		            $.post("{:U('shopcart/change_quantity',array('sid'=>$shopid))}", {itemId: itemId,quantity:o}, function (data) {
+		                if (data.status == 1) { //成功
+		
+		                    _this.parents(".cartEditDiv").find(".totalPrice").text(data.sumPrice)
+		                } else{
+		                    alert(data.msg);
+		                }
+		            }, 'json');
+		        }else{
+		            console.log(o)
+		        }
+        }
+    }
+
+    function balanceNum(){
+        var price=0;
+        for(var i=0;i<$(".cartEditDiv li .checkInput:checked").length;i++){
+            var num=$(".cartEditDiv li .checkInput:checked").length;
+            $("span.num").text(num);
+            var k = $(".cartEditDiv li .checkInput:checked").eq(i).parents("li").find(".goodPrice").text();
+            var x = $(".cartEditDiv li .checkInput:checked").eq(i).parents("li").find(".guigeNum").text();
+            price += parseInt(k)*parseInt(x);
+        }
+        if(!price){
+            price=0;
+        }
+        $(".totalPrice").text("￥"+price) ;
+    }
+</script>

@@ -1,0 +1,214 @@
+<include file="public:header"/>
+<!-- <link rel="stylesheet" type="text/css"
+	href="__STATIC__/weixin/css/dingcan/css2.css" /> -->
+<link rel="stylesheet" type="text/css"
+	href="__STATIC__/weixin/css/dingcan/css2.css?v=1124" />	
+<div class="col-sm-12 widget-container-span">
+	<div class="widget-box transparent">
+		<div class="widget-header">
+			<div class="widget-toolbar no-border">
+				<ul class="nav nav-tabs" id="myTab">
+					<li class="active"><a data-toggle="tab" href="#home2">编辑素材</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main padding-12 no-padding-left no-padding-right">
+				<div class="tab-content padding-4">
+					<div id="home2" class="tab-pane in active">
+						<form class="form-horizontal J_ajaxForm" enctype="multipart/form-data" id="myform" action="{:U('item/add')}" method="post">
+							<div class="tabbable">
+								<div class="tab-content">
+									<div class="tab-pane active">
+										<table cellpadding="2" cellspacing="2" width="100%" border="0" class="table_form">
+											<tbody>
+								            	<div class="list" id="add_zsc" style="">
+									            	<div class="edit-info">
+									            		<ul>
+									            			<li>
+									            				<span>素材名称</span>
+									            				<input type="text" class="text1" value="{$media.name}"  name="name" id="name">
+									            				<input type="hidden" value="{$media.id}" name="zsc_iid" id="zsc_iid">
+									            				
+									            			</li>
+									            			<li>
+										            			<span>回复内容设置</span><br>
+										            			<if condition="$media['media_type'] eq 0">
+										            			<input type="radio" onclick="check_tuwen(0)" id="ch_wen" name="media_type" checked="checked"  value="1">文本
+										            			<input type="radio" onclick="check_tuwen(1)" id="ch_tu" name="media_type" checked="checked" value="0">图文
+										            			<else/>
+										            			<input type="radio" onclick="check_tuwen(0)" id="ch_wen" name="media_type" checked="checked"  value="0">文本
+										            			<input type="radio" onclick="check_tuwen(1)" id="ch_tu" name="media_type" checked="checked" value="1">图文
+										            			</if>
+									            			</li>
+									            		</ul>
+									            	</div>
+									            	<div class="clear" id="wen" style="display: none;">
+									            		<div class="replycon">
+									            			<textarea id="content" style="width:695px;height:137px; border:#ccc solid 1px;"></textarea>
+									            		</div>
+									            		<div style=" padding-top:45px; clear:both;">
+									            			<a href="javascript:btnfalse(0);" class="save cancel"></a>
+									            		<div onclick="btnsave(0,1)" class="save" style="cursor:pointer;">
+									            		</div>
+									            		</div>
+									            	</div>
+									            	<div class="clear" id="tu" style="display: block;">
+									            		<div class="tuwen">
+									            			<div class="tuwen_left">
+									            			<!-- 第一个 -->
+									            				<a href="javascript:;" class="imgcon">
+									            					<img id="zsc_imgs0" src="{$media_item_first.picurl}" width="295" height="126">
+									            					<span id="zsc_titles0">{$media_item_first.title}</span>
+									            					<b class="modify">
+									            						<img id="zsc_simg0" src="static/weixin/images/dingcan/op-modify.png" onclick="zsc_editimg(0)">
+									            					</b>
+									            					<input type="hidden" value="{$media_item_first.id}" class="addid" id="zsc_id0">
+									            					<input type="hidden" value="{$media_item_first.title}" class="addtitle" id="zsc_t0">
+									            					<input type="hidden" value="{$media_item_first.picurl}" class="addimg" id="zsc_i0">
+									            					<input type="hidden" value="{$media_item_first.url}" class="addurls" id="zsc_urls0">
+									            					<input type="hidden" value="{$media_item_first.content}" class="addcontent" id="zsc_content0">
+									            					<input type="hidden" value="{$media_item_first.isurl}" class="addisurl" id="zscisurl0">
+									            					<input type="hidden" value="{$media_item_first.contentUrl}" class="addcontentUrl" id="zsccontentUrl0">
+									            				</a>
+									            				<volist name="media_item_other" id="vo" key="k">
+									            					<a href="javascript:;" class="simgcon" id="zsc_imgs{$k}">
+									            					<span>{$vo.title}</span>
+									            					<img src="{$vo.picurl}" id="zsc_simg{$k}">
+									            					<b class="smodify">
+									            					<img src="/static/weixin/images/dingcan/op-modify.png" onclick="zsc_editimg({$k})">
+									            					<img src="/static/weixin/images/dingcan/op-del.png" onclick="zsc_delimg({$k})">
+									            					</b>
+									            					<input type="hidden" value="{$k}" class="simgcons">
+									            					<input type="hidden" value="{$vo.id}" class="addid" id = "zsc_id{$k}">
+ 									            					<input type="hidden" value="{$vo.title}" class="addtitle" id="zsc_t{$k}">
+									            					<input type="hidden" value="{$vo.picurl}" class="addimg" id="zsc_i{$k}">
+									            					<input type="hidden" value="{$vo.url}"  class="addurls" id="zsc_urls{$k}">
+									            					<input type="hidden" value="{$vo.content}" class="addcontent" id="zsc_c{$k}">
+									            					<input type="hidden" value="{$vo.isurl}" class="addisurl" id="zsc_isu{$k}">
+									            					<input type="hidden" value="{$vo.contentUrl}" class="addcontentUrl" id="zsc_cu{$k}">
+									            				</a>
+									            				</volist>
+									            				<div style="width:295px;" id="zsc_add1bg">
+									            					<img src="/static/weixin/images/dingcan/keywords_28.jpg" class="add1" style="cursor:pointer;" onclick="zsc_addimg(2)">
+									            				</div>
+									            			</div>
+									            			<div class="tuwen_right">
+								            					<div style="height:60px;">
+								            						标题：<input id="zsc_titles" type="text" style="width:277px" class="text1" onkeyup="zsc_keytitle()" onchange="zsc_keytitle()">
+								            					</div>
+								            					
+								            					<div style="height:60px;">
+								            							封面：<input type="text" class="text1" style="width:199px" id="zsc_imgurls" readonly="readonly">
+								            							  <input class="choseimg" type="button" value="选择图片" onclick="choseImg()">
+								            					</div>
+								            					<div style="height:60px;">
+								            							<label><input type='radio'  class="J_change_status" id='isurlyes' name='isurl' value='0' checked="true"/>链接 &nbsp;&nbsp;</label>
+				                                                 		<label><input type='radio' class="J_change_status"  id='isurlno' name='isurl' value='1'/>自定义文章</label>
+								            					 </div>
+								            					 <div id = "urlinput" style="height:60px;">
+								            					 	     链接：<input id="zsc_urls" type="text" style="width:277px" class="text1" onkeyup="zsc_urlinfo()" onchange="zsc_urlinfo()">
+								            					 </div>
+								            					 <div id = 'textinput' style="height:100px; display:none">
+								            					    <div style="height:60px;">
+								            						          原文链接：<input id="zsc_contentUrls" type="text" style="width:277px" class="text1" onkeyup="zsc_contentUrl()" onchange="zsc_contentUrl()">
+                          												</div>
+                          												<div style="height:60px;">
+								            						         <textarea rows="" cols="" id='zsc_contents' name='zsc_contents' onkeyup="zsc_content()"  onchange="zsc_content()"></textarea> 
+								            						</div>
+								            					 </div>
+									            			</div>
+									            			<!-- <div class="tuwen_right">
+									            				<img src="/static/weixin/images/dingcan/keywords_15.jpg">
+									            				<p><br>
+									            						标题：<input id="zsc_titles" type="text" style="width:277px" class="text1" onkeyup="zsc_keytitle()" onchange="zsc_keytitle()">
+									            					<br><br>
+									            						封面：<input type="text" class="text1" style="width:199px" id="zsc_imgurls" readonly="readonly">
+									            						<input class="choseimg" type="button" value="选择图片" onclick="choseImg()">
+									            					<br><br>
+									            						链接：<input id="zsc_urls" type="text" style="width:277px" class="text1" onkeyup="zsc_urlinfo()" onchange="zsc_urlinfo()">
+									            				</p>
+									            					<img src="/static/weixin/images/dingcan/keywords_19.jpg">
+									            			</div> -->
+									            				<div style=" padding-top:45px; clear:both;">
+									            					<a class="save cancel" href="javascript:btnfalse(0);"></a>
+									            					<div onclick="btnsave(1,1)" class="save" style="cursor:pointer;">
+									            					</div>
+									            				</div>
+									            		</div>
+									            	</div>
+								            	</div>
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="showimg" style="display: none">
+	<div class="stit">
+		<span>上传图片</span> <a href="javascript:zsc_close();"><img
+			src="__STATIC__/weixin/images/dingcan/addpageup_06.jpg" /></a>
+	</div>
+	<div class="sup">
+		<input type="button" value="上传图片" class="uploadbtn" />
+		<form action="{:U('keyword/ajaxupload')}" method="post"
+			id="zsc_myform" enctype="multipart/form-data" target="yframe">
+			<input type="file" value="上传图片" class="uploadbtn"
+				style="position: absolute; top: 75px; left: 20px; filter: alpha(pacity = 0); opacity: 0; z-index: 999;"
+				onchange="zsc_upload()" name="image[]" />大小不超过1M ，仅限png,jpeg,jpg <input
+				type="hidden" name="sub" value="submit" />
+		</form>
+		<iframe name="yframe" src="{:U('keyword/ajaxupload')}"
+			style="border: none; display: none;"></iframe>
+	</div>
+	<div class="imgbox"></div>
+	<div class="sbottom">
+		<input type="button" class="submit" id="zsc_surebtn" />
+	</div>
+	<!-----正在提交------>
+	<span class="loadsubmit">正在上传...</span>
+</div>
+<div class="zhe" style="display: none"></div>
+<include file="public:common" />
+ <script src="__STATIC__/js/kindeditor/kindeditor.js"></script>
+<script src="__STATIC__/js/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+$(function() {
+	KindEditor.ready(function(K) {
+		editor1 = K.create('textarea[name="zsc_contents"]', {
+			height : '250px',
+			width : "555px",
+			uploadJson : '{:U("attachment/editer_upload")}',
+			allowFileManager : false,
+			allowImageUpload : true,
+			items : [ 'source', '|', 'undo', 'redo', '|', 'preview',
+					'print', 'template', 'code', 'cut', 'copy', 'paste',
+					'plainpaste', 'wordpaste', '|', 'justifyleft',
+					'justifycenter', 'justifyright', 'justifyfull',
+					'insertorderedlist', 'insertunorderedlist', 'indent',
+					'outdent', 'subscript', 'superscript', 'clearhtml',
+					'quickformat', 'selectall', '|', 'fullscreen', '/',
+					'formatblock', 'fontname', 'fontsize', '|',
+					'forecolor', 'hilitecolor', 'bold', 'italic',
+					'underline', 'strikethrough', 'lineheight',
+					'removeformat', '|', 'image','table', 'hr',
+					'emoticons', 'baidumap', 'pagebreak', 'anchor', 'link',
+					'unlink', '|', 'about' ],
+			afterBlur : function() {
+				this.sync();
+				zsc_content() ;
+				
+			}
+		});
+	});
+	
+}); 
+</script>
+ <include file="public:weixin"/>

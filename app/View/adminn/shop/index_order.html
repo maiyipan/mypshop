@@ -1,0 +1,21 @@
+<!--首页推广模块顺序编辑-->
+<div class="dialog_content">
+<form id="info_form" action="{:u('shop/index_order')}" method="post">
+<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+    <tr>
+        <th width="80">店铺名称</th>
+        <td><input type="text" name="name" id="name" class="input-text" size="40" readonly value="{$info.name}"></td>
+    </tr>
+    <tr>
+        <th width="180">首页推广顺序 :</th>
+        <td>
+            <label><input type="radio" <if condition="$info['index_order'] eq '1'">checked="checked"</if> value="1" name="index_order"> 横幅推广优先</label>&nbsp;&nbsp;
+            <label><input type="radio" <if condition="$info['index_order'] eq '0'">checked="checked"</if> value="0" name="index_order"> 分类推广优先</label>
+        </td>
+    </tr>
+</table>
+<input type="hidden" name="id" id="id" value="{$info.id}" />
+</form>
+</div>
+<script type="text/javascript">
+</script>

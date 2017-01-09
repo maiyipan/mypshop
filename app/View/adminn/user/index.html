@@ -1,0 +1,135 @@
+<include file="public:_header" />
+<!--会员列表-->
+<div class="pad_10" >
+    <form name="searchform" method="get" >
+    <table width="100%" cellspacing="0" class="search_form">
+        <tbody>
+            <tr>
+                <td>
+                <div class="explain_col">
+                    <input type="hidden" name="g" value="adminn" />
+                    <input type="hidden" name="m" value="user" />
+                    <input type="hidden" name="a" value="index" />
+                    <input type="hidden" name="menuid" value="{$menuid}" />
+                    &nbsp;关键字 :
+                    <input name="keyword" type="text" placeholder="用户名、邮箱" class="input-text" size="25" value="{$search.keyword}" />
+                    <input type="submit" name="search" class="btn" value="搜索" />
+                </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+
+    <div class="J_tablelist table_list" data-acturi="{:U('user/ajax_edit')}">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width=25><input type="checkbox" id="checkall_t" class="J_checkall"></th>
+                <th width="60"><span data-tdtype="order_by" data-field="id">ID</span></th>
+                <th>头像</th>
+                <th align="center"><span>用户名</span></th>
+               <!--  <th align="center"><spa>邮箱</span></th> -->
+                <th align="center"><span>性别</span></th>
+                <th align="center"><span>积分</span></th>
+                <th align="center"><span>余额</span></th>
+                <th align="center"><span data-tdtype="order_by" data-field="reg_time">注册时间</span></th>
+                <!-- <th align="center"><span data-tdtype="order_by" data-field="last_time">最后登陆</span></th> -->
+                <!-- <th align="center"><span>最后IP</span></th> -->
+                <!-- <th align="center"><span>状态</span></th> -->
+                <th align="center"><span>关注</span></th>
+                <th align="center"><span>操作</span></th>
+            </tr>
+        </thead>
+    	<tbody>
+            <volist name="list" id="val" >
+            <tr>
+                <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+                <td align="center">{$val.id}</td>
+                <td align="center"><img src="{$val.headimgurl}" width="32" height="32"/></td>
+                <td align="center"><span>{$val.username}</span></td>
+               <!--  <td align="center"><span>{$val.email}</span></td> -->
+                <td align="center">
+                  <if condition="$val['gender'] eq '1'">男</if>
+                  <if condition="$val['gender'] eq '2'">女</if>
+                </td>
+                <td align="center">{$val.score}</td>
+                <td align="center"><if condition="$val['bindstatus'] eq 1">{$val.card_balance}<else/>未绑定会员卡</if></td>
+                <td align="center">{$val.reg_time|date="Y-m-d H:i",###}</td>
+                <!-- <td align="center">{$val.last_time|date="Y-m-d H:i",###}</td> -->
+                <!-- <td align="center">{$val.last_ip}</td> -->
+                <!-- <td align="center"><img data-tdtype="toggle" data-id="{$val.id}" data-field="status" data-value="{$val.status}" src="__STATIC__/images/admin/toggle_<if condition="$val.status eq 0">disabled<else/>enabled</if>.gif" /></td> -->
+                <td align="center"><img src="__STATIC__/images/admin/toggle_<if condition="$val['weuser']['subscribe'] eq 1">enabled<else/>disabled</if>.gif" /></td>
+                <td align="">
+               	 <!-- <a href="javascript:;" class="J_showdialog btn btn-link" data-uri="{:u('user/log', array('id'=>$val['id'], 'menuid'=>$menuid,'p'=>1))}" data-title="访问记录-{$val.username}" 
+               	 data-id="edit" data-width="520" data-height="330">对话记录</a> --> 
+               	 <a href="javascript:;" class="J_showdialog btn btn-link" data-uri="{:u('message/user', array('id'=>$val['id'], 'menuid'=>$menuid,'p'=>1))}" data-title="给-{$val.username}-发私信" 
+               		 data-id="add" data-width="520" data-height="330">发私信</a> 
+               	 <a href="{:u('user/order', array('id'=>$val['id'], 'menuid'=>$menuid))}"  class="btn btn-link">订单</a>
+               	 <a href="{:u('user/address', array('id'=>$val['id'], 'menuid'=>$menuid))}"  class="btn btn-link">地址</a> 
+               	 <a href="javascript:;" onclick="ajaxCoupons({$val['id']})" id="ajaxCoupons" class="btn btn-link">绑定优惠券</a>
+                </td>
+            </tr>
+            </volist>
+    	</tbody>
+    </table>
+    <div class="btn_wrap_fixed">
+     <!-- 
+        <label class="select_all"><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+        <input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('user/delete')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+         -->
+        <div id="pages">{$page}</div>
+    </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+function ajaxCoupons(userid){
+	var dtitle = '优惠券筛选',
+		did = 'ajaxCoupons',
+		duri = '{:U("user/coupons")}';
+	$.dialog({id:did}).close();
+	$.dialog({
+		id:did,
+		title:dtitle,
+		width:700,
+		height:300,
+		lock:true,
+		ok:function(){
+			var list = $('input[name="id[]"]:checked');
+			if(list.length == 0){
+				alert('请选择优惠劵');
+				return false;
+			}
+			return relationCallBack(list,userid);
+		},
+		cancel:function(){}
+	});
+	$.getJSON(duri, function(result){
+		if(result.status == 1){
+			$.dialog.get(did).content(result.data);
+		}
+	});
+	return false;
+}
+function relationCallBack(list,userid){
+	if(list){
+		var isreturn = false;
+		$.each(list, function(){
+			var urlid = $(this).attr('id');
+			$.post('{:U("user/bind_coupon")}',{'urlid':urlid,'userid':userid}, function(result){
+				if(result.status == 1){
+					alert(result.msg);
+					$.dialog({id:'ajaxCoupons'}).close();
+				}
+			},'json');
+		})
+		return false;
+	}
+}
+</script>
+<include file="public:_footer" />
+</body>
+</html>
+<link rel="stylesheet" type="text/css" href="__STATIC__/js/calendar/calendar-blue.css"/>
+<script type="text/javascript" src="__STATIC__/js/calendar/calendar.js"></script>

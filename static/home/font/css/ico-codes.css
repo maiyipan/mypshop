@@ -1,0 +1,27 @@
+
+.ic-heart-empty:before { content: '\e800'; } /* '' */
+.ic-heart:before { content: '\e801'; } /* '' */
+.ic-scan:before { content: '\e802'; } /* '' */
+.ic-search:before { content: '\e803'; } /* '' */
+.ic-shopbag:before { content: '\e804'; } /* '' */
+.ic-tick:before { content: '\e805'; } /* '' */
+.ic-app:before { content: '\e806'; } /* '' */
+.ic-back:before { content: '\e807'; } /* '' */
+.ic-cart:before { content: '\e808'; } /* '' */
+.ic-class:before { content: '\e809'; } /* '' */
+.ic-delete:before { content: '\e80a'; } /* '' */
+.ic-eidt:before { content: '\e80b'; } /* '' */
+.ic-err:before { content: '\e80c'; } /* '' */
+.ic-favor:before { content: '\e80d'; } /* '' */
+.ic-gift:before { content: '\e80e'; } /* '' */
+.ic-groupbuy:before { content: '\e80f'; } /* '' */
+.ic-home:before { content: '\e810'; } /* '' */
+.ic-map:before { content: '\e811'; } /* '' */
+.ic-mobilephone:before { content: '\e812'; } /* '' */
+.ic-more:before { content: '\e813'; } /* '' */
+.ic-my:before { content: '\e814'; } /* '' */
+.ic-nail:before { content: '\e815'; } /* '' */
+.ic-phone:before { content: '\e816'; } /* '' */
+.ic-private:before { content: '\e817'; } /* '' */
+.ic-down-dir:before { content: '\e818'; } /* '' */
+.ic-up-dir:before { content: '\e819'; } /* '' */

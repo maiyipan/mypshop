@@ -1,0 +1,18 @@
+<table id="table" border="1">
+    <tr>
+      	<thead>
+          <tr>
+              <th class="title"><span>商品名称</span></th>
+    			<th >操作</th>
+	 	  </tr>
+      </thead>
+  	<tbody>
+      <volist name="list" id="val">
+		<tr>
+			<td>{$val.title}</td>
+			<!--  <td><button class="btn js-choose" href="javascript:void(0)">选取</button></td>-->
+    	</tr>
+     </volist>
+	</tbody>
+  </tr>
+</table>

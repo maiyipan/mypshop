@@ -1,0 +1,67 @@
+<!--添加广告-->
+<div class="dialog_content">
+<form id="info_form" action="{:u('custom_menu/edit')}" method="post">
+<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+    <tr>
+      <th width="80">菜单名称:</th>
+      <td><input type="text" name="name" id="name" class="input-text" size="40" value="{$info.name}"></td>
+    </tr>
+    <tr>
+      <th>点击类型:</th>
+      <td>
+      		<select name="type" class="typeSelect">
+      			<option value="0" <if condition="0 eq $info['type']" >selected="selected"</if> >点击事件 </option>
+      			<option value="1" <if condition="1 eq $info['type']" >selected="selected"</if> >访问网页 </option>
+      		</select>
+      </td>
+    </tr>
+    <tr id="typecilck">
+    
+      <th>素材:</th>
+      <td>
+        <select name="media_id" id="board_id">
+            <volist name="medialist" id="val" >
+            <option 
+            	<if condition="$val.id eq $info.media_id ">selected="selected"</if> value="{$val.id}" >
+            		{$val.name}
+            	</option>
+            </volist>
+        </select>
+      </td>
+    </tr>
+    <tr id="typelink" >
+      <th>访问网页:</th>
+      <td>
+        <input type="text" name="linkurl" value="{$info.content}">
+      </td>
+    </tr>
+    
+    <input type="hidden" name ="id" value = "{$info.id}">
+    
+</table>
+</form>
+</div>
+<script>
+$(function(){
+	
+	//alert ({$info.type});
+	if ({$info.type} == 0) {
+		$('#typelink').addClass('hidden');
+	} else {
+		$('#typecilck').addClass('hidden');
+	}
+    $('.typeSelect').on('change', function(){
+    	//console.log($(this).val());
+        if($(this).val() == '0'){ //点击事件
+        	$('#typecilck').removeClass('hidden');
+        	$('#typelink').fadeOut();
+            $('#typecilck').fadeIn();
+        }else{
+        	$('#typelink').removeClass('hidden');
+        	$('#typelink').fadeIn();
+            $('#typecilck').fadeOut();
+        } 
+    }); 
+});
+
+</script>

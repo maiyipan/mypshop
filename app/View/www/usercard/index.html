@@ -1,0 +1,110 @@
+<include file="public:header"/>
+<div class="backDiv">
+    <i class="ic-back " onclick="goreturn()"> </i>
+    <span class="applySpan">我的佳鲜农庄会员卡</span>
+</div>
+
+<div class="applyMenbershipDiv">
+<div id="content" style="background: #f4f9f0; padding-top: 1px;">
+  <form method="post">
+  				<p align="center">恭喜你，门店会员卡合并成功!</p>
+				<p align="center">您可以线上查看账户余额及积分信息</p>
+  <table  style="margin-left: 40px;">
+			  <tr> 
+  		<td>
+                <p align="" name="card_num">会员卡号：{$val.card_num}</p>
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <p align="" name="card_score">会员积分：{$val.card_score}</p> 
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <p align="" name="card_balance">账户余额：{$val.card_balance}</p>
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <p align="" name="member_name">持卡人：{$val.member_name}</p> 
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <p align="" name="time">有效时间：{$val.public_time}~{$val.expire_time}</p>     
+                </td>
+			</tr>
+			  <tr> 
+  		<td>            
+                <p align="" name="mobile">联系电话：{$val.mobile_a}</p>
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <p align="" name="address">地址：{$val.address}</p>
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <p align="" name="discount">会员折扣：{$val.discount}</p>    
+                </td>
+			</tr>
+			  <tr> 
+  		<td>
+                <div class="btn submit" style="margin-right: 18px;">
+                    <input class="cardid" type="hidden" name="id" value="{$val.id}">
+                    <span class="activate"> <input class="enter" style="background-color: #7b9e5c;" value="解除绑定" type="button"></span>
+                </div>
+                <div class="btn submit">
+                	 <span class="activate"> <input class="go" value="马上购物" type="button"></span>
+                   <!--  <a href="{:U('index/index',array('sid'=>$shopid))}"> 马上购物</a> -->
+                    <!-- <span class="activate"> <input class="enter" value="解除绑定" type="button"></span> -->
+                </div>
+               
+                </td>
+			</tr>
+			 
+        </table>
+  </form>
+</div>
+</div>
+<include file="public:footer"/>
+<script type="text/javascript">
+function goreturn(){
+	window.location.href="{:U('my/index',array('sid'=>$shopid))}";
+}
+$(".enter").on("click",function(){
+	$.ajax({
+        type: 'post',
+        url: "{:U('usercard/release_bound',array('sid'=>$shopid))}",
+        dataType: 'json',
+        timeout: 15000,
+        data:{},
+        success: function (data) {
+            if (data.status == 1) {
+            	$(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text(data.msg);
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+            	window.location.href = data.data.url;
+            } else {
+            	$(".noneBtnAlertSpan").show()
+                $(".noneBtnAlertSpan").text(data.msg);
+                setTimeout(function(){
+                    $(".noneBtnAlertSpan").hide()
+                },1000)
+            	window.location.href = data.data.url;
+            }
+        },
+        error: function (xhr, type) {
+//            alert('网络超时，请刷新后再试！');
+        }
+    });
+});
+
+$(".go").on("click",function(){
+	window.location.href="{:U('index/index',array('sid'=>$shopid))}"  //成功之后跳转的链接
+});
+</script>

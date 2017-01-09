@@ -1,0 +1,104 @@
+<div class="navbar navbar-default" id="navbar">
+	<div class="navbar-container" id="navbar-container">
+		<div class="navbar-header pull-left">
+			<a href="#" class="navbar-brand">
+				 <small>
+					佳鲜农庄后台管理  V0.2
+				</small> 
+			</a><!-- /.brand -->
+		</div><!-- /.navbar-header -->
+
+		<div class="navbar-header pull-right" role="navigation">
+			<ul class="nav ace-nav " >
+				<li class="light-blue"  >
+					<ul class="nav ace-nav " id="J_tmenu">
+					
+					
+					 <volist name="top_menus" id="val" mode="2"> 
+						<li class="top_menu <eq name="mod">red</eq> <neq name="mod">green</neq> ">
+							<a href="javascript:;" data-id="{$val.id}"
+								hidefocus="true" class="nav-app" name="{:L($val['name'])}"><i class="icon-{$val['img']}"></i>{:L($val['name'])}
+							</a>
+						</li>
+					</volist> 
+					
+					<!--  
+					<volist name="top_menus" id="val" >
+							<li class="{$val['color']}">
+								<a href="#" class="dropdown-toggle"  data-toggle="dropdown">
+									<i class="icon-{$val['img']}"></i>
+									<span class="menu-text">  {$val.name} </span>
+					
+									<b class="arrow icon-angle-down"></b>
+								</a>
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" id="J_tmenu">
+								<volist name="val['sub']" id="sval" >
+							    	<li class="sub_menu">
+								    	<a href="javascript:;" 
+								    	data-uri="{:U($sval['module_name'].'/'.$sval['action_name'], array('menuid'=>$sval['id']))}{$sval.data}" 
+								    	data-id="{$sval.id}" hidefocus="true"><i class="fa fa-angle-right"></i> 
+								    	<span>{$sval.name}</span>
+								    	</a>
+							    	</li>
+								</volist>
+							</ul>
+					</volist>
+					-->
+					</ul>
+				</li>
+				
+				<li class="light-blue">
+					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<!-- <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" /> -->
+								<span class="menu-text">
+									<small>门店切换</small> <!-- {$shopList.shopname} -->
+								</span>
+
+								<b class="arrow icon-angle-down"></b>
+					</a>
+						
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a href="{:U('index/index', array('sid'=>$quan))}" hidefocus="true" > <i class="fa fa-angle-right"></i> 
+										全部  {$qaun}
+									</a>
+								</li>
+								<volist name="shopList['shopList']" id="shop" >
+									<li>
+										<a href="{:U('index/index' , array('sid'=>$shop['uid']))}" hidefocus="true" > <i class="fa fa-angle-right"></i> 
+											{$shop.name}
+										</a>
+									</li>
+								</volist>
+								
+							</ul>
+						
+							
+							
+				</li>
+				<li class="light-blue">
+					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<!-- <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" /> -->
+								<span class="user-info">
+									<small>{$my_admin.currname}</small> 
+									{$my_admin.username}
+								</span>
+
+								<i class="icon-caret-down"></i>
+					</a>
+
+						<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+							<li>
+								<a href="{:U('index/logout')}">
+									<i class="icon-off"></i>
+									注销
+								</a>
+							</li>
+						</ul>
+							
+							
+				</li>
+			</ul><!-- /.ace-nav -->
+		</div><!-- /.navbar-header -->
+	</div><!-- /.container -->
+</div>
